@@ -1,5 +1,7 @@
 // THIS FILE ADAPTED FROM INFS2605 19T3 WEEK 5 TUTORIAL
 
+package helper;
+
 import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
