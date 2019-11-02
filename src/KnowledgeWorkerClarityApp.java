@@ -8,7 +8,6 @@ public class KnowledgeWorkerClarityApp extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        System.out.println("testing");
         Parent root = FXMLLoader.load(getClass().getResource("kanban/KanbanScreen.fxml"));
 
         Scene scene = new Scene(root);
