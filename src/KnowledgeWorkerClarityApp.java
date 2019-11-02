@@ -8,7 +8,7 @@ public class KnowledgeWorkerClarityApp extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("KanbanScreen.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("kanban/KanbanScreen.fxml"));
 
         Scene scene = new Scene(root);
 

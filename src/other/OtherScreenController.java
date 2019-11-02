@@ -1,3 +1,6 @@
+package other;
+
+import helper.PageSwitchHelper;
 import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,7 +16,7 @@ public class OtherScreenController {
     @FXML
     private void handleKanbanScreenButtonAction(ActionEvent event) throws IOException {
         try {
-            pageSwitchHelper.switcher(event, "KanbanScreen.fxml");
+            pageSwitchHelper.switcher(event, "/kanban/KanbanScreen.fxml");
         } catch (Exception ex) {
             ex.printStackTrace();
         }

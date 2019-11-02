@@ -1,5 +1,7 @@
 // THIS FILE ADAPTED FROM INFS2605 19T3 WEEK 5 TUTORIAL
 
+package helper;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
