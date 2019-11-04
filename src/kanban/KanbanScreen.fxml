@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.shape.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.canvas.*?>
 <?import javafx.scene.text.*?>
 <?import java.net.*?>
 <?import java.lang.*?>
@@ -8,8 +11,35 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kanban.KanbanScreenController">
+<AnchorPane id="AnchorPane" prefHeight="768.0" prefWidth="917.0" style="-fx-background-color: 0;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="KanbanScreenController">
    <children>
-      <Button fx:id="aboutScreenButton" defaultButton="true" layoutX="217.0" layoutY="187.0" mnemonicParsing="false" onAction="#handleAboutScreenButtonAction" prefHeight="27.0" prefWidth="167.0" text="About" />
+      <Button fx:id="otherScreenButton" defaultButton="true" layoutX="654.0" layoutY="603.0" mnemonicParsing="false" onAction="#handleOtherScreenButtonAction" prefHeight="27.0" prefWidth="167.0" text="Go to other screen" />
+      <GridPane layoutX="183.0" layoutY="87.0" prefHeight="434.0" prefWidth="576.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="270.0" minWidth="10.0" prefWidth="184.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="387.0" minWidth="10.0" prefWidth="368.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints maxHeight="194.0" minHeight="10.0" prefHeight="141.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="231.0" minHeight="0.0" prefHeight="147.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="216.0" minHeight="10.0" prefHeight="136.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <TextField fx:id="categoryName" alignment="TOP_LEFT" centerShape="false" prefHeight="15.0" prefWidth="29.0" GridPane.columnIndex="1" />
+            <Label text="Colour" GridPane.rowIndex="1" />
+            <Label text="Category Name:" />
+            <ColorPicker prefHeight="176.0" prefWidth="380.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+            </ColorPicker>
+            <Button fx:id="SbmtCategoryButton" mnemonicParsing="false" text="Submit" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+            </Button>
+         </children>
+      </GridPane>
+      <Label alignment="CENTER" layoutX="349.0" layoutY="14.0" prefHeight="57.0" prefWidth="221.0" text="Create New Category" />
    </children>
 </AnchorPane>
