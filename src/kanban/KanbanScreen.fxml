@@ -11,9 +11,8 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="768.0" prefWidth="917.0" style="-fx-background-color: 0;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="KanbanScreenController">
+<AnchorPane id="AnchorPane" prefHeight="768.0" prefWidth="917.0" style="-fx-background-color: 0;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kanban.KanbanScreenController">
    <children>
-      <Button fx:id="otherScreenButton" defaultButton="true" layoutX="654.0" layoutY="603.0" mnemonicParsing="false" onAction="#handleOtherScreenButtonAction" prefHeight="27.0" prefWidth="167.0" text="Go to other screen" />
       <GridPane layoutX="183.0" layoutY="87.0" prefHeight="434.0" prefWidth="576.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="270.0" minWidth="10.0" prefWidth="184.0" />
@@ -25,15 +24,15 @@
           <RowConstraints maxHeight="216.0" minHeight="10.0" prefHeight="136.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <TextField fx:id="categoryName" alignment="TOP_LEFT" centerShape="false" prefHeight="15.0" prefWidth="29.0" GridPane.columnIndex="1" />
+            <TextField fx:id="categoryNameTextField" alignment="TOP_LEFT" centerShape="false" prefHeight="15.0" prefWidth="29.0" GridPane.columnIndex="1" />
             <Label text="Colour" GridPane.rowIndex="1" />
             <Label text="Category Name:" />
-            <ColorPicker prefHeight="176.0" prefWidth="380.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <ColorPicker prefHeight="35.0" prefWidth="380.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets />
                </GridPane.margin>
             </ColorPicker>
-            <Button fx:id="SbmtCategoryButton" mnemonicParsing="false" text="Submit" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+            <Button fx:id="submitCategoryButton" mnemonicParsing="false" onAction="#handleSubmitCategoryButtonAction" text="Submit" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                <GridPane.margin>
                   <Insets />
                </GridPane.margin>
@@ -41,5 +40,6 @@
          </children>
       </GridPane>
       <Label alignment="CENTER" layoutX="349.0" layoutY="14.0" prefHeight="57.0" prefWidth="221.0" text="Create New Category" />
+      <Button fx:id="aboutScreenButton" layoutX="372.0" layoutY="657.0" mnemonicParsing="false" onAction="#handleAboutScreenButtonAction" prefHeight="27.0" prefWidth="167.0" text="About" />
    </children>
 </AnchorPane>
