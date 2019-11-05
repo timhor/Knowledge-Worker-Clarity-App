@@ -7,6 +7,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class Database {
 
@@ -17,8 +18,8 @@ public class Database {
         if (conn == null) {
             try {
                 conn = DriverManager.getConnection("jdbc:sqlite:Database.db");
-            } catch (SQLException ex) {
-                ex.printStackTrace();
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         }
     }
@@ -59,18 +60,31 @@ public class Database {
         stmt.close();
     }
 
-    public static void createLoginTable() throws SQLException {
+    public static void createEntriesTable() throws SQLException {
         openConnection();
         java.sql.Statement stmt = conn.createStatement();
 
-        String dropQuery = "DROP TABLE IF EXISTS users";
-        stmt.execute(dropQuery);
-
-        String createQuery = "CREATE TABLE users (username TEXT NOT NULL, password TEXT NOT NULL)";
+        String createQuery = "CREATE TABLE IF NOT EXISTS entries" +
+            "(id INTEGER PRIMARY KEY," +
+            "desc TEXT NOT NULL," +
+            "starttime TEXT NOT NULL," +
+            "endtime TEXT NOT NULL," +
+            "durationinseconds INTEGER NOT NULL," +
+            "category INTEGER REFERENCES categories(id) ON DELETE SET NULL)";
         stmt.execute(createQuery);
 
-        String insertQuery = "INSERT INTO users VALUES ('admin', 'admin')";
-        stmt.execute(insertQuery);
+        ArrayList<String> insertStatements = new ArrayList<String>();
+
+        insertStatements.add("INSERT INTO entries (desc, starttime, endtime, durationinseconds, category)" +
+            "VALUES ('First entry', '2019-11-05T00:37:26.079Z', '2019-11-05T00:39:52.157Z', '146', NULL)");
+        insertStatements.add("INSERT INTO entries (desc, starttime, endtime, durationinseconds, category)" +
+            "VALUES ('Second entry', '2019-11-07T00:37:26.079Z', '2019-11-07T00:55:52.157Z', '1106', NULL)");
+        insertStatements.add("INSERT INTO entries (desc, starttime, endtime, durationinseconds, category)" +
+            "VALUES ('Third entry', '2019-11-07T15:56:26.079Z', '2019-11-08T02:21:52.157Z', '37526', NULL)");
+
+        for (String statement : insertStatements) {
+            stmt.execute(statement);
+        }
 
         stmt.close();
     }
