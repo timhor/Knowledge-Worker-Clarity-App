@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.web.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.canvas.*?>
+<?import javafx.scene.text.*?>
+<?import java.net.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="768.0" prefWidth="917.0" style="-fx-background-color: 0;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kanban.KanbanScreenController">
+   <children>
+      <Button fx:id="aboutScreenButton" layoutX="388.0" layoutY="697.0" mnemonicParsing="false" onAction="#handleAboutScreenButtonAction" prefHeight="27.0" prefWidth="167.0" text="About" />
+      <Label layoutX="112.0" layoutY="117.0" text="Create Entry">
+         <font>
+            <Font name="Segoe UI" size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="entryDescriptionTextField" layoutX="112.0" layoutY="173.0" prefHeight="33.0" prefWidth="209.0" promptText="Entry Description" />
+      <TextField fx:id="entryDescriptionTextField1" layoutX="359.0" layoutY="173.0" prefHeight="33.0" prefWidth="148.0" promptText="Start Time (HH:MM)" />
+      <TextField fx:id="entryDescriptionTextField11" layoutX="516.0" layoutY="173.0" prefHeight="33.0" prefWidth="148.0" promptText="End Time (HH:MM)" />
+      <Button layoutX="696.0" layoutY="173.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="121.0" text="Save Entry" />
+      <TableView editable="true" focusTraversable="false" layoutX="113.0" layoutY="249.0" prefHeight="374.0" prefWidth="704.0">
+        <columns>
+          <TableColumn prefWidth="75.0" text="Category" />
+          <TableColumn prefWidth="131.80508422851562" text="Description" />
+            <TableColumn prefWidth="75.0" text="Start" />
+            <TableColumn prefWidth="75.0" text="End" />
+            <TableColumn prefWidth="75.0" text="Duration" />
+        </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
+      </TableView>
+   </children>
+</AnchorPane>
