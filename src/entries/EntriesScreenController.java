@@ -51,8 +51,6 @@ public class EntriesScreenController {
     @FXML
     private TableColumn<Entry, String> durationColumn;
 
-    Database database = new Database();
-
     @FXML
     public void initialize() {
         categoryColumn.setCellValueFactory(cellData -> cellData.getValue().getCategoryProperty());
@@ -70,7 +68,7 @@ public class EntriesScreenController {
 
     private ObservableList<Entry> getEntryListData() throws SQLException {
         ArrayList<Entry> entryList = new ArrayList<Entry>();
-        ResultSet rs = database.getResultSet("SELECT * FROM entries");
+        ResultSet rs = Database.getResultSet("SELECT * FROM entries");
         while (rs.next()) {
             String category = rs.getString("category");
             if (rs.wasNull()) {

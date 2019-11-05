@@ -25,14 +25,14 @@ public class Database {
     }
 
 	/* Pass an SQL String into this method when querying the database */
-    public ResultSet getResultSet(String sqlstatement) throws SQLException {
+    public static ResultSet getResultSet(String sqlstatement) throws SQLException {
         openConnection();
         java.sql.Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery(sqlstatement);
         return rs;
     }
 
-    public ResultSet getResultSetFromPreparedStatement(String sqlstatement, String[] parameters) throws SQLException {
+    public static ResultSet getResultSetFromPreparedStatement(String sqlstatement, String[] parameters) throws SQLException {
         PreparedStatement stmt = conn.prepareStatement(sqlstatement);
         for (int i = 0; i < parameters.length; i++) {
             stmt.setString(i + 1, parameters[i]);
@@ -43,7 +43,7 @@ public class Database {
     }
 
 	/* Pass an SQL String into this method when inserting data into the database */
-    public void insertStatement(String insert_query) throws SQLException {
+    public static void insertStatement(String insert_query) throws SQLException {
         java.sql.Statement stmt = null;
         openConnection();
         try {
@@ -73,19 +73,23 @@ public class Database {
             "endtime TEXT NOT NULL)";
         stmt.execute(createQuery);
 
-        // TODO: check if entries already exist, if so don't add
+        String checkExistingQuery = "SELECT COUNT(*) FROM entries";
+        ResultSet rs = getResultSet(checkExistingQuery);
+        int rowCount = rs.getInt(1);
 
-        ArrayList<String> insertStatements = new ArrayList<String>();
+        if (rowCount == 0) {
+            ArrayList<String> insertStatements = new ArrayList<String>();
 
-        insertStatements.add("INSERT INTO entries (category, desc, date, starttime, endtime)" +
-            "VALUES (NULL, 'First entry', '2019-11-05', '11:30', '12:45')");
-        insertStatements.add("INSERT INTO entries (category, desc, date, starttime, endtime)" +
-            "VALUES (NULL, 'Second entry', '2019-11-07', '13:23', '15:12')");
-        insertStatements.add("INSERT INTO entries (category, desc, date, starttime, endtime)" +
-            "VALUES (NULL, 'Third entry', '2019-11-07', '18:38', '20:53')");
+            insertStatements.add("INSERT INTO entries (category, desc, date, starttime, endtime)" +
+                "VALUES (NULL, 'First entry', '2019-11-05', '11:30', '12:45')");
+            insertStatements.add("INSERT INTO entries (category, desc, date, starttime, endtime)" +
+                "VALUES (NULL, 'Second entry', '2019-11-07', '13:23', '15:12')");
+            insertStatements.add("INSERT INTO entries (category, desc, date, starttime, endtime)" +
+                "VALUES (NULL, 'Third entry', '2019-11-07', '18:38', '20:53')");
 
-        for (String statement : insertStatements) {
-            stmt.execute(statement);
+            for (String statement : insertStatements) {
+                stmt.execute(statement);
+            }
         }
 
         stmt.close();
