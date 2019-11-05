@@ -67,7 +67,7 @@ public class Database {
         String createQuery = "CREATE TABLE IF NOT EXISTS entries" +
             "(id INTEGER PRIMARY KEY," +
             "category INTEGER REFERENCES categories(id) ON DELETE SET NULL," +
-            "desc TEXT NOT NULL," +
+            "description TEXT NOT NULL," +
             "date TEXT NOT NULL," +
             "starttime TEXT NOT NULL," +
             "endtime TEXT NOT NULL)";
@@ -80,11 +80,11 @@ public class Database {
         if (rowCount == 0) {
             ArrayList<String> insertStatements = new ArrayList<String>();
 
-            insertStatements.add("INSERT INTO entries (category, desc, date, starttime, endtime)" +
+            insertStatements.add("INSERT INTO entries (category, description, date, starttime, endtime)" +
                 "VALUES (NULL, 'First entry', '2019-11-05', '11:30', '12:45')");
-            insertStatements.add("INSERT INTO entries (category, desc, date, starttime, endtime)" +
+            insertStatements.add("INSERT INTO entries (category, description, date, starttime, endtime)" +
                 "VALUES (NULL, 'Second entry', '2019-11-07', '13:23', '15:12')");
-            insertStatements.add("INSERT INTO entries (category, desc, date, starttime, endtime)" +
+            insertStatements.add("INSERT INTO entries (category, description, date, starttime, endtime)" +
                 "VALUES (NULL, 'Third entry', '2019-11-07', '18:38', '20:53')");
 
             for (String statement : insertStatements) {

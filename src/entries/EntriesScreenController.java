@@ -74,7 +74,7 @@ public class EntriesScreenController {
             if (rs.wasNull()) {
                 category = "Not set";
             }
-            Entry entry = new Entry(category, rs.getString("desc"), rs.getString("starttime"), rs.getString("endtime"));
+            Entry entry = new Entry(category, rs.getString("description"), rs.getString("starttime"), rs.getString("endtime"));
             entryList.add(entry);
         }
         return FXCollections.observableList(entryList);
