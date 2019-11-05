@@ -42,15 +42,24 @@ public class Database {
         return rs;
     }
 
+    public static void insertPreparedStatement(String insertQuery, String[] parameters) throws SQLException {
+        PreparedStatement stmt = conn.prepareStatement(insertQuery);
+        for (int i = 0; i < parameters.length; i++) {
+            stmt.setString(i + 1, parameters[i]);
+        }
+        stmt.executeUpdate();
+        stmt.close();
+    }
+
 	/* Pass an SQL String into this method when inserting data into the database */
-    public static void insertStatement(String insert_query) throws SQLException {
+    public static void insertStatement(String insertQuery) throws SQLException {
         java.sql.Statement stmt = null;
         openConnection();
         try {
             System.out.println("Database opened successfully");
             stmt = conn.createStatement();
-            System.out.println("The query was: " + insert_query);
-            stmt.executeUpdate(insert_query);
+            System.out.println("The query was: " + insertQuery);
+            stmt.executeUpdate(insertQuery);
             stmt.close();
             conn.commit();
         } catch (Exception e) {
