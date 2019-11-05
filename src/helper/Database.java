@@ -66,20 +66,23 @@ public class Database {
 
         String createQuery = "CREATE TABLE IF NOT EXISTS entries" +
             "(id INTEGER PRIMARY KEY," +
+            "category INTEGER REFERENCES categories(id) ON DELETE SET NULL," +
             "desc TEXT NOT NULL," +
+            "date TEXT NOT NULL," +
             "starttime TEXT NOT NULL," +
-            "endtime TEXT NOT NULL," +
-            "category INTEGER REFERENCES categories(id) ON DELETE SET NULL)";
+            "endtime TEXT NOT NULL)";
         stmt.execute(createQuery);
+
+        // TODO: check if entries already exist, if so don't add
 
         ArrayList<String> insertStatements = new ArrayList<String>();
 
-        insertStatements.add("INSERT INTO entries (desc, starttime, endtime, category)" +
-            "VALUES ('First entry', '2019-11-05T00:37:26.079Z', '2019-11-05T00:39:52.157Z', NULL)");
-        insertStatements.add("INSERT INTO entries (desc, starttime, endtime, category)" +
-            "VALUES ('Second entry', '2019-11-07T00:37:26.079Z', '2019-11-07T00:55:52.157Z', NULL)");
-        insertStatements.add("INSERT INTO entries (desc, starttime, endtime, category)" +
-            "VALUES ('Third entry', '2019-11-07T15:56:26.079Z', '2019-11-08T02:21:52.157Z', NULL)");
+        insertStatements.add("INSERT INTO entries (category, desc, date, starttime, endtime)" +
+            "VALUES (NULL, 'First entry', '2019-11-05', '11:30', '12:45')");
+        insertStatements.add("INSERT INTO entries (category, desc, date, starttime, endtime)" +
+            "VALUES (NULL, 'Second entry', '2019-11-07', '13:23', '15:12')");
+        insertStatements.add("INSERT INTO entries (category, desc, date, starttime, endtime)" +
+            "VALUES (NULL, 'Third entry', '2019-11-07', '18:38', '20:53')");
 
         for (String statement : insertStatements) {
             stmt.execute(statement);
