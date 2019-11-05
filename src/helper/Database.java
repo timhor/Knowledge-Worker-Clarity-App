@@ -69,18 +69,17 @@ public class Database {
             "desc TEXT NOT NULL," +
             "starttime TEXT NOT NULL," +
             "endtime TEXT NOT NULL," +
-            "durationinseconds INTEGER NOT NULL," +
             "category INTEGER REFERENCES categories(id) ON DELETE SET NULL)";
         stmt.execute(createQuery);
 
         ArrayList<String> insertStatements = new ArrayList<String>();
 
-        insertStatements.add("INSERT INTO entries (desc, starttime, endtime, durationinseconds, category)" +
-            "VALUES ('First entry', '2019-11-05T00:37:26.079Z', '2019-11-05T00:39:52.157Z', '146', NULL)");
-        insertStatements.add("INSERT INTO entries (desc, starttime, endtime, durationinseconds, category)" +
-            "VALUES ('Second entry', '2019-11-07T00:37:26.079Z', '2019-11-07T00:55:52.157Z', '1106', NULL)");
-        insertStatements.add("INSERT INTO entries (desc, starttime, endtime, durationinseconds, category)" +
-            "VALUES ('Third entry', '2019-11-07T15:56:26.079Z', '2019-11-08T02:21:52.157Z', '37526', NULL)");
+        insertStatements.add("INSERT INTO entries (desc, starttime, endtime, category)" +
+            "VALUES ('First entry', '2019-11-05T00:37:26.079Z', '2019-11-05T00:39:52.157Z', NULL)");
+        insertStatements.add("INSERT INTO entries (desc, starttime, endtime, category)" +
+            "VALUES ('Second entry', '2019-11-07T00:37:26.079Z', '2019-11-07T00:55:52.157Z', NULL)");
+        insertStatements.add("INSERT INTO entries (desc, starttime, endtime, category)" +
+            "VALUES ('Third entry', '2019-11-07T15:56:26.079Z', '2019-11-08T02:21:52.157Z', NULL)");
 
         for (String statement : insertStatements) {
             stmt.execute(statement);
