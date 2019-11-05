@@ -5,7 +5,9 @@ import helper.PageSwitchHelper;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -17,6 +19,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 
 public class EntriesScreenController {
+
+    PageSwitchHelper pageSwitchHelper = new PageSwitchHelper();
 
     @FXML
     private Button aboutScreenButton;
@@ -80,7 +84,23 @@ public class EntriesScreenController {
         return FXCollections.observableList(entryList);
     }
 
-    PageSwitchHelper pageSwitchHelper = new PageSwitchHelper();
+    @FXML
+    private void handleSaveEntryButtonAction(ActionEvent event) {
+        String category = null;
+        String description = entryDescriptionTextField.getText();
+        String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+        String startTime = startTimeTextField.getText();
+        String endTime = endTimeTextField.getText();
+        try {
+            Database.insertPreparedStatement(
+                    "INSERT INTO entries (category, description, date, starttime, endtime) VALUES (?,?,?,?,?)",
+                    new String[] { category, description, date, startTime, endTime });
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            initialize();
+        }
+    }
 
     @FXML
     private void handleAboutScreenButtonAction(ActionEvent event) throws IOException {
