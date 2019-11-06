@@ -16,7 +16,7 @@ public class AboutScreenController {
     @FXML
     private void handleBackButtonAction(ActionEvent event) throws IOException {
         try {
-            pageSwitchHelper.switcher(event, "/kanban/KanbanScreen.fxml");
+            pageSwitchHelper.switcher(event, "/entries/EntriesScreen.fxml");
         } catch (Exception ex) {
             ex.printStackTrace();
         }

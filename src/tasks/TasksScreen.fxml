@@ -11,7 +11,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="768.0" prefWidth="917.0" style="-fx-background-color: 0;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kanban.KanbanScreenController">
+<AnchorPane id="AnchorPane" prefHeight="768.0" prefWidth="917.0" style="-fx-background-color: 0;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tasks.TasksScreenController">
    <children>
       <GridPane layoutX="183.0" layoutY="87.0" prefHeight="434.0" prefWidth="576.0">
         <columnConstraints>

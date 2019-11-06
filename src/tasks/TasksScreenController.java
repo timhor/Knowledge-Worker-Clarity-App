@@ -1,4 +1,4 @@
-package kanban;
+package tasks;
 
 import helper.Database;
 import helper.PageSwitchHelper;
@@ -10,7 +10,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
-public class KanbanScreenController {
+public class TasksScreenController {
 
     @FXML
     private Button aboutScreenButton;

@@ -7,6 +7,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class Database {
 
@@ -17,21 +18,21 @@ public class Database {
         if (conn == null) {
             try {
                 conn = DriverManager.getConnection("jdbc:sqlite:Database.db");
-            } catch (SQLException ex) {
-                ex.printStackTrace();
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         }
     }
 
 	/* Pass an SQL String into this method when querying the database */
-    public ResultSet getResultSet(String sqlstatement) throws SQLException {
+    public static ResultSet getResultSet(String sqlstatement) throws SQLException {
         openConnection();
         java.sql.Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery(sqlstatement);
         return rs;
     }
 
-    public ResultSet getResultSetFromPreparedStatement(String sqlstatement, String[] parameters) throws SQLException {
+    public static ResultSet getResultSetFromPreparedStatement(String sqlstatement, String[] parameters) throws SQLException {
         PreparedStatement stmt = conn.prepareStatement(sqlstatement);
         for (int i = 0; i < parameters.length; i++) {
             stmt.setString(i + 1, parameters[i]);
@@ -41,15 +42,24 @@ public class Database {
         return rs;
     }
 
+    public static void insertPreparedStatement(String insertQuery, String[] parameters) throws SQLException {
+        PreparedStatement stmt = conn.prepareStatement(insertQuery);
+        for (int i = 0; i < parameters.length; i++) {
+            stmt.setString(i + 1, parameters[i]);
+        }
+        stmt.executeUpdate();
+        stmt.close();
+    }
+
 	/* Pass an SQL String into this method when inserting data into the database */
-    public void insertStatement(String insert_query) throws SQLException {
+    public static void insertStatement(String insertQuery) throws SQLException {
         java.sql.Statement stmt = null;
         openConnection();
         try {
             System.out.println("Database opened successfully");
             stmt = conn.createStatement();
-            System.out.println("The query was: " + insert_query);
-            stmt.executeUpdate(insert_query);
+            System.out.println("The query was: " + insertQuery);
+            stmt.executeUpdate(insertQuery);
             stmt.close();
             conn.commit();
         } catch (Exception e) {
@@ -59,18 +69,37 @@ public class Database {
         stmt.close();
     }
 
-    public static void createLoginTable() throws SQLException {
+    public static void createEntriesTable() throws SQLException {
         openConnection();
         java.sql.Statement stmt = conn.createStatement();
 
-        String dropQuery = "DROP TABLE IF EXISTS users";
-        stmt.execute(dropQuery);
-
-        String createQuery = "CREATE TABLE users (username TEXT NOT NULL, password TEXT NOT NULL)";
+        String createQuery = "CREATE TABLE IF NOT EXISTS entries" +
+            "(id INTEGER PRIMARY KEY," +
+            "category INTEGER REFERENCES categories(id) ON DELETE SET NULL," +
+            "description TEXT NOT NULL," +
+            "date TEXT NOT NULL," +
+            "starttime TEXT NOT NULL," +
+            "endtime TEXT NOT NULL)";
         stmt.execute(createQuery);
 
-        String insertQuery = "INSERT INTO users VALUES ('admin', 'admin')";
-        stmt.execute(insertQuery);
+        String checkExistingQuery = "SELECT COUNT(*) FROM entries";
+        ResultSet rs = getResultSet(checkExistingQuery);
+        int rowCount = rs.getInt(1);
+
+        if (rowCount == 0) {
+            ArrayList<String> insertStatements = new ArrayList<String>();
+
+            insertStatements.add("INSERT INTO entries (category, description, date, starttime, endtime)" +
+                "VALUES (NULL, 'First entry', '2019-11-05', '11:30', '12:45')");
+            insertStatements.add("INSERT INTO entries (category, description, date, starttime, endtime)" +
+                "VALUES (NULL, 'Second entry', '2019-11-07', '13:23', '15:12')");
+            insertStatements.add("INSERT INTO entries (category, description, date, starttime, endtime)" +
+                "VALUES (NULL, 'Third entry', '2019-11-07', '18:38', '20:53')");
+
+            for (String statement : insertStatements) {
+                stmt.execute(statement);
+            }
+        }
 
         stmt.close();
     }
