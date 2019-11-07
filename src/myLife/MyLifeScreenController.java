@@ -1,21 +1,15 @@
-package about;
-
-import helper.PageSwitchHelper;
-import layout.LayoutScreenController;
+package myLife;
 
 import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import layout.LayoutScreenController;
 
-public class AboutScreenController {
-
-
-    PageSwitchHelper pageSwitchHelper = new PageSwitchHelper();
+public class MyLifeScreenController {
 
     LayoutScreenController layoutController = new LayoutScreenController();
 
-    //Navigation
     // Side bar 
     @FXML
     public Button homeScreenButton;
@@ -41,17 +35,6 @@ public class AboutScreenController {
     
     @FXML
     public Button aboutScreenButton;
-    @FXML
-    private void handleBackButtonAction(ActionEvent event) throws IOException {
-        try {
-            pageSwitchHelper.switcher(event, "/entries/EntriesScreen.fxml");
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-
-
-    //Navigation
 
     // Top Bar Handling 
     @FXML
@@ -94,4 +77,10 @@ public class AboutScreenController {
     public void handleWeeklyTrendsScreenButtonAction(ActionEvent event) throws IOException {
         layoutController.handleWeeklyTrendsScreenButtonAction(event);
     }
+
+    @FXML
+    private void handleBackButtonAction(ActionEvent event) throws IOException {
+        layoutController.handleWeeklyTrendsScreenButtonAction(event);
+    }
+
 }

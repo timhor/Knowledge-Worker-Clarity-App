@@ -11,7 +11,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
-public class TasksScreenController {
+public class FocusModeScreenController {
 
     @FXML
     private Button submitCategoryButton;
@@ -43,16 +43,6 @@ public class TasksScreenController {
     // Top Bar
     @FXML
     public Button focusModeScreenButton;
-
-    // Top Bar
-    @FXML
-    public Button entriesScreenButton;
-
-    @FXML
-    public Button tasksScreenButton;
-    
-    @FXML
-    public Button aboutScreenButton;
 
     //Navigation
     // Top Bar Handling 
