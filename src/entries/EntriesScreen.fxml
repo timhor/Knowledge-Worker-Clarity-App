@@ -71,6 +71,7 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
             </GridPane>
+            <Label fx:id="statusLabel" layoutX="123.0" layoutY="727.0" visible="false" />
          </children>
       </Group>
    </children>

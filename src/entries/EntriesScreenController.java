@@ -7,6 +7,7 @@ import layout.LayoutScreenController;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -16,9 +17,11 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.paint.Color;
 
 public class EntriesScreenController {
 
@@ -58,7 +61,7 @@ public class EntriesScreenController {
 
 
     //Navigation
-    // Side bar 
+    // Side bar
     @FXML
     public Button homeScreenButton;
 
@@ -70,7 +73,7 @@ public class EntriesScreenController {
 
     @FXML
     public Button myWeekScreenButton;
-    
+
     @FXML
     public Button weeklyTrendsScreenButton;
 
@@ -80,9 +83,12 @@ public class EntriesScreenController {
 
     @FXML
     public Button tasksScreenButton;
-    
+
     @FXML
     public Button aboutScreenButton;
+
+    @FXML
+    private Label statusLabel;
 
     @FXML
     public void initialize() {
@@ -115,24 +121,53 @@ public class EntriesScreenController {
 
     @FXML
     private void handleSaveEntryButtonAction(ActionEvent event) {
+        statusLabel.setVisible(false);
+
         String category = null;
         String description = entryDescriptionTextField.getText();
         String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-        String startTime = startTimeTextField.getText();
-        String endTime = endTimeTextField.getText();
+
         try {
-            Database.insertPreparedStatement(
-                    "INSERT INTO entries (category, description, date, starttime, endtime) VALUES (?,?,?,?,?)",
-                    new String[] { category, description, date, startTime, endTime });
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            initialize();
+            String startTime = validateAndFormatTime(startTimeTextField.getText().trim());
+            String endTime = validateAndFormatTime(endTimeTextField.getText().trim());
+            long duration = Entry.parseTimeInMs(endTime) - Entry.parseTimeInMs(startTime);
+            if (duration <= 0) {
+                statusLabel.setVisible(true);
+                statusLabel.setTextFill(Color.RED);
+                statusLabel.setText("End time must later than start time");
+                return;
+            }
+            try {
+                Database.insertPreparedStatement(
+                        "INSERT INTO entries (category, description, date, starttime, endtime) VALUES (?,?,?,?,?)",
+                        new String[] { category, description, date, startTime, endTime });
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                initialize();
+            }
+        } catch (ParseException e) {
+            statusLabel.setVisible(true);
+            statusLabel.setTextFill(Color.RED);
+            statusLabel.setText("Invalid time format, should be HH:MM");
         }
+
+    }
+
+    private String validateAndFormatTime(String time) throws ParseException {
+        String timeFormat = "^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$";
+        String timeFormatNoLeadingZero = "^[0-9]:[0-5][0-9]$";
+        if (time.matches(timeFormatNoLeadingZero)) {
+            return "0" + time;
+        }
+        if (time.matches(timeFormat)) {
+            return time;
+        }
+        throw new ParseException("Invalid time format", 0);
     }
 
     //Navigation
-    // Top Bar Handling 
+    // Top Bar Handling
     @FXML
     public void handleEntriesScreenButtonAction(ActionEvent event) throws IOException {
         layoutController.handleEntriesScreenButtonAction(event);
@@ -148,12 +183,12 @@ public class EntriesScreenController {
         layoutController.handleAboutScreenButtonAction(event);
     }
 
-    // Add Data Handling  
+    // Add Data Handling
     @FXML
     public void handleHomeScreenButtonAction(ActionEvent event) throws IOException {
         layoutController.handleHomeScreenButtonAction(event);
     }
-    
+
     @FXML
     public void handleMyLifeScreenButtonAction(ActionEvent event) throws IOException {
         layoutController.handleMyLifeScreenButtonAction(event);
@@ -174,8 +209,4 @@ public class EntriesScreenController {
         layoutController.handleWeeklyTrendsScreenButtonAction(event);
     }
 
-    @FXML
-    private void handleBackButtonAction(ActionEvent event) throws IOException {
-        layoutController.handleWeeklyTrendsScreenButtonAction(event);
-    }
 }

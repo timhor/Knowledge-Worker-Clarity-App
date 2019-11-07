@@ -24,14 +24,7 @@ public class Entry {
         this.starttime = new SimpleStringProperty(starttime);
         this.endtime = new SimpleStringProperty(endtime);
 
-        String duration = "Unknown";
-        try {
-            Date start = new SimpleDateFormat("HH:mm").parse(starttime);
-            Date end = new SimpleDateFormat("HH:mm").parse(endtime);
-            duration = Long.toString((end.getTime() - start.getTime()) / 1000);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        String duration = Long.toString((parseTimeInMs(endtime) - parseTimeInMs(starttime)) / 1000);
         this.duration = new SimpleStringProperty(duration);
     }
 
@@ -53,6 +46,16 @@ public class Entry {
 
     public StringProperty getDurationProperty() {
         return duration;
+    }
+
+    public static long parseTimeInMs(String time) {
+        try {
+            Date date = new SimpleDateFormat("HH:mm").parse(time);
+            return date.getTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return -1;
+        }
     }
 
 }
