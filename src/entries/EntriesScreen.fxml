@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.web.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.canvas.*?>
+<?import javafx.scene.text.*?>
+<?import java.net.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="768.0" prefWidth="917.0" style="-fx-background-color: 0;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="entries.EntriesScreenController">
+   <children>
+      <Button fx:id="aboutScreenButton" layoutX="388.0" layoutY="697.0" mnemonicParsing="false" onAction="#handleAboutScreenButtonAction" prefHeight="27.0" prefWidth="167.0" text="About" />
+      <Label layoutX="112.0" layoutY="117.0" text="Create Entry">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="entryDescriptionTextField" layoutX="112.0" layoutY="173.0" prefHeight="33.0" prefWidth="209.0" promptText="Entry Description" />
+      <TextField fx:id="startTimeTextField" layoutX="359.0" layoutY="173.0" prefHeight="33.0" prefWidth="148.0" promptText="Start Time (HH:MM)" />
+      <TextField fx:id="endTimeTextField" layoutX="516.0" layoutY="173.0" prefHeight="33.0" prefWidth="148.0" promptText="End Time (HH:MM)" />
+      <Button fx:id="saveEntryButton" layoutX="696.0" layoutY="173.0" mnemonicParsing="false" onAction="#handleSaveEntryButtonAction" prefHeight="33.0" prefWidth="121.0" text="Save Entry" />
+      <TableView fx:id="entryList" editable="true" focusTraversable="false" layoutX="113.0" layoutY="249.0" prefHeight="374.0" prefWidth="704.0">
+        <columns>
+          <TableColumn fx:id="categoryColumn" prefWidth="163.0" text="Category" />
+          <TableColumn fx:id="descriptionColumn" prefWidth="279.0" text="Description" />
+            <TableColumn fx:id="startTimeColumn" prefWidth="73.0" text="Start" />
+            <TableColumn fx:id="endTimeColumn" prefWidth="82.0" text="End" />
+            <TableColumn fx:id="durationColumn" prefWidth="89.0" text="Duration" />
+        </columns>
+      </TableView>
+   </children>
+</AnchorPane>
