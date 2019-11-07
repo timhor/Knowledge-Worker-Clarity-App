@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.shape.*?>
 <?import javafx.scene.web.*?>
 <?import javafx.scene.text.*?>
 <?import java.net.*?>
@@ -11,9 +12,29 @@
 
 <AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="about.AboutScreenController">
    <children>
-      <Button fx:id="backButton" defaultButton="true" layoutX="217.0" layoutY="343.0" mnemonicParsing="false" onAction="#handleBackButtonAction" prefHeight="27.0" prefWidth="167.0" text="Back" />
-      <Text layoutX="31.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Submission UUID:" />
-      <Text layoutX="31.0" layoutY="78.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Copyright © 2019. We, the developers of this software application, declare that it is our work towards an assessment item submitted to fulfil the requirements of INFS2605 (UNSW Sydney). We declare that it is our own work, except where acknowledged, and has not been submitted for academic credit elsewhere. We acknowledge that the assessor of this item may, for the purpose of assessing this item: Reproduce this assessment item and provide a copy to another member of the University; and/or, Communicate a copy of this assessment item to a plagiarism checking service (which may then retain a copy of the assessment item on its database for the purpose of future plagiarism checking). We certify that we have read and understood the UNSW University Rules in respect of Student Academic Misconduct." textAlignment="JUSTIFY" wrappingWidth="537.84814453125" />
-      <Text layoutX="31.0" layoutY="250.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Third-Party Libraries and Multimedia Items Used:" />
+      <Group>
+         <children>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#91ccff00" height="770.0" smooth="false" stroke="TRANSPARENT" strokeType="INSIDE" width="100.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#91caff" height="45.0" smooth="false" stroke="TRANSPARENT" strokeType="INSIDE" width="1000.0" />
+            <GridPane alignment="CENTER" layoutY="5.0" prefHeight="34.0" prefWidth="1000.0">
+               <children>
+                  <Button fx:id="entriesScreenButton" alignment="CENTER" contentDisplay="CENTER" graphicTextGap="0.0" mnemonicParsing="false" onAction="#handleEntriesScreenButtonAction" prefHeight="50.0" prefWidth="450.0" text="Entries" />
+                  <Button fx:id="tasksScreenButton" alignment="CENTER" contentDisplay="CENTER" graphicTextGap="0.0" layoutX="616.0" layoutY="19.0" mnemonicParsing="false" onAction="#handleTasksScreenButtonAction" prefHeight="50.0" prefWidth="450.0" text="Tasks" GridPane.columnIndex="1" />
+                  <Button fx:id="aboutScreenButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleAboutScreenButtonAction" prefHeight="50.0" prefWidth="450.0" text="About" GridPane.columnIndex="2" />
+               </children>
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+            </GridPane>
+            <Text layoutX="260.0" layoutY="241.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Submission UUID:" />
+            <Text layoutX="260.0" layoutY="277.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Copyright © 2019. We, the developers of this software application, declare that it is our work towards an assessment item submitted to fulfil the requirements of INFS2605 (UNSW Sydney). We declare that it is our own work, except where acknowledged, and has not been submitted for academic credit elsewhere. We acknowledge that the assessor of this item may, for the purpose of assessing this item: Reproduce this assessment item and provide a copy to another member of the University; and/or, Communicate a copy of this assessment item to a plagiarism checking service (which may then retain a copy of the assessment item on its database for the purpose of future plagiarism checking). We certify that we have read and understood the UNSW University Rules in respect of Student Academic Misconduct." textAlignment="JUSTIFY" wrappingWidth="537.84814453125" />
+            <Text layoutX="260.0" layoutY="449.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Third-Party Libraries and Multimedia Items Used:" />
+         </children>
+      </Group>
    </children>
 </AnchorPane>

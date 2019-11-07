@@ -2,6 +2,8 @@ package entries;
 
 import helper.Database;
 import helper.PageSwitchHelper;
+import layout.LayoutScreenController;
+
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,8 +24,7 @@ public class EntriesScreenController {
 
     PageSwitchHelper pageSwitchHelper = new PageSwitchHelper();
 
-    @FXML
-    private Button aboutScreenButton;
+    LayoutScreenController layoutController = new LayoutScreenController();
 
     @FXML
     private TextField entryDescriptionTextField;
@@ -54,6 +55,34 @@ public class EntriesScreenController {
 
     @FXML
     private TableColumn<Entry, String> durationColumn;
+
+
+    //Navigation
+    // Side bar 
+    @FXML
+    public Button homeScreenButton;
+
+    @FXML
+    public Button myLifeScreenButton;
+
+    @FXML
+    public Button myDayScreenButton;
+
+    @FXML
+    public Button myWeekScreenButton;
+    
+    @FXML
+    public Button weeklyTrendsScreenButton;
+
+    // Top Bar
+    @FXML
+    public Button entriesScreenButton;
+
+    @FXML
+    public Button tasksScreenButton;
+    
+    @FXML
+    public Button aboutScreenButton;
 
     @FXML
     public void initialize() {
@@ -102,13 +131,51 @@ public class EntriesScreenController {
         }
     }
 
+    //Navigation
+    // Top Bar Handling 
     @FXML
-    private void handleAboutScreenButtonAction(ActionEvent event) throws IOException {
-        try {
-            pageSwitchHelper.switcher(event, "/about/AboutScreen.fxml");
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+    public void handleEntriesScreenButtonAction(ActionEvent event) throws IOException {
+        layoutController.handleEntriesScreenButtonAction(event);
     }
 
+    @FXML
+    public void handleTasksScreenButtonAction(ActionEvent event) throws IOException {
+        layoutController.handleTasksScreenButtonAction(event);
+    }
+
+    @FXML
+    public void handleAboutScreenButtonAction(ActionEvent event) throws IOException {
+        layoutController.handleAboutScreenButtonAction(event);
+    }
+
+    // Add Data Handling  
+    @FXML
+    public void handleHomeScreenButtonAction(ActionEvent event) throws IOException {
+        layoutController.handleHomeScreenButtonAction(event);
+    }
+    
+    @FXML
+    public void handleMyLifeScreenButtonAction(ActionEvent event) throws IOException {
+        layoutController.handleMyLifeScreenButtonAction(event);
+    }
+
+    @FXML
+    public void handleMyDayScreenButtonAction(ActionEvent event) throws IOException {
+        layoutController.handleMyDayScreenButtonAction(event);
+    }
+
+    @FXML
+    public void handleMyWeekScreenButtonAction(ActionEvent event) throws IOException {
+        layoutController.handleMyWeekScreenButtonAction(event);
+    }
+
+    @FXML
+    public void handleWeeklyTrendsScreenButtonAction(ActionEvent event) throws IOException {
+        layoutController.handleWeeklyTrendsScreenButtonAction(event);
+    }
+
+    @FXML
+    private void handleBackButtonAction(ActionEvent event) throws IOException {
+        layoutController.handleWeeklyTrendsScreenButtonAction(event);
+    }
 }

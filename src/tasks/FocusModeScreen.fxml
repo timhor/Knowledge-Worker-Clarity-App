@@ -1,17 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.shape.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.canvas.*?>
 <?import javafx.scene.text.*?>
-<?import java.net.*?>
+<?import javafx.geometry.*?>
 <?import java.lang.*?>
-<?import java.util.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="768.0" prefWidth="917.0" style="-fx-background-color: 0;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tasks.TasksScreenController">
+<AnchorPane id="AnchorPane" prefHeight="768.0" prefWidth="917.0" style="-fx-background-color: 0;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tasks.FocusModeScreenController">
    <children>
       <Group>
          <children>
@@ -34,7 +31,7 @@
                <children>
                   <Button fx:id="entriesScreenButton" alignment="CENTER" contentDisplay="CENTER" graphicTextGap="0.0" mnemonicParsing="false" onAction="#handleEntriesScreenButtonAction" prefHeight="50.0" prefWidth="450.0" text="Entries" />
                   <Button fx:id="tasksScreenButton" alignment="CENTER" contentDisplay="CENTER" graphicTextGap="0.0" layoutX="616.0" layoutY="19.0" mnemonicParsing="false" onAction="#handleTasksScreenButtonAction" prefHeight="50.0" prefWidth="450.0" text="Tasks" GridPane.columnIndex="1" />
-                  <Button fx:id="aboutScreenButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleAboutScreenButtonAction" prefHeight="50.0" prefWidth="450.0" text="About" GridPane.columnIndex="2" />
+                  <Button fx:id="aboutScreenButton1" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleAboutScreenButtonAction" prefHeight="50.0" prefWidth="450.0" text="About" GridPane.columnIndex="2" />
                </children>
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -45,7 +42,28 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
             </GridPane>
-            <Label layoutX="483.0" layoutY="377.0" text="Kanban" />
+            <ChoiceBox layoutX="534.0" layoutY="239.0" prefHeight="47.0" prefWidth="298.0" />
+            <Label alignment="CENTER" layoutX="322.0" layoutY="126.0" prefHeight="61.0" prefWidth="435.0" text="Deep Focus Mode">
+               <font>
+                  <Font size="30.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" layoutX="112.0" layoutY="241.0" prefHeight="61.0" prefWidth="435.0" text="Choose a task to focus on:">
+               <font>
+                  <Font size="30.0" />
+               </font>
+            </Label>
+            <Button layoutX="575.0" layoutY="297.0" mnemonicParsing="false" prefHeight="73.0" prefWidth="210.0" text="Start Focusing" />
+            <Label alignment="CENTER" layoutX="295.0" layoutY="500.0" prefHeight="61.0" prefWidth="435.0" text="Current Time: xxxx">
+               <font>
+                  <Font size="30.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" layoutX="311.0" layoutY="555.0" prefHeight="61.0" prefWidth="435.0" text="Focused Time Elapsed: yyyy">
+               <font>
+                  <Font size="30.0" />
+               </font>
+            </Label>
          </children>
       </Group>
    </children>
