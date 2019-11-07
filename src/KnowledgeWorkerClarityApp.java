@@ -12,7 +12,7 @@ public class KnowledgeWorkerClarityApp extends Application {
     @Override   
     public void start(Stage stage) throws Exception {
         loadDatabase();
-        Parent root = FXMLLoader.load(getClass().getResource("layout/DefaultScreen.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("entries/EntriesScreen.fxml"));
 
         Scene scene = new Scene(root);
 
