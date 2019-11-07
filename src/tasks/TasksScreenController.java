@@ -1,42 +1,21 @@
 package tasks;
 
-import helper.Database;
 import helper.PageSwitchHelper;
 import java.io.IOException;
-import java.sql.ResultSet;
 import layout.LayoutScreenController;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
 
 public class TasksScreenController {
-
-    @FXML
-    private Button submitCategoryButton;
-
-    @FXML
-    private TextField categoryNameTextField;
-
-    Database database;
 
     PageSwitchHelper pageSwitchHelper = new PageSwitchHelper();
 
     LayoutScreenController layoutController = new LayoutScreenController();
 
-    @FXML
-    private void handleSubmitCategoryButtonAction(ActionEvent event) {
-        try {
-            ResultSet rs = database.getResultSetFromPreparedStatement("SELECT * FROM categoryName",
-                    new String[] { categoryNameTextField.getText() });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     //Navigation
-    // Side bar 
+    // Side bar
     @FXML
     public Button kanbanScreenButton;
 
@@ -50,12 +29,12 @@ public class TasksScreenController {
 
     @FXML
     public Button tasksScreenButton;
-    
+
     @FXML
     public Button aboutScreenButton;
 
     //Navigation
-    // Top Bar Handling 
+    // Top Bar Handling
     @FXML
     public void handleEntriesScreenButtonAction(ActionEvent event) throws IOException {
         layoutController.handleEntriesScreenButtonAction(event);
@@ -79,14 +58,14 @@ public class TasksScreenController {
             ex.printStackTrace();
         }
     }
-    
+
     @FXML
     public void handleFocusModeScreenButtonAction(ActionEvent event) throws IOException {
         try {
             pageSwitchHelper.switcher(event, "/tasks/FocusModeScreen.fxml");
         } catch (Exception ex) {
             ex.printStackTrace();
-        }    
+        }
     }
 
 }
