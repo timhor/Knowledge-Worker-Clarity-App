@@ -16,11 +16,11 @@ public class LayoutScreenController {
 
     @FXML
     public Button tasksScreenButton;
-    
+
     @FXML
     public Button aboutScreenButton;
 
-    // Side bar 
+    // Side bar
     @FXML
     public Button homeScreenButton;
 
@@ -32,12 +32,12 @@ public class LayoutScreenController {
 
     @FXML
     public Button myWeekScreenButton;
-    
+
     @FXML
     public Button weeklyTrendsScreenButton;
 
 
-    // Top Bar Handling 
+    // Top Bar Handling
     @FXML
     public void handleEntriesScreenButtonAction(ActionEvent event) throws IOException {
         try {
@@ -65,16 +65,16 @@ public class LayoutScreenController {
         }
     }
 
-    // Add Data Handling  
+    // Add Data Handling
     @FXML
     public void handleHomeScreenButtonAction(ActionEvent event) throws IOException {
         try {
-            pageSwitchHelper.switcher(event, "/layout/DefaultScreen.fxml");
+            pageSwitchHelper.switcher(event, "/layout/EntriesScreen.fxml");
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
-    
+
     @FXML
     public void handleMyLifeScreenButtonAction(ActionEvent event) throws IOException {
         try {
