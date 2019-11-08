@@ -59,7 +59,7 @@
                 <TableColumn fx:id="descriptionColumn" prefWidth="279.0" text="Description" />
                   <TableColumn fx:id="startTimeColumn" prefWidth="73.0" text="Start" />
                   <TableColumn fx:id="endTimeColumn" prefWidth="82.0" text="End" />
-                  <TableColumn fx:id="durationColumn" prefWidth="89.0" text="Duration" />
+                  <TableColumn fx:id="durationColumn" editable="false" prefWidth="89.0" sortable="false" text="Duration" />
               </columns>
             </TableView>
             <TextField fx:id="entryDescriptionTextField" layoutX="204.0" layoutY="244.0" prefHeight="33.0" prefWidth="209.0" promptText="Entry Description" />
