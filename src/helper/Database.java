@@ -7,6 +7,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 public class Database {
@@ -27,7 +28,7 @@ public class Database {
 	/* Pass an SQL String into this method when querying the database */
     public static ResultSet getResultSet(String sqlstatement) throws SQLException {
         openConnection();
-        java.sql.Statement stmt = conn.createStatement();
+        Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery(sqlstatement);
         return rs;
     }
@@ -53,7 +54,7 @@ public class Database {
 
 	/* Pass an SQL String into this method when inserting data into the database */
     public static void insertStatement(String insertQuery) throws SQLException {
-        java.sql.Statement stmt = null;
+        Statement stmt = null;
         openConnection();
         try {
             System.out.println("Database opened successfully");
@@ -71,7 +72,7 @@ public class Database {
 
     public static void createEntriesTable() throws SQLException {
         openConnection();
-        java.sql.Statement stmt = conn.createStatement();
+        Statement stmt = conn.createStatement();
 
         String createQuery = "CREATE TABLE IF NOT EXISTS entries" +
             "(id INTEGER PRIMARY KEY," +
