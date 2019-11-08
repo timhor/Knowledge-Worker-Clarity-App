@@ -12,20 +12,18 @@ import javafx.beans.property.StringProperty;
 public class Entry {
 
     // StringProperty is needed for TableView
+    private StringProperty category;
     private StringProperty description;
     private StringProperty starttime;
     private StringProperty endtime;
-    private StringProperty duration;
-    private StringProperty category;
+    private long duration;
 
     public Entry(String category, String description, String starttime, String endtime) {
         this.category = new SimpleStringProperty(category);
         this.description = new SimpleStringProperty(description);
         this.starttime = new SimpleStringProperty(starttime);
         this.endtime = new SimpleStringProperty(endtime);
-
-        String duration = Long.toString((parseTimeInMs(endtime) - parseTimeInMs(starttime)) / 1000);
-        this.duration = new SimpleStringProperty(duration);
+        this.duration = (parseTimeInMs(endtime) - parseTimeInMs(starttime)) / 1000;
     }
 
     public StringProperty getCategoryProperty() {
@@ -45,7 +43,11 @@ public class Entry {
     }
 
     public StringProperty getDurationProperty() {
-        return duration;
+        int remaining = (int) duration;
+        String hours = String.format("%d", remaining / 3600);
+        remaining %= 3600;
+        String minutes = String.format("%02d", remaining / 60);
+        return new SimpleStringProperty(String.join(":", hours, minutes));
     }
 
     public static long parseTimeInMs(String time) {
