@@ -13,33 +13,15 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="768.0" prefWidth="917.0" style="-fx-background-color: 0;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="entries.EntriesScreenController">
+<AnchorPane id="AnchorPane" prefHeight="768.0" prefWidth="917.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="entries.EntriesScreenController">
    <children>
-      <Label layoutX="112.0" layoutY="117.0" text="Create Entry">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Label>
-      <TextField fx:id="entryDescriptionTextField" layoutX="112.0" layoutY="173.0" prefHeight="33.0" prefWidth="209.0" promptText="Entry Description" />
-      <TextField fx:id="startTimeTextField" layoutX="359.0" layoutY="173.0" prefHeight="33.0" prefWidth="148.0" promptText="Start Time (HH:MM)" />
-      <TextField fx:id="endTimeTextField" layoutX="516.0" layoutY="173.0" prefHeight="33.0" prefWidth="148.0" promptText="End Time (HH:MM)" />
-      <Button fx:id="saveEntryButton" layoutX="696.0" layoutY="173.0" mnemonicParsing="false" onAction="#handleSaveEntryButtonAction" prefHeight="33.0" prefWidth="121.0" text="Save Entry" />
-      <TableView fx:id="entryList" editable="true" focusTraversable="false" layoutX="113.0" layoutY="249.0" prefHeight="374.0" prefWidth="704.0">
-        <columns>
-          <TableColumn fx:id="categoryColumn" prefWidth="163.0" text="Category" />
-          <TableColumn fx:id="descriptionColumn" prefWidth="279.0" text="Description" />
-            <TableColumn fx:id="startTimeColumn" prefWidth="73.0" text="Start" />
-            <TableColumn fx:id="endTimeColumn" prefWidth="82.0" text="End" />
-            <TableColumn fx:id="durationColumn" prefWidth="89.0" text="Duration" />
-        </columns>
-      </TableView>
       <Group>
          <children>
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#91caff" height="770.0" smooth="false" stroke="TRANSPARENT" strokeType="INSIDE" width="100.0" />
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#91caff" height="45.0" smooth="false" stroke="TRANSPARENT" strokeType="INSIDE" width="1000.0" />
             <GridPane alignment="CENTER_LEFT" layoutY="150.0" prefHeight="253.0" prefWidth="110.0">
                <children>
-                  <Button fx:id="homeScreenButton" alignment="BASELINE_LEFT" graphicTextGap="0.0" mnemonicParsing="false" onAction="#handleHomeScreenButtonAction" prefHeight="50.0" prefWidth="100.0" text="Home" />
+                  <Button fx:id="homeScreenButton" alignment="BASELINE_LEFT" graphicTextGap="0.0" mnemonicParsing="false" onAction="#handleHomeScreenButtonAction" prefHeight="50.0" prefWidth="100.0" text="All Entries" />
                   <Button fx:id="myLifeScreenButton" alignment="BASELINE_LEFT" graphicTextGap="0.0" mnemonicParsing="false" onAction="#handleMyLifeScreenButtonAction" prefHeight="50.0" prefWidth="100.0" text="My Life" GridPane.rowIndex="1" />
                   <Button fx:id="myDayScreenButton" alignment="BASELINE_LEFT" graphicTextGap="0.0" mnemonicParsing="false" onAction="#handleMyDayScreenButtonAction" prefHeight="50.0" prefWidth="100.0" text="My Day" GridPane.rowIndex="2" />
                   <Button fx:id="myWeekScreenButton" alignment="BASELINE_LEFT" graphicTextGap="0.0" mnemonicParsing="false" onAction="#handleMyWeekScreenButtonAction" prefHeight="50.0" prefWidth="100.0" text="My Week" GridPane.rowIndex="3" />
@@ -71,6 +53,25 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
             </GridPane>
+            <TableView fx:id="entryList" editable="true" focusTraversable="false" layoutX="204.0" layoutY="315.0" prefHeight="374.0" prefWidth="704.0">
+              <columns>
+                <TableColumn fx:id="categoryColumn" prefWidth="163.0" text="Category" />
+                <TableColumn fx:id="descriptionColumn" prefWidth="279.0" text="Description" />
+                  <TableColumn fx:id="startTimeColumn" prefWidth="73.0" text="Start" />
+                  <TableColumn fx:id="endTimeColumn" prefWidth="82.0" text="End" />
+                  <TableColumn fx:id="durationColumn" editable="false" prefWidth="89.0" sortable="false" text="Duration" />
+              </columns>
+            </TableView>
+            <TextField fx:id="entryDescriptionTextField" layoutX="204.0" layoutY="244.0" prefHeight="33.0" prefWidth="209.0" promptText="Entry Description" />
+            <TextField fx:id="startTimeTextField" layoutX="438.0" layoutY="244.0" prefHeight="33.0" prefWidth="148.0" promptText="Start Time (HH:MM)" />
+            <TextField fx:id="endTimeTextField" layoutX="598.0" layoutY="244.0" prefHeight="33.0" prefWidth="148.0" promptText="End Time (HH:MM)" />
+            <Button fx:id="saveEntryButton" layoutX="787.0" layoutY="244.0" mnemonicParsing="false" onAction="#handleSaveEntryButtonAction" prefHeight="33.0" prefWidth="121.0" text="Save Entry" />
+            <Label layoutX="204.0" layoutY="203.0" text="Create Entry">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="statusLabel" layoutX="123.0" layoutY="727.0" visible="false" />
          </children>
       </Group>
    </children>

@@ -12,27 +12,25 @@ import javafx.beans.property.StringProperty;
 public class Entry {
 
     // StringProperty is needed for TableView
+    private String id;
+    private StringProperty category;
     private StringProperty description;
     private StringProperty starttime;
     private StringProperty endtime;
-    private StringProperty duration;
-    private StringProperty category;
+    private long duration;
 
-    public Entry(String category, String description, String starttime, String endtime) {
+    public Entry(String id, String category, String description, String starttime, String endtime) {
+        this.id = id;
         this.category = new SimpleStringProperty(category);
         this.description = new SimpleStringProperty(description);
         this.starttime = new SimpleStringProperty(starttime);
         this.endtime = new SimpleStringProperty(endtime);
+        this.duration = (parseTimeInMs(endtime) - parseTimeInMs(starttime)) / 1000;
+    }
 
-        String duration = "Unknown";
-        try {
-            Date start = new SimpleDateFormat("HH:mm").parse(starttime);
-            Date end = new SimpleDateFormat("HH:mm").parse(endtime);
-            duration = Long.toString((end.getTime() - start.getTime()) / 1000);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        this.duration = new SimpleStringProperty(duration);
+    // to facilitate editing and deleting entries from TableView
+    public String getId() {
+        return this.id;
     }
 
     public StringProperty getCategoryProperty() {
@@ -41,6 +39,10 @@ public class Entry {
 
     public StringProperty getDescriptionProperty() {
         return description;
+    }
+
+    public void setDescriptionProperty(String description) {
+        this.description.set(description);
     }
 
     public StringProperty getStartTimeProperty() {
@@ -52,7 +54,21 @@ public class Entry {
     }
 
     public StringProperty getDurationProperty() {
-        return duration;
+        int remaining = (int) duration;
+        String hours = String.format("%d", remaining / 3600);
+        remaining %= 3600;
+        String minutes = String.format("%02d", remaining / 60);
+        return new SimpleStringProperty(String.join(":", hours, minutes));
+    }
+
+    public static long parseTimeInMs(String time) {
+        try {
+            Date date = new SimpleDateFormat("HH:mm").parse(time);
+            return date.getTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return -1;
+        }
     }
 
 }

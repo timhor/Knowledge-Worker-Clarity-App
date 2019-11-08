@@ -7,6 +7,7 @@ import layout.LayoutScreenController;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -16,9 +17,13 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TableColumn.CellEditEvent;
+import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.paint.Color;
 
 public class EntriesScreenController {
 
@@ -56,9 +61,8 @@ public class EntriesScreenController {
     @FXML
     private TableColumn<Entry, String> durationColumn;
 
-
-    //Navigation
-    // Side bar 
+    // Navigation
+    // Side bar
     @FXML
     public Button homeScreenButton;
 
@@ -70,7 +74,7 @@ public class EntriesScreenController {
 
     @FXML
     public Button myWeekScreenButton;
-    
+
     @FXML
     public Button weeklyTrendsScreenButton;
 
@@ -80,14 +84,32 @@ public class EntriesScreenController {
 
     @FXML
     public Button tasksScreenButton;
-    
+
     @FXML
     public Button aboutScreenButton;
 
     @FXML
+    private Label statusLabel;
+
+    @FXML
     public void initialize() {
+        // adapted from https://docs.oracle.com/javase/8/javafx/user-interface-tutorial/table-view.htm#CJAGAAEE
         categoryColumn.setCellValueFactory(cellData -> cellData.getValue().getCategoryProperty());
+
+        descriptionColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         descriptionColumn.setCellValueFactory(cellData -> cellData.getValue().getDescriptionProperty());
+        descriptionColumn.setOnEditCommit((CellEditEvent<Entry, String> t) -> {
+            String newDescription = t.getNewValue();
+            try {
+                Database.updateFromPreparedStatement("UPDATE entries SET description = ? WHERE id = ?",
+                        new String[] { newDescription, t.getRowValue().getId() });
+                ((Entry) t.getTableView().getItems().get(t.getTablePosition().getRow()))
+                        .setDescriptionProperty(newDescription);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
+
         startTimeColumn.setCellValueFactory(cellData -> cellData.getValue().getStartTimeProperty());
         endTimeColumn.setCellValueFactory(cellData -> cellData.getValue().getEndTimeProperty());
         durationColumn.setCellValueFactory(cellData -> cellData.getValue().getDurationProperty());
@@ -107,7 +129,8 @@ public class EntriesScreenController {
             if (rs.wasNull()) {
                 category = "Not set";
             }
-            Entry entry = new Entry(category, rs.getString("description"), rs.getString("starttime"), rs.getString("endtime"));
+            Entry entry = new Entry(rs.getString("id"), category, rs.getString("description"), rs.getString("starttime"),
+                    rs.getString("endtime"));
             entryList.add(entry);
         }
         return FXCollections.observableList(entryList);
@@ -115,24 +138,56 @@ public class EntriesScreenController {
 
     @FXML
     private void handleSaveEntryButtonAction(ActionEvent event) {
+        statusLabel.setVisible(false);
+
         String category = null;
         String description = entryDescriptionTextField.getText();
         String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-        String startTime = startTimeTextField.getText();
-        String endTime = endTimeTextField.getText();
+
         try {
-            Database.insertPreparedStatement(
-                    "INSERT INTO entries (category, description, date, starttime, endtime) VALUES (?,?,?,?,?)",
-                    new String[] { category, description, date, startTime, endTime });
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            initialize();
+            String startTime = validateAndFormatTime(startTimeTextField.getText().trim());
+            String endTime = validateAndFormatTime(endTimeTextField.getText().trim());
+            long duration = Entry.parseTimeInMs(endTime) - Entry.parseTimeInMs(startTime);
+            if (duration <= 0) {
+                statusLabel.setVisible(true);
+                statusLabel.setTextFill(Color.RED);
+                statusLabel.setText("End time must later than start time");
+                return;
+            }
+            try {
+                Database.updateFromPreparedStatement(
+                        "INSERT INTO entries (category, description, date, starttime, endtime) VALUES (?,?,?,?,?)",
+                        new String[] { category, description, date, startTime, endTime });
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                initialize();
+                entryDescriptionTextField.setText("");
+                startTimeTextField.setText("");
+                endTimeTextField.setText("");
+            }
+        } catch (ParseException e) {
+            statusLabel.setVisible(true);
+            statusLabel.setTextFill(Color.RED);
+            statusLabel.setText("Invalid time format, should be HH:MM");
         }
+
     }
 
-    //Navigation
-    // Top Bar Handling 
+    private String validateAndFormatTime(String time) throws ParseException {
+        String timeFormat = "^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$";
+        String timeFormatNoLeadingZero = "^[0-9]:[0-5][0-9]$";
+        if (time.matches(timeFormatNoLeadingZero)) {
+            return "0" + time;
+        }
+        if (time.matches(timeFormat)) {
+            return time;
+        }
+        throw new ParseException("Invalid time format", 0);
+    }
+
+    // Navigation
+    // Top Bar Handling
     @FXML
     public void handleEntriesScreenButtonAction(ActionEvent event) throws IOException {
         layoutController.handleEntriesScreenButtonAction(event);
@@ -148,12 +203,12 @@ public class EntriesScreenController {
         layoutController.handleAboutScreenButtonAction(event);
     }
 
-    // Add Data Handling  
+    // Add Data Handling
     @FXML
     public void handleHomeScreenButtonAction(ActionEvent event) throws IOException {
         layoutController.handleHomeScreenButtonAction(event);
     }
-    
+
     @FXML
     public void handleMyLifeScreenButtonAction(ActionEvent event) throws IOException {
         layoutController.handleMyLifeScreenButtonAction(event);
@@ -174,8 +229,4 @@ public class EntriesScreenController {
         layoutController.handleWeeklyTrendsScreenButtonAction(event);
     }
 
-    @FXML
-    private void handleBackButtonAction(ActionEvent event) throws IOException {
-        layoutController.handleWeeklyTrendsScreenButtonAction(event);
-    }
 }
