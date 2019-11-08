@@ -21,6 +21,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TableColumn.CellEditEvent;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.paint.Color;
 
 public class EntriesScreenController {
@@ -59,8 +61,7 @@ public class EntriesScreenController {
     @FXML
     private TableColumn<Entry, String> durationColumn;
 
-
-    //Navigation
+    // Navigation
     // Side bar
     @FXML
     public Button homeScreenButton;
@@ -92,8 +93,23 @@ public class EntriesScreenController {
 
     @FXML
     public void initialize() {
+        // adapted from https://docs.oracle.com/javase/8/javafx/user-interface-tutorial/table-view.htm#CJAGAAEE
         categoryColumn.setCellValueFactory(cellData -> cellData.getValue().getCategoryProperty());
+
+        descriptionColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         descriptionColumn.setCellValueFactory(cellData -> cellData.getValue().getDescriptionProperty());
+        descriptionColumn.setOnEditCommit((CellEditEvent<Entry, String> t) -> {
+            String newDescription = t.getNewValue();
+            try {
+                Database.updateFromPreparedStatement("UPDATE entries SET description = ? WHERE id = ?",
+                        new String[] { newDescription, t.getRowValue().getId() });
+                ((Entry) t.getTableView().getItems().get(t.getTablePosition().getRow()))
+                        .setDescriptionProperty(newDescription);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
+
         startTimeColumn.setCellValueFactory(cellData -> cellData.getValue().getStartTimeProperty());
         endTimeColumn.setCellValueFactory(cellData -> cellData.getValue().getEndTimeProperty());
         durationColumn.setCellValueFactory(cellData -> cellData.getValue().getDurationProperty());
@@ -113,7 +129,8 @@ public class EntriesScreenController {
             if (rs.wasNull()) {
                 category = "Not set";
             }
-            Entry entry = new Entry(category, rs.getString("description"), rs.getString("starttime"), rs.getString("endtime"));
+            Entry entry = new Entry(rs.getString("id"), category, rs.getString("description"), rs.getString("starttime"),
+                    rs.getString("endtime"));
             entryList.add(entry);
         }
         return FXCollections.observableList(entryList);
@@ -138,7 +155,7 @@ public class EntriesScreenController {
                 return;
             }
             try {
-                Database.insertPreparedStatement(
+                Database.updateFromPreparedStatement(
                         "INSERT INTO entries (category, description, date, starttime, endtime) VALUES (?,?,?,?,?)",
                         new String[] { category, description, date, startTime, endTime });
             } catch (SQLException e) {
@@ -169,7 +186,7 @@ public class EntriesScreenController {
         throw new ParseException("Invalid time format", 0);
     }
 
-    //Navigation
+    // Navigation
     // Top Bar Handling
     @FXML
     public void handleEntriesScreenButtonAction(ActionEvent event) throws IOException {

@@ -12,18 +12,25 @@ import javafx.beans.property.StringProperty;
 public class Entry {
 
     // StringProperty is needed for TableView
+    private String id;
     private StringProperty category;
     private StringProperty description;
     private StringProperty starttime;
     private StringProperty endtime;
     private long duration;
 
-    public Entry(String category, String description, String starttime, String endtime) {
+    public Entry(String id, String category, String description, String starttime, String endtime) {
+        this.id = id;
         this.category = new SimpleStringProperty(category);
         this.description = new SimpleStringProperty(description);
         this.starttime = new SimpleStringProperty(starttime);
         this.endtime = new SimpleStringProperty(endtime);
         this.duration = (parseTimeInMs(endtime) - parseTimeInMs(starttime)) / 1000;
+    }
+
+    // to facilitate editing and deleting entries from TableView
+    public String getId() {
+        return this.id;
     }
 
     public StringProperty getCategoryProperty() {
@@ -32,6 +39,10 @@ public class Entry {
 
     public StringProperty getDescriptionProperty() {
         return description;
+    }
+
+    public void setDescriptionProperty(String description) {
+        this.description.set(description);
     }
 
     public StringProperty getStartTimeProperty() {

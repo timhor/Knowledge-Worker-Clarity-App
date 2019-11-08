@@ -43,8 +43,8 @@ public class Database {
         return rs;
     }
 
-    public static void insertPreparedStatement(String insertQuery, String[] parameters) throws SQLException {
-        PreparedStatement stmt = conn.prepareStatement(insertQuery);
+    public static void updateFromPreparedStatement(String updateQuery, String[] parameters) throws SQLException {
+        PreparedStatement stmt = conn.prepareStatement(updateQuery);
         for (int i = 0; i < parameters.length; i++) {
             stmt.setString(i + 1, parameters[i]);
         }
