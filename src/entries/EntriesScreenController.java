@@ -145,6 +145,9 @@ public class EntriesScreenController {
                 e.printStackTrace();
             } finally {
                 initialize();
+                entryDescriptionTextField.setText("");
+                startTimeTextField.setText("");
+                endTimeTextField.setText("");
             }
         } catch (ParseException e) {
             statusLabel.setVisible(true);
