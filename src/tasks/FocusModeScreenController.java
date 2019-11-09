@@ -134,7 +134,6 @@ public class FocusModeScreenController {
         // populate the time 
         Timeline clock = new Timeline(new KeyFrame(Duration.ZERO, e -> {        
         LocalTime currentTime = LocalTime.now();
-        //System.out.print(currentTime.truncatedTo(ChronoUnit.SECONDS));
         timeLabel.setText("Current Time: " + currentTime.truncatedTo(ChronoUnit.SECONDS));
         }),
              new KeyFrame(Duration.seconds(1))
@@ -146,7 +145,6 @@ public class FocusModeScreenController {
     
     @FXML
     public void StartFocusing(){
-        System.out.println("Focusing start"); 
         if (taskDropdown.getValue().equals("Select a task first...")){
             selectTaskWarningLabel.setVisible(true);
             return;
@@ -163,7 +161,6 @@ public class FocusModeScreenController {
         timeLabel.setVisible(true);
         //get whatever task we have & set the label text
         String currentFocusTask = taskDropdown.getValue();
-        System.out.println(currentFocusTask);
         focusTaskLabel.setText("Time to focus on: " + currentFocusTask);
         focusTaskLabel.setVisible(true);
 
@@ -171,8 +168,6 @@ public class FocusModeScreenController {
     
     @FXML
     public void StopFocusing(){
-        System.out.println("Focusing stop");
-
         //turn off stop focusing button
         stopFocusingButton.setVisible(false);
         timeLabel.setVisible(false);
