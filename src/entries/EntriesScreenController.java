@@ -113,7 +113,7 @@ public class EntriesScreenController {
             String newDescription = t.getNewValue();
             try {
                 Database.updateFromPreparedStatement("UPDATE entries SET description = ? WHERE id = ?",
-                        new String[]{newDescription, t.getRowValue().getId()});
+                        new String[] { newDescription, t.getRowValue().getId() });
                 ((Entry) t.getTableView().getItems().get(t.getTablePosition().getRow()))
                         .setDescriptionProperty(newDescription);
             } catch (SQLException e) {
@@ -140,8 +140,8 @@ public class EntriesScreenController {
             if (rs.wasNull()) {
                 category = "Not set";
             }
-            Entry entry = new Entry(rs.getString("id"), category, rs.getString("description"), rs.getString("starttime"),
-                    rs.getString("endtime"));
+            Entry entry = new Entry(rs.getString("id"), category, rs.getString("description"),
+                    rs.getString("starttime"), rs.getString("endtime"));
             entryList.add(entry);
         }
         return FXCollections.observableList(entryList);
@@ -168,7 +168,7 @@ public class EntriesScreenController {
             try {
                 Database.updateFromPreparedStatement(
                         "INSERT INTO entries (category, description, date, starttime, endtime) VALUES (?,?,?,?,?)",
-                        new String[]{category, description, date, startTime, endTime});
+                        new String[] { category, description, date, startTime, endTime });
             } catch (SQLException e) {
                 e.printStackTrace();
             } finally {
@@ -184,6 +184,7 @@ public class EntriesScreenController {
         }
 
     }
+
     @FXML
     private void handleSaveCategoryButtonAction(ActionEvent event) {
 
@@ -193,18 +194,15 @@ public class EntriesScreenController {
         int red = (int) colorValue.getRed();
         int green = (int) colorValue.getGreen();
         int blue = (int) colorValue.getBlue();
-        
-        
+
         String hexString = String.format("#%02X%02X%02X", red, green, blue);
 
-        
-        //AWAITING DROPDOWN LIST TO INPUT VALUES 
+        // AWAITING DROPDOWN LIST TO INPUT VALUES
         try {
             categoryName = categoryNameTextField.getText();
 
-            Database.updateFromPreparedStatement(
-                    "INSERT INTO entries (category, description) VALUES ( ?, ?)",
-                    new String[]{categoryName, hexString});
+            Database.updateFromPreparedStatement("INSERT INTO entries (category, description) VALUES ( ?, ?)",
+                    new String[] { categoryName, hexString });
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -214,7 +212,6 @@ public class EntriesScreenController {
         }
 
     }
-
 
     private String validateAndFormatTime(String time) throws ParseException {
         String timeFormat = "^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$";
@@ -231,43 +228,43 @@ public class EntriesScreenController {
     // Navigation
     // Top Bar Handling
     @FXML
-        public void handleEntriesScreenButtonAction(ActionEvent event) throws IOException {
+    public void handleEntriesScreenButtonAction(ActionEvent event) throws IOException {
         layoutController.handleEntriesScreenButtonAction(event);
     }
 
     @FXML
-        public void handleTasksScreenButtonAction(ActionEvent event) throws IOException {
+    public void handleTasksScreenButtonAction(ActionEvent event) throws IOException {
         layoutController.handleTasksScreenButtonAction(event);
     }
 
     @FXML
-        public void handleAboutScreenButtonAction(ActionEvent event) throws IOException {
+    public void handleAboutScreenButtonAction(ActionEvent event) throws IOException {
         layoutController.handleAboutScreenButtonAction(event);
     }
 
     // Add Data Handling
     @FXML
-        public void handleHomeScreenButtonAction(ActionEvent event) throws IOException {
+    public void handleHomeScreenButtonAction(ActionEvent event) throws IOException {
         layoutController.handleHomeScreenButtonAction(event);
     }
 
     @FXML
-        public void handleMyLifeScreenButtonAction(ActionEvent event) throws IOException {
+    public void handleMyLifeScreenButtonAction(ActionEvent event) throws IOException {
         layoutController.handleMyLifeScreenButtonAction(event);
     }
 
     @FXML
-        public void handleMyDayScreenButtonAction(ActionEvent event) throws IOException {
+    public void handleMyDayScreenButtonAction(ActionEvent event) throws IOException {
         layoutController.handleMyDayScreenButtonAction(event);
     }
 
     @FXML
-        public void handleMyWeekScreenButtonAction(ActionEvent event) throws IOException {
+    public void handleMyWeekScreenButtonAction(ActionEvent event) throws IOException {
         layoutController.handleMyWeekScreenButtonAction(event);
     }
 
     @FXML
-        public void handleWeeklyTrendsScreenButtonAction(ActionEvent event) throws IOException {
+    public void handleWeeklyTrendsScreenButtonAction(ActionEvent event) throws IOException {
         layoutController.handleWeeklyTrendsScreenButtonAction(event);
     }
 
