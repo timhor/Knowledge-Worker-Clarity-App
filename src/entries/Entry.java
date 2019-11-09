@@ -15,17 +15,19 @@ public class Entry {
     private String id;
     private StringProperty category;
     private StringProperty description;
-    private StringProperty starttime;
-    private StringProperty endtime;
+    private StringProperty date;
+    private StringProperty startTime;
+    private StringProperty endTime;
     private long duration;
 
-    public Entry(String id, String category, String description, String starttime, String endtime) {
+    public Entry(String id, String category, String description, String date, String startTime, String endTime) {
         this.id = id;
         this.category = new SimpleStringProperty(category);
         this.description = new SimpleStringProperty(description);
-        this.starttime = new SimpleStringProperty(starttime);
-        this.endtime = new SimpleStringProperty(endtime);
-        this.duration = (parseTimeInMs(endtime) - parseTimeInMs(starttime)) / 1000;
+        this.date = new SimpleStringProperty(date);
+        this.startTime = new SimpleStringProperty(startTime);
+        this.endTime = new SimpleStringProperty(endTime);
+        this.duration = (parseTimeInMs(endTime) - parseTimeInMs(startTime)) / 1000;
     }
 
     // to facilitate editing and deleting entries from TableView
@@ -45,12 +47,24 @@ public class Entry {
         this.description.set(description);
     }
 
+    public StringProperty getDateProperty() {
+        return date;
+    }
+
     public StringProperty getStartTimeProperty() {
-        return starttime;
+        return startTime;
+    }
+
+    public void setStartTimeProperty(String startTime) {
+        this.startTime.set(startTime);
     }
 
     public StringProperty getEndTimeProperty() {
-        return endtime;
+        return endTime;
+    }
+
+    public void setEndTimeProperty(String endTime) {
+        this.endTime.set(endTime);
     }
 
     public StringProperty getDurationProperty() {
