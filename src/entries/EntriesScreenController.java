@@ -91,9 +91,10 @@ public class EntriesScreenController {
     @FXML
     private Label statusLabel;
 
+    // table cell editing adapted from:
+    // https://docs.oracle.com/javase/8/javafx/user-interface-tutorial/table-view.htm#CJAGAAEE
     @FXML
     public void initialize() {
-        // adapted from https://docs.oracle.com/javase/8/javafx/user-interface-tutorial/table-view.htm#CJAGAAEE
         categoryColumn.setCellValueFactory(cellData -> cellData.getValue().getCategoryProperty());
 
         descriptionColumn.setCellFactory(TextFieldTableCell.forTableColumn());
@@ -105,15 +106,48 @@ public class EntriesScreenController {
                         new String[] { newDescription, t.getRowValue().getId() });
                 ((Entry) t.getTableView().getItems().get(t.getTablePosition().getRow()))
                         .setDescriptionProperty(newDescription);
+                populateEntries();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         });
 
+        startTimeColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         startTimeColumn.setCellValueFactory(cellData -> cellData.getValue().getStartTimeProperty());
+        startTimeColumn.setOnEditCommit((CellEditEvent<Entry, String> t) -> {
+            String newStartTime = t.getNewValue();
+            try {
+                Database.updateFromPreparedStatement("UPDATE entries SET starttime = ? WHERE id = ?",
+                        new String[] { newStartTime, t.getRowValue().getId() });
+                ((Entry) t.getTableView().getItems().get(t.getTablePosition().getRow()))
+                        .setStartTimeProperty(newStartTime);
+                populateEntries();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
+
+        endTimeColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         endTimeColumn.setCellValueFactory(cellData -> cellData.getValue().getEndTimeProperty());
+        endTimeColumn.setOnEditCommit((CellEditEvent<Entry, String> t) -> {
+            String newEndTime = t.getNewValue();
+            try {
+                Database.updateFromPreparedStatement("UPDATE entries SET endtime = ? WHERE id = ?",
+                        new String[] { newEndTime, t.getRowValue().getId() });
+                ((Entry) t.getTableView().getItems().get(t.getTablePosition().getRow()))
+                        .setEndTimeProperty(newEndTime);
+                populateEntries();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
+
         durationColumn.setCellValueFactory(cellData -> cellData.getValue().getDurationProperty());
 
+        populateEntries();
+    }
+
+    private void populateEntries() {
         try {
             entryList.setItems(getEntryListData());
         } catch (Exception ex) {
