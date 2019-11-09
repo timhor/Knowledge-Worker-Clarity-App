@@ -205,7 +205,20 @@ public class EntriesScreenController {
             statusLabel.setTextFill(Color.RED);
             statusLabel.setText("Invalid time format, should be HH:MM");
         }
+    }
 
+    @FXML
+    private void handleDeleteButtonAction(ActionEvent event) {
+        Entry entryToDelete = entryList.getSelectionModel().getSelectedItem();
+        if (entryToDelete != null) {
+            try {
+                Database.updateFromPreparedStatement("DELETE FROM entries WHERE id = ?",
+                            new String[] { entryToDelete.getId() });
+                populateEntries();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private String validateAndFormatTime(String time) throws ParseException {
