@@ -9,6 +9,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -17,6 +19,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -24,6 +27,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.paint.Color;
+import javafx.util.StringConverter;
 
 public class EntriesScreenController {
 
@@ -33,6 +37,9 @@ public class EntriesScreenController {
 
     @FXML
     private TextField entryDescriptionTextField;
+
+    @FXML
+    private DatePicker datePicker = new DatePicker(LocalDate.now());
 
     @FXML
     private TextField startTimeTextField;
@@ -51,6 +58,9 @@ public class EntriesScreenController {
 
     @FXML
     private TableColumn<Entry, String> descriptionColumn;
+
+    @FXML
+    private TableColumn<Entry, String> dateColumn;
 
     @FXML
     private TableColumn<Entry, String> startTimeColumn;
@@ -112,6 +122,8 @@ public class EntriesScreenController {
             }
         });
 
+        dateColumn.setCellValueFactory(cellData -> cellData.getValue().getDateProperty());
+
         startTimeColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         startTimeColumn.setCellValueFactory(cellData -> cellData.getValue().getStartTimeProperty());
         startTimeColumn.setOnEditCommit((CellEditEvent<Entry, String> t) -> {
@@ -134,8 +146,7 @@ public class EntriesScreenController {
             try {
                 Database.updateFromPreparedStatement("UPDATE entries SET endtime = ? WHERE id = ?",
                         new String[] { newEndTime, t.getRowValue().getId() });
-                ((Entry) t.getTableView().getItems().get(t.getTablePosition().getRow()))
-                        .setEndTimeProperty(newEndTime);
+                ((Entry) t.getTableView().getItems().get(t.getTablePosition().getRow())).setEndTimeProperty(newEndTime);
                 populateEntries();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -143,6 +154,29 @@ public class EntriesScreenController {
         });
 
         durationColumn.setCellValueFactory(cellData -> cellData.getValue().getDurationProperty());
+
+        // date picker formatting adapted from: https://code.makery.ch/blog/javafx-8-date-picker/
+        datePicker.setConverter(new StringConverter<LocalDate>() {
+            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+            @Override
+            public String toString(LocalDate date) {
+                if (date != null) {
+                    return dateFormatter.format(date);
+                } else {
+                    return "";
+                }
+            }
+
+            @Override
+            public LocalDate fromString(String string) {
+                if (string != null && !string.isEmpty()) {
+                    return LocalDate.parse(string, dateFormatter);
+                } else {
+                    return null;
+                }
+            }
+        });
 
         populateEntries();
     }
@@ -163,8 +197,8 @@ public class EntriesScreenController {
             if (rs.wasNull()) {
                 category = "Not set";
             }
-            Entry entry = new Entry(rs.getString("id"), category, rs.getString("description"), rs.getString("starttime"),
-                    rs.getString("endtime"));
+            Entry entry = new Entry(rs.getString("id"), category, rs.getString("description"), rs.getString("date"),
+                    rs.getString("starttime"), rs.getString("endtime"));
             entryList.add(entry);
         }
         return FXCollections.observableList(entryList);
@@ -176,7 +210,19 @@ public class EntriesScreenController {
 
         String category = null;
         String description = entryDescriptionTextField.getText();
-        String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+        if (description.length() == 0) {
+            statusLabel.setVisible(true);
+            statusLabel.setTextFill(Color.RED);
+            statusLabel.setText("Description cannot be empty");
+            return;
+        }
+        LocalDate date = datePicker.getValue();
+        if (date == null) {
+            statusLabel.setVisible(true);
+            statusLabel.setTextFill(Color.RED);
+            statusLabel.setText("Please set a date");
+            return;
+        }
 
         try {
             String startTime = validateAndFormatTime(startTimeTextField.getText().trim());
@@ -191,7 +237,7 @@ public class EntriesScreenController {
             try {
                 Database.updateFromPreparedStatement(
                         "INSERT INTO entries (category, description, date, starttime, endtime) VALUES (?,?,?,?,?)",
-                        new String[] { category, description, date, startTime, endTime });
+                        new String[] { category, description, date.toString(), startTime, endTime });
             } catch (SQLException e) {
                 e.printStackTrace();
             } finally {
@@ -213,7 +259,7 @@ public class EntriesScreenController {
         if (entryToDelete != null) {
             try {
                 Database.updateFromPreparedStatement("DELETE FROM entries WHERE id = ?",
-                            new String[] { entryToDelete.getId() });
+                        new String[] { entryToDelete.getId() });
                 populateEntries();
             } catch (SQLException e) {
                 e.printStackTrace();

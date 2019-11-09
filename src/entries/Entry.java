@@ -15,14 +15,16 @@ public class Entry {
     private String id;
     private StringProperty category;
     private StringProperty description;
+    private StringProperty date;
     private StringProperty startTime;
     private StringProperty endTime;
     private long duration;
 
-    public Entry(String id, String category, String description, String startTime, String endTime) {
+    public Entry(String id, String category, String description, String date, String startTime, String endTime) {
         this.id = id;
         this.category = new SimpleStringProperty(category);
         this.description = new SimpleStringProperty(description);
+        this.date = new SimpleStringProperty(date);
         this.startTime = new SimpleStringProperty(startTime);
         this.endTime = new SimpleStringProperty(endTime);
         this.duration = (parseTimeInMs(endTime) - parseTimeInMs(startTime)) / 1000;
@@ -43,6 +45,10 @@ public class Entry {
 
     public void setDescriptionProperty(String description) {
         this.description.set(description);
+    }
+
+    public StringProperty getDateProperty() {
+        return date;
     }
 
     public StringProperty getStartTimeProperty() {

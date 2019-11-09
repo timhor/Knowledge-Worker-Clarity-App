@@ -42,7 +42,7 @@
                <children>
                   <Button fx:id="entriesScreenButton" alignment="CENTER" contentDisplay="CENTER" graphicTextGap="0.0" mnemonicParsing="false" onAction="#handleEntriesScreenButtonAction" prefHeight="50.0" prefWidth="450.0" text="Entries" />
                   <Button fx:id="tasksScreenButton" alignment="CENTER" contentDisplay="CENTER" graphicTextGap="0.0" layoutX="616.0" layoutY="19.0" mnemonicParsing="false" onAction="#handleTasksScreenButtonAction" prefHeight="50.0" prefWidth="450.0" text="Tasks" GridPane.columnIndex="1" />
-                  <Button fx:id="aboutScreenButton1" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleAboutScreenButtonAction" prefHeight="50.0" prefWidth="450.0" text="About" GridPane.columnIndex="2" />
+                  <Button fx:id="aboutScreenButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleAboutScreenButtonAction" prefHeight="50.0" prefWidth="450.0" text="About" GridPane.columnIndex="2" />
                </children>
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -56,23 +56,25 @@
             <TableView fx:id="entryList" editable="true" focusTraversable="false" layoutX="110.0" layoutY="319.0" prefHeight="395.0" prefWidth="877.0">
               <columns>
                 <TableColumn fx:id="categoryColumn" prefWidth="87.0" text="Category" />
-                <TableColumn fx:id="descriptionColumn" prefWidth="459.0" text="Description" />
-                  <TableColumn fx:id="startTimeColumn" prefWidth="100.0" text="Start" />
-                  <TableColumn fx:id="endTimeColumn" prefWidth="98.0" text="End" />
-                  <TableColumn fx:id="durationColumn" editable="false" minWidth="0.0" prefWidth="114.0" sortable="false" text="Duration" />
+                <TableColumn fx:id="descriptionColumn" prefWidth="399.0430145263672" text="Description" />
+                  <TableColumn fx:id="dateColumn" editable="false" prefWidth="107.95697021484375" text="Date" />
+                  <TableColumn fx:id="startTimeColumn" prefWidth="92.532958984375" text="Start" />
+                  <TableColumn fx:id="endTimeColumn" prefWidth="99.60028076171875" text="End" />
+                  <TableColumn fx:id="durationColumn" editable="false" minWidth="0.0" prefWidth="92.39971923828125" sortable="false" text="Duration" />
               </columns>
             </TableView>
-            <TextField fx:id="entryDescriptionTextField" layoutX="204.0" layoutY="244.0" prefHeight="33.0" prefWidth="209.0" promptText="Entry Description" />
-            <TextField fx:id="startTimeTextField" layoutX="438.0" layoutY="244.0" prefHeight="33.0" prefWidth="148.0" promptText="Start Time (HH:MM)" />
-            <TextField fx:id="endTimeTextField" layoutX="598.0" layoutY="244.0" prefHeight="33.0" prefWidth="148.0" promptText="End Time (HH:MM)" />
-            <Button fx:id="saveEntryButton" layoutX="787.0" layoutY="244.0" mnemonicParsing="false" onAction="#handleSaveEntryButtonAction" prefHeight="33.0" prefWidth="121.0" text="Save Entry" />
-            <Label layoutX="204.0" layoutY="204.0" text="Create Entry">
+            <TextField fx:id="entryDescriptionTextField" layoutX="123.0" layoutY="244.0" prefHeight="33.0" prefWidth="209.0" promptText="Entry Description" />
+            <TextField fx:id="startTimeTextField" layoutX="527.0" layoutY="244.0" prefHeight="33.0" prefWidth="148.0" promptText="Start Time (HH:MM)" />
+            <TextField fx:id="endTimeTextField" layoutX="686.0" layoutY="244.0" prefHeight="33.0" prefWidth="148.0" promptText="End Time (HH:MM)" />
+            <Button fx:id="saveEntryButton" layoutX="848.0" layoutY="244.0" mnemonicParsing="false" onAction="#handleSaveEntryButtonAction" prefHeight="33.0" prefWidth="121.0" text="Save Entry" />
+            <Label layoutX="124.0" layoutY="205.0" text="Create Entry">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
             <Label fx:id="statusLabel" layoutX="110.0" layoutY="727.0" prefHeight="29.0" prefWidth="528.0" visible="false" />
             <Button layoutX="833.0" layoutY="728.0" mnemonicParsing="false" onAction="#handleDeleteButtonAction" text="Delete Selected Entry" />
+            <DatePicker fx:id="datePicker" layoutX="348.0" layoutY="244.0" prefHeight="33.0" prefWidth="163.0" promptText="Date" />
          </children>
       </Group>
    </children>
