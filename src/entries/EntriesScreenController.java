@@ -195,7 +195,7 @@ public class EntriesScreenController {
             } catch (SQLException e) {
                 e.printStackTrace();
             } finally {
-                initialize();
+                populateEntries();
                 entryDescriptionTextField.setText("");
                 startTimeTextField.setText("");
                 endTimeTextField.setText("");
