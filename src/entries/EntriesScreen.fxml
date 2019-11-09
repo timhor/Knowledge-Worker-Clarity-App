@@ -65,13 +65,21 @@
             <TextField fx:id="entryDescriptionTextField" layoutX="204.0" layoutY="244.0" prefHeight="33.0" prefWidth="209.0" promptText="Entry Description" />
             <TextField fx:id="startTimeTextField" layoutX="438.0" layoutY="244.0" prefHeight="33.0" prefWidth="148.0" promptText="Start Time (HH:MM)" />
             <TextField fx:id="endTimeTextField" layoutX="598.0" layoutY="244.0" prefHeight="33.0" prefWidth="148.0" promptText="End Time (HH:MM)" />
-            <Button fx:id="saveEntryButton" layoutX="787.0" layoutY="244.0" mnemonicParsing="false" onAction="#handleSaveEntryButtonAction" prefHeight="33.0" prefWidth="121.0" text="Save Entry" />
+            <Button fx:id="saveEntryButton" layoutX="775.0" layoutY="244.0" mnemonicParsing="false" onAction="#handleSaveEntryButtonAction" prefHeight="39.0" prefWidth="138.0" text="Save Entry" />
             <Label layoutX="204.0" layoutY="203.0" text="Create Entry">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
             <Label fx:id="statusLabel" layoutX="123.0" layoutY="727.0" visible="false" />
+            <Label layoutX="204.0" layoutY="79.0" text="Create Category">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <TextField fx:id="categoryNameTextField" layoutX="196.0" layoutY="118.0" prefHeight="33.0" prefWidth="209.0" promptText="Category Name" />
+            <ColorPicker layoutX="438.0" layoutY="118.0" prefHeight="38.0" prefWidth="149.0" />
+            <Button fx:id="saveCategoryButton" layoutX="770.0" layoutY="118.0" mnemonicParsing="false" onAction="#handleSaveCategoryButtonAction" prefHeight="35.0" prefWidth="138.0" text="Save Category" />
          </children>
       </Group>
    </children>
