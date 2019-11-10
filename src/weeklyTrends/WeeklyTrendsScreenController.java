@@ -58,7 +58,11 @@ public class WeeklyTrendsScreenController {
     // Chart items
     @FXML
     public LineChart weeklyTrendsLineChart;
+    
+    @FXML
     public CategoryAxis weeklyTrendsCategoryAxis;
+    
+    @FXML
     public NumberAxis weeklyTrendsNumberAxis;
     
 
@@ -111,31 +115,12 @@ public class WeeklyTrendsScreenController {
     
     @FXML
     public void initialize() {
-        
-        long maxTimeOnTask = 0;
-        
-        try {
-            ResultSet rs = Database.getResultSet("SELECT * FROM entries");
-            while (rs.next()){
-                //We want to figure out the highest y axis values
-                String startTime = rs.getString("starttime");
-                String endTime = rs.getString("endtime");
-                long duration = parseTimeInMs(endTime) - parseTimeInMs(startTime);
-                if (maxTimeOnTask < duration){
-                    maxTimeOnTask = duration;
-                }
-            }
-        } catch (SQLException e){
-            e.printStackTrace();            
-        }
-        
+
         // ** LINE GRAPH ** 
         // Adapted from https://www.tutorialspoint.com/javafx/line_chart.htm 
 
         //Defining the y axis
-        int yAxisMax = (int) (TimeUnit.MILLISECONDS.toMinutes(maxTimeOnTask) + 10);
-        NumberAxis weeklyTrendsNumberAxis = new NumberAxis(0, yAxisMax, 50); 
-        weeklyTrendsNumberAxis.setLabel("Minutes spent"); 
+        weeklyTrendsNumberAxis.setLabel("Time spent on each category (min)"); 
         
         //Get all the categories we have in the database
         List categoryNames = new ArrayList();
@@ -160,164 +145,62 @@ public class WeeklyTrendsScreenController {
         } else {
             startDate = thisMonday; // start on this monday
         }
-        ArrayList<String> weeksAxis = new ArrayList<String>();
+        ArrayList<String> weeksAxis = new ArrayList<>();
         while (startDate.isBefore(endDate)) {
             weeksAxis.add(startDate.toString());
             startDate = startDate.plusWeeks(1);
         }  
         weeklyTrendsCategoryAxis.setCategories(FXCollections.<String>observableArrayList(weeksAxis));
         weeklyTrendsCategoryAxis.setLabel("Week of");        
-      
-        //Create series per category 
-        for (int i = 0; i < categoryNames.size(); i++){
-            XYChart.Series series = new XYChart.Series(); 
-            series.setName("Category: " + categoryNames.get(i));
-            //weeklyTrendsLineChart.getData().add(series);
-        }
         
         // Data entry 
         // Data to add to before we put them into the plot 
-        HashMap<String, ArrayList<String>> dataHashmap = new HashMap<String, ArrayList<String>>();
+        HashMap<String, ArrayList<Float>> dataHashmap = new HashMap<>();
         
         for (int j = 0; j < categoryNames.size(); j++){
             // create an array list, which will store all the hours 
-            ArrayList<Float> categoryArrayList = new ArrayList<Float>();
+            ArrayList<Float> categoryArrayList = new ArrayList<>();
             for (int i = 0; i < weeksAxis.size(); i++){
-                if (i < weeksAxis.size() - 1){   
-                    long categorySumInMs = 0;
-                    try {
-                        String st = "SELECT starttime, endtime FROM entries WHERE date BETWEEN '" + weeksAxis.get(i) + "' AND '" + weeksAxis.get(i + 1) + "' AND category = '" + categoryNames.get(j) + "'";
-                        ResultSet rs = Database.getResultSet(st);
-                        while (rs.next()){
-                            // sum all the entries in this category
-                            String startTime = rs.getString("starttime");
-                            String endTime = rs.getString("endtime");
-                            long duration = parseTimeInMs(endTime) - parseTimeInMs(startTime);
-                            categorySumInMs += duration;
-                        }
-                    } catch (SQLException e){
-                        e.printStackTrace();
-                    }         
-                    
-                    // convert into minutes 
-                    float timeSpent = 0;
-                    timeSpent = TimeUnit.MILLISECONDS.toMinutes(categorySumInMs);
-                    System.out.println("Category; " + categoryNames.get(j) + ", time spent: " + timeSpent + " in week: " + weeksAxis.get(i));
-                    categoryArrayList.add(timeSpent);
-                    
-                } else if (i == weeksAxis.size() - 1){
-                    // find out how much time we spend on the category. 
-                    long categorySumInMs = 0;
-                    try {
-                        String st = "SELECT starttime, endtime FROM entries WHERE date BETWEEN '" + weeksAxis.get(i) + "' AND '" + LocalDate.now() + "' AND category = '" + categoryNames.get(j) + "'";
-                        ResultSet rs = Database.getResultSet(st);
-                        while (rs.next()){
-                            // sum all the entries in this category
-                            String startTime = rs.getString("starttime");
-                            String endTime = rs.getString("endtime");
-                            long duration = parseTimeInMs(endTime) - parseTimeInMs(startTime);
-                            categorySumInMs += duration;
-                        }
-                    } catch (SQLException e){
-                        e.printStackTrace();
+                long categorySumInMs = 0;
+                try {
+                    String st = "";
+                    if (i < weeksAxis.size() - 1)
+                    {
+                        st = "SELECT starttime, endtime FROM entries WHERE date BETWEEN '" + weeksAxis.get(i) + "' AND '" + weeksAxis.get(i + 1) + "' AND category = '" + categoryNames.get(j) + "'";
+                    } else if (i == weeksAxis.size() - 1) {
+                        st = "SELECT starttime, endtime FROM entries WHERE date BETWEEN '" + weeksAxis.get(i) + "' AND '" + LocalDate.now() + "' AND category = '" + categoryNames.get(j) + "'";
                     }
-                    // convert into minutes 
-                    float timeSpent = 0; 
-                    timeSpent = TimeUnit.MILLISECONDS.toMinutes(categorySumInMs);
-                    System.out.println("Category; " + categoryNames.get(j) + ", time spent: " + timeSpent + " in week: " + weeksAxis.get(i));
-                    categoryArrayList.add(timeSpent);
-                }
-            }
-            System.out.print("category: " + categoryNames.get(j) + " " + categoryArrayList);
-            
-            // add it to the hashmap 
+                    ResultSet rs = Database.getResultSet(st);
+                    while (rs.next()){
+                        // sum all the entries in this category
+                        String startTime = rs.getString("starttime");
+                        String endTime = rs.getString("endtime");
+                        long duration = parseTimeInMs(endTime) - parseTimeInMs(startTime);
+                        categorySumInMs += duration;
+                    }
+                } catch (SQLException e){
+                    e.printStackTrace();
+                }         
+                // convert into minutes 
+                float timeSpent = 0;
+                timeSpent = TimeUnit.MILLISECONDS.toMinutes(categorySumInMs);
+                categoryArrayList.add(timeSpent);
+            }           
+            // add it to the hashmap
+            String category = (String) categoryNames.get(j);
+            dataHashmap.put(category, categoryArrayList);
         }
- 
-//        
-//        // for each week...
-//        for (int i = 0; i < weeksAxis.size(); i++){
-//            if (i < weeksAxis.size() - 1){
-//                // for each category...
-//                for (int j = 0; j < categoryNames.size(); j++){
-//                    // find out how much time we spend on the category. 
-//                    long categorySumInMs = 0;
-//                    try {
-//                        String st = "SELECT starttime, endtime FROM entries WHERE date BETWEEN '" + weeksAxis.get(i) + "' AND '" + weeksAxis.get(i + 1) + "' AND category = '" + categoryNames.get(j) + "'";
-//                        ResultSet rs = Database.getResultSet(st);
-//                        while (rs.next()){
-//                            // sum all the entries in this category
-//                            String startTime = rs.getString("starttime");
-//                            String endTime = rs.getString("endtime");
-//                            long duration = parseTimeInMs(endTime) - parseTimeInMs(startTime);
-//                            categorySumInMs += duration;
-//
-//                            // convert into minutes 
-//                            float timeSpent = TimeUnit.MILLISECONDS.toMinutes(categorySumInMs);
-//                            System.out.println("Category; " + categoryNames.get(j) + ", time spent: " + timeSpent + " in week: " + weeksAxis.get(i));
-//
-//                            // add to the data 
-////                            XYChart.Series series = new XYChart.Series(); 
-////                            series.setName("Category: " + categoryNames.get(j));
-////                            series.getData().add(new XYChart.Data(weeksAxis.get(i), timeSpent)); 
-////                            weeklyTrendsLineChart.getData().add(series);
-//
-//                        }
-//                    } catch (SQLException e){
-//                        e.printStackTrace();
-//                    }
-//                }
-//            } // unless the last week (from this monday - present) 
-//            else if (i == weeksAxis.size() - 1){
-//                for (int j = 0; j < categoryNames.size(); j++){
-//                    // find out how much time we spend on the category. 
-//                    long categorySumInMs = 0;
-//                    try {
-//                        String st = "SELECT starttime, endtime FROM entries WHERE date BETWEEN '" + weeksAxis.get(i) + "' AND '" + LocalDate.now() + "' AND category = '" + categoryNames.get(j) + "'";
-//                        ResultSet rs = Database.getResultSet(st);
-//                        while (rs.next()){
-//                            // sum all the entries in this category
-//                            String startTime = rs.getString("starttime");
-//                            String endTime = rs.getString("endtime");
-//                            long duration = parseTimeInMs(endTime) - parseTimeInMs(startTime);
-//                            categorySumInMs += duration;
-//
-//                            // convert into minutes 
-//                            float timeSpent = TimeUnit.MILLISECONDS.toMinutes(categorySumInMs);
-//                            System.out.println("Category; " + categoryNames.get(j) + ", time spent: " + timeSpent + " in week: " + weeksAxis.get(i));
-//
-//                            // add to the plot
-//                            XYChart.Series series = new XYChart.Series(); 
-//                            series.setName("Category: " + categoryNames.get(j));
-//                            series.getData().add(new XYChart.Data(weeksAxis.get(i), timeSpent)); 
-//                            weeklyTrendsLineChart.getData().add(series);
-//                        }
-//                    } catch (SQLException e){
-//                        e.printStackTrace();
-//                    }
-//                }  
-//            }            
-//        }
-////        
-//        for (int i = 0; i < categoryNames.size(); i++){
-//            XYChart.Series series = new XYChart.Series(); 
-//            series.setName("Category: " + categoryNames.get(i));         
-//            // Sum all the durations for each entry per category.
-//            float categorySumMs = 0;
-//            try {
-//                ResultSet rs = Database.getResultSet("SELECT starttime, endtime FROM entries WHERE category = " + categoryNames.get(i));
-//                while (rs.next()){
-//                    // sum all the entries in this category
-//                    String startTime = rs.getString("starttime");
-//                    String endTime = rs.getString("endtime");
-//                    long duration = parseTimeInMs(endTime) - parseTimeInMs(startTime);
-//                    categorySumMs += duration;
-//                }
-//            } catch (SQLException e){
-//                e.printStackTrace();
-//            }
-//
-//            weeklyTrendsLineChart.getData().add(series);  
-//        }                
+        
+        // now create series for each category and add to them
+        dataHashmap.keySet().stream().forEach((key) -> {
+            //iterate over keys
+            XYChart.Series series = new XYChart.Series(); 
+            series.setName("Category: " + key);
+            // iterate over the array list, and add the date to it from weeksAxis
+            for (int i = 0; i < weeksAxis.size(); i++){
+                series.getData().add(new XYChart.Data( weeksAxis.get(i), dataHashmap.get(key).get(i)));
+            }
+            weeklyTrendsLineChart.getData().add(series);
+        });       
     }
-
 }
