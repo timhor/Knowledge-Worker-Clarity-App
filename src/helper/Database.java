@@ -111,7 +111,7 @@ public class Database {
 
         String createQuery = "CREATE TABLE IF NOT EXISTS categories" +
             "(categoryname TEXT NOT NULL, " +
-            "hexString TEXT";
+            "hexString TEXT)";
         
         stmt.execute(createQuery);
 
@@ -123,11 +123,11 @@ public class Database {
             ArrayList<String> insertStatements = new ArrayList<String>();
 
             insertStatements.add("INSERT INTO categories (categoryname, hexstring)" +
-                "VALUES (First category, '#FF0000')");
+                "VALUES ('First category', '#FF0000')");
             insertStatements.add("INSERT INTO categories (categoryname, hexstring)" +
-                "VALUES (Second category, '#00FF00')");
+                "VALUES ('Second category', '#00FF00')");
             insertStatements.add("INSERT INTO categories (categoryname, hexstring)" +
-                "VALUES (Third category, '#0000FF')");
+                "VALUES ('Third category', '#0000FF')");
 
             for (String statement : insertStatements) {
                 stmt.execute(statement);
