@@ -6,8 +6,10 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -123,9 +125,9 @@ public class WeeklyTrendsScreenController {
         }    
 
         //Defining the y axis
-        weeklyTrendsNumberAxis.setLabel("Time spent on each category (min)"); 
+        weeklyTrendsNumberAxis.setLabel("Total time spent (%)"); 
         
-        //Defining the x axis (categories)  
+        //Defining the x axis (categories)
         // We want the last 12 weeks of data - adapted from https://stackoverflow.com/questions/31467524/how-to-get-all-week-dates-for-given-date-java       
         //Find start of each week from that start Date, which will become our x axis
         LocalDate endDate = LocalDate.now();
@@ -172,9 +174,9 @@ public class WeeklyTrendsScreenController {
                 } catch (SQLException e){
                     e.printStackTrace();
                 }         
-                // convert into minutes 
+                // convert into hours 
                 float timeSpent = 0;
-                timeSpent = TimeUnit.MILLISECONDS.toMinutes(categorySumInMs);
+                timeSpent = TimeUnit.MILLISECONDS.toHours(categorySumInMs);
                 categoryArrayList.add(timeSpent);
             }           
             // add it to the hashmap
@@ -182,6 +184,46 @@ public class WeeklyTrendsScreenController {
             dataHashmap.put(category, categoryArrayList);
         }
         
+        // we want to convert hours into percentages
+        // for each week, find out how much work was logged
+        ArrayList<Float> totalHoursInWeekArray = new ArrayList<>();
+        for (int i = 0; i < weeksAxis.size(); i++){
+            // add up per category, per each key 
+            float totalHoursInWeek = 0;
+            for (Map.Entry<String, ArrayList<Float>> entry : dataHashmap.entrySet()) {
+                //String key = entry.getKey();
+                ArrayList<Float> value = entry.getValue();
+                totalHoursInWeek += value.get(i);
+            }            
+            //System.out.println("Total hrs spent in week: " + weeksAxis.get(i) + " is: " + totalHoursInWeek);
+            totalHoursInWeekArray.add(i, totalHoursInWeek);
+
+        }
+                
+        for (int i = 0; i < weeksAxis.size(); i++){    
+            ArrayList<Float> percentageArrayListForThisWeek = new ArrayList<>();
+            //now convert each of the current existing values into the percentage
+            //accessing array lists in a hashmap adapted from https://stackoverflow.com/questions/10562834/how-to-iterate-hashmap-with-containing-arraylist
+            for (Map.Entry<String, ArrayList<Float>> entry : dataHashmap.entrySet()) {
+                String key = entry.getKey();
+                ArrayList<Float> value = entry.getValue();
+                //System.out.println(key + value.get(i));
+                //System.out.println(totalHoursInWeekArray.get(i));
+                float percentage = (value.get(i) / totalHoursInWeekArray.get(i)) * 100;
+                if (Float.isNaN(percentage)){
+                    percentage = 0;
+                }
+                percentageArrayListForThisWeek.add(percentage);   
+                
+                //Now update the values to reflect %, not hours 
+                // update this value...
+                //System.out.println(entry.getValue().get(i));
+                // with this value: 
+                //System.out.println(weeksAxis.get(i) + " " + percentageArrayListForThisWeek.get(percentageArrayListForThisWeek.size() - 1));
+                entry.getValue().set(i, percentageArrayListForThisWeek.get(percentageArrayListForThisWeek.size() - 1));
+            }
+        }
+
         // now create series for each category and add to them
         dataHashmap.keySet().stream().forEach((key) -> {
             //iterate over keys
