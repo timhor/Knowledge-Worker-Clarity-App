@@ -5,10 +5,7 @@ import helper.Database;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -19,7 +16,6 @@ import javafx.scene.chart.CategoryAxis;
 import javafx.scene.control.Button;
 import layout.LayoutScreenController;
 import org.joda.time.*;
-
 
 import javafx.scene.chart.LineChart; 
 import javafx.scene.chart.NumberAxis; 
@@ -107,11 +103,6 @@ public class WeeklyTrendsScreenController {
     public void handleWeeklyTrendsScreenButtonAction(ActionEvent event) throws IOException {
         layoutController.handleWeeklyTrendsScreenButtonAction(event);
     }
-
-    @FXML
-    private void handleBackButtonAction(ActionEvent event) throws IOException {
-        layoutController.handleWeeklyTrendsScreenButtonAction(event);
-    }
     
     @FXML
     public void initialize() {
@@ -119,9 +110,6 @@ public class WeeklyTrendsScreenController {
         // ** LINE GRAPH ** 
         // Adapted from https://www.tutorialspoint.com/javafx/line_chart.htm 
 
-        //Defining the y axis
-        weeklyTrendsNumberAxis.setLabel("Time spent on each category (min)"); 
-        
         //Get all the categories we have in the database
         List categoryNames = new ArrayList();
         try {
@@ -133,6 +121,9 @@ public class WeeklyTrendsScreenController {
         } catch (SQLException e){
             e.printStackTrace();            
         }    
+
+        //Defining the y axis
+        weeklyTrendsNumberAxis.setLabel("Time spent on each category (min)"); 
         
         //Defining the x axis (categories)  
         // We want the last 12 weeks of data - adapted from https://stackoverflow.com/questions/31467524/how-to-get-all-week-dates-for-given-date-java       
