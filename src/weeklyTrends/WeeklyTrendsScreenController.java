@@ -118,12 +118,11 @@ public class WeeklyTrendsScreenController {
             while (rs.next()){
                 //We want to figure out the highest y axis values
                 String startTime = rs.getString("starttime");
-                String endTime = rs.getString("endTime");
+                String endTime = rs.getString("endtime");
                 long duration = parseTimeInMs(endTime) - parseTimeInMs(startTime);
                 if (maxTimeOnTask < duration){
                     maxTimeOnTask = duration;
                 }
-
             }
         } catch (SQLException e){
             e.printStackTrace();            
@@ -132,60 +131,101 @@ public class WeeklyTrendsScreenController {
         // ** LINE GRAPH ** 
         // Adapted from https://www.tutorialspoint.com/javafx/line_chart.htm 
 
-        //Defining the y axis. we want to have 10 minor tick marks
+        //Defining the y axis
         int yAxisMax = (int) (TimeUnit.MILLISECONDS.toMinutes(maxTimeOnTask) + 10);
-        int numTickMarks = yAxisMax / 10;
         NumberAxis weeklyTrendsNumberAxis = new NumberAxis(0, yAxisMax, 50); 
         weeklyTrendsNumberAxis.setLabel("Minutes spent"); 
         
-        
-        //Defining the x axis   
-        // We want the last 12 weeks of data - adapted from https://stackoverflow.com/questions/31467524/how-to-get-all-week-dates-for-given-date-java       
-        //Find start of each week from that start Date, which will become our x axis
-        LocalDate endDate = LocalDate.now();
-        LocalDate startDate = endDate.minusMonths(3);
-        LocalDate thisMonday = startDate.withDayOfWeek(DateTimeConstants.MONDAY);
-        if (startDate.isAfter(thisMonday)) {
-            startDate = thisMonday.plusWeeks(1); // start on next monday
-        } else {
-            startDate = thisMonday; // start on this monday
-        }
-        
-        ArrayList<String> weeksAxis = new ArrayList<String>();
-        while (startDate.isBefore(endDate)) {
-            System.out.println(startDate);
-            weeksAxis.add(startDate.toString());
-            startDate = startDate.plusWeeks(1);
-        }
-        
-        weeklyTrendsCategoryAxis.setCategories(FXCollections.<String>observableArrayList(weeksAxis));
-        weeklyTrendsCategoryAxis.setLabel("Week of"); 
- 
-        
-        //Create a new series for each category.
+        //Get all the categories we have in the database
         List categoryNames = new ArrayList();
         try {
 
             ResultSet rs = Database.getResultSet("SELECT DISTINCT category FROM entries");
             while (rs.next()){
                 categoryNames.add(rs.getString("category"));
-                System.out.println(rs.getString("category"));
             }
         } catch (SQLException e){
             e.printStackTrace();            
-        }        
-
+        }    
+        
+        //Defining the x axis (categories)  
+        // We want the last 12 weeks of data - adapted from https://stackoverflow.com/questions/31467524/how-to-get-all-week-dates-for-given-date-java       
+        //Find start of each week from that start Date, which will become our x axis
+        LocalDate endDate = LocalDate.now();
+        LocalDate startDate = endDate.minusMonths(1);
+        LocalDate thisMonday = startDate.withDayOfWeek(DateTimeConstants.MONDAY);
+        if (startDate.isAfter(thisMonday)) {
+            startDate = thisMonday.plusWeeks(1); // start on next monday
+        } else {
+            startDate = thisMonday; // start on this monday
+        }
+        ArrayList<String> weeksAxis = new ArrayList<String>();
+        while (startDate.isBefore(endDate)) {
+            weeksAxis.add(startDate.toString());
+            startDate = startDate.plusWeeks(1);
+        }  
+        weeklyTrendsCategoryAxis.setCategories(FXCollections.<String>observableArrayList(weeksAxis));
+        weeklyTrendsCategoryAxis.setLabel("Week of");        
+      
+        //Create series per category 
         for (int i = 0; i < categoryNames.size(); i++){
-            System.out.println(categoryNames.get(i));
             XYChart.Series series = new XYChart.Series(); 
             series.setName("Category: " + categoryNames.get(i)); 
-
-//            series.getData().add(new XYChart.Data("September", 60));
-//            series.getData().add(new XYChart.Data("October", 150)); 
-//            series.getData().add(new XYChart.Data("November", 300)); 
-
-            weeklyTrendsLineChart.getData().add(series);  
-        }                
+        }
+        
+        // Data entry 
+        // for each week...
+        for (int i = 0; i < weeksAxis.size() - 1; i++){
+            // for each category...
+            for (int j = 0; j < categoryNames.size(); j++){
+                // find out how much time we spend on the category. 
+                float categorySumInMs = 0;
+                try {
+                    //String st = "SELECT starttime, endtime FROM entries WHERE category = '" + categoryNames.get(i) + "' AND date BETWEEN '" + weeksAxis.get(i) + "' AND '" + weeksAxis.get(i + 1) + "'";
+                    String st = "SELECT starttime, endtime FROM entries WHERE date BETWEEN '" + weeksAxis.get(i) + "' AND '" + weeksAxis.get(i + 1) + "' AND category = '" + categoryNames.get(j) + "'";
+                    System.out.println(st);
+                    ResultSet rs = Database.getResultSet(st);
+                    while (rs.next()){
+                        // sum all the entries in this category
+                        String startTime = rs.getString("starttime");
+                        String endTime = rs.getString("endtime");
+                        long duration = parseTimeInMs(endTime) - parseTimeInMs(startTime);
+                        categorySumInMs += duration;
+                    }
+                    System.out.println("Category; " + categoryNames.get(j) + ", time spent: " + categorySumInMs + " in week: " + weeksAxis.get(i));
+                } catch (SQLException e){
+                    e.printStackTrace();
+                }
+                
+                // convert into minutes 
+                float timeSpent = TimeUnit.MILLISECONDS.toMinutes(maxTimeOnTask);
+                XYChart.Series series = new XYChart.Series(); 
+                series.setName("Category: " + categoryNames.get(i));
+                series.getData().add(new XYChart.Data(weeksAxis.get(i), timeSpent)); 
+                weeklyTrendsLineChart.getData().add(series);
+            }
+        }
+//        
+//        for (int i = 0; i < categoryNames.size(); i++){
+//            XYChart.Series series = new XYChart.Series(); 
+//            series.setName("Category: " + categoryNames.get(i));         
+//            // Sum all the durations for each entry per category.
+//            float categorySumMs = 0;
+//            try {
+//                ResultSet rs = Database.getResultSet("SELECT starttime, endtime FROM entries WHERE category = " + categoryNames.get(i));
+//                while (rs.next()){
+//                    // sum all the entries in this category
+//                    String startTime = rs.getString("starttime");
+//                    String endTime = rs.getString("endtime");
+//                    long duration = parseTimeInMs(endTime) - parseTimeInMs(startTime);
+//                    categorySumMs += duration;
+//                }
+//            } catch (SQLException e){
+//                e.printStackTrace();
+//            }
+//
+//            weeklyTrendsLineChart.getData().add(series);  
+//        }                
     }
 
 }
