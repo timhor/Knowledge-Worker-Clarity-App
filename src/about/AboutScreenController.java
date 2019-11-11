@@ -4,19 +4,28 @@ import helper.PageSwitchHelper;
 import layout.LayoutScreenController;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.awt.Desktop;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Hyperlink;
 
 public class AboutScreenController {
-
 
     PageSwitchHelper pageSwitchHelper = new PageSwitchHelper();
 
     LayoutScreenController layoutController = new LayoutScreenController();
 
+    @FXML
+    private Hyperlink jdbcLink;
+
+    @FXML
+    private Hyperlink jodaTimeLink;
+
     //Navigation
-    // Side bar 
+    // Side bar
     @FXML
     public Button homeScreenButton;
 
@@ -28,7 +37,7 @@ public class AboutScreenController {
 
     @FXML
     public Button myWeekScreenButton;
-    
+
     @FXML
     public Button weeklyTrendsScreenButton;
 
@@ -38,7 +47,7 @@ public class AboutScreenController {
 
     @FXML
     public Button tasksScreenButton;
-    
+
     @FXML
     public Button aboutScreenButton;
     @FXML
@@ -53,7 +62,7 @@ public class AboutScreenController {
 
     //Navigation
 
-    // Top Bar Handling 
+    // Top Bar Handling
     @FXML
     public void handleEntriesScreenButtonAction(ActionEvent event) throws IOException {
         layoutController.handleEntriesScreenButtonAction(event);
@@ -69,12 +78,12 @@ public class AboutScreenController {
         layoutController.handleAboutScreenButtonAction(event);
     }
 
-    // Add Data Handling  
+    // Add Data Handling
     @FXML
     public void handleHomeScreenButtonAction(ActionEvent event) throws IOException {
         layoutController.handleHomeScreenButtonAction(event);
     }
-    
+
     @FXML
     public void handleMyLifeScreenButtonAction(ActionEvent event) throws IOException {
         layoutController.handleMyLifeScreenButtonAction(event);
@@ -94,4 +103,23 @@ public class AboutScreenController {
     public void handleWeeklyTrendsScreenButtonAction(ActionEvent event) throws IOException {
         layoutController.handleWeeklyTrendsScreenButtonAction(event);
     }
+
+    @FXML
+    public void initialize() {
+        // opening link in default browser adapted from:
+        // https://www.reddit.com/r/javahelp/comments/4bqcci/how_to_make_a_link_hyperlink_in_javafx/
+        jdbcLink.setOnAction(event -> openLinkInBrowser(jdbcLink.getText()));
+        jodaTimeLink.setOnAction(event -> openLinkInBrowser(jodaTimeLink.getText()));
+    }
+
+    private void openLinkInBrowser(String link) {
+        if (Desktop.isDesktopSupported()) {
+            try {
+                Desktop.getDesktop().browse(new URI(link));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 }

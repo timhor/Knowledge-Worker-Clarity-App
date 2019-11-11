@@ -48,6 +48,27 @@
                <font>
                   <Font size="16.0" />
                </font></Text>
+            <Separator layoutX="255.0" layoutY="454.0" prefHeight="2.0" prefWidth="547.0" />
+            <Text layoutX="255.0" layoutY="537.0" strokeType="OUTSIDE" strokeWidth="0.0" text="- SQLite JDBC Driver 3.27.2.1">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
+            <Hyperlink fx:id="jdbcLink" layoutX="498.0" layoutY="517.0" text="https://github.com/xerial/sqlite-jdbc">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Hyperlink>
+            <Text layoutX="255.0" layoutY="567.0" strokeType="OUTSIDE" strokeWidth="0.0" text="- Joda-Time 2.10.5">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
+            <Hyperlink fx:id="jodaTimeLink" layoutX="498.0" layoutY="547.0" text="https://github.com/JodaOrg/joda-time">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Hyperlink>
          </children>
       </Group>
    </children>
