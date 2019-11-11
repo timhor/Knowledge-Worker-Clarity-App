@@ -13,16 +13,18 @@ public class Entry {
 
     // StringProperty is needed for TableView
     private String id;
-    private StringProperty category;
+    private String categoryColour;
+    private StringProperty categoryName;
     private StringProperty description;
     private StringProperty date;
     private StringProperty startTime;
     private StringProperty endTime;
     private long duration;
 
-    public Entry(String id, String category, String description, String date, String startTime, String endTime) {
+    public Entry(String id, String categoryColour, String categoryName, String description, String date, String startTime, String endTime) {
         this.id = id;
-        this.category = new SimpleStringProperty(category);
+        this.categoryColour = categoryColour;
+        this.categoryName = new SimpleStringProperty(categoryName);
         this.description = new SimpleStringProperty(description);
         this.date = new SimpleStringProperty(date);
         this.startTime = new SimpleStringProperty(startTime);
@@ -35,8 +37,12 @@ public class Entry {
         return this.id;
     }
 
-    public StringProperty getCategoryProperty() {
-        return category;
+    public String getCategoryColour() {
+        return this.categoryColour;
+    }
+
+    public StringProperty getCategoryNameProperty() {
+        return categoryName;
     }
 
     public StringProperty getDescriptionProperty() {

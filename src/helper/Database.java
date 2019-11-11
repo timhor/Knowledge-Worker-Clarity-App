@@ -104,15 +104,16 @@ public class Database {
 
         stmt.close();
     }
-    
+
     public static void createCategoriesTable() throws SQLException {
         openConnection();
         Statement stmt = conn.createStatement();
 
         String createQuery = "CREATE TABLE IF NOT EXISTS categories" +
-            "(categoryname TEXT NOT NULL, " +
-            "hexString TEXT)";
-        
+            "(id INTEGER PRIMARY KEY," +
+            "categoryname TEXT NOT NULL," +
+            "hexString TEXT NOT NULL)";
+
         stmt.execute(createQuery);
 
         String checkExistingQuery = "SELECT COUNT(*) FROM categories";
