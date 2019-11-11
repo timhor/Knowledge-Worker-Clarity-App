@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.chart.*?>
 <?import javafx.scene.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
@@ -52,6 +53,14 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
             </GridPane>
+            <LineChart fx:id="weeklyTrendsLineChart" layoutX="128.0" layoutY="155.0" prefHeight="598.0" prefWidth="843.0">
+              <xAxis>
+                <CategoryAxis fx:id="weeklyTrendsCategoryAxis" side="BOTTOM" />
+              </xAxis>
+              <yAxis>
+                <NumberAxis fx:id="weeklyTrendsNumberAxis" side="LEFT" />
+              </yAxis>
+            </LineChart>
          </children>
       </Group>
    </children>
