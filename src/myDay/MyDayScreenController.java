@@ -14,14 +14,16 @@ import java.util.concurrent.TimeUnit;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
+import javafx.scene.chart.XYChart.Series;
 import layout.LayoutScreenController;
-
+import javafx.scene.chart.XYChart.Data;
 public class MyDayScreenController {
 
     LayoutScreenController layoutController = new LayoutScreenController();
@@ -154,11 +156,8 @@ public class MyDayScreenController {
             // append to the hashmap
             categoryTimeMap.put(timeRs.getString("categoryname"), categoryTimeMap.get(timeRs.getString("categoryname")) + durationInHours);
         }        
-        
-        //System.out.println(categoryTimeMap);
-        
         HashMap<String,Float> sortedDailyHashMap = nLargest(categoryTimeMap, 5);
-    
+ 
         // BAR CHART
         // adapted from https://o7planning.org/en/11107/javafx-barchart-and-stackedbarchart-tutorial 
         XYChart.Series<String, Float> series = new XYChart.Series<String, Float>();
@@ -168,6 +167,36 @@ public class MyDayScreenController {
             series.getData().add(new XYChart.Data(key, value));
         }
         myDayBarChart.getData().add(series);
+        
+        // Change colours
+        // Get hexkeys of the categories 
+        ArrayList<String> colourCodes = new ArrayList<>();
+        for (Map.Entry<String, Float> entry : sortedDailyHashMap.entrySet()) {
+            String key = entry.getKey();
+            String colourSt = "SELECT DISTINCT c.hexString FROM entries e LEFT JOIN categories c ON e.category = c.id WHERE c.categoryname = '" + key + "'";
+            ResultSet colourRs = Database.getResultSet(colourSt);
+            while (colourRs.next()){
+                String categoryColour = colourRs.getString("hexString");
+                colourCodes.add(categoryColour);
+            }
+        }
+        
+        try {
+            Node n = myDayBarChart.lookup(".data0.chart-bar");
+            n.setStyle("-fx-bar-fill: " + colourCodes.get(0));
+            n = myDayBarChart.lookup(".data1.chart-bar");
+            n.setStyle("-fx-bar-fill: " + colourCodes.get(1));
+            n = myDayBarChart.lookup(".data2.chart-bar");
+            n.setStyle("-fx-bar-fill: " + colourCodes.get(2));
+            n = myDayBarChart.lookup(".data3.chart-bar");
+            n.setStyle("-fx-bar-fill: " + colourCodes.get(3));    
+            n = myDayBarChart.lookup(".data4.chart-bar");
+            n.setStyle("-fx-bar-fill: " + colourCodes.get(4));
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    
+        
         myDayBarChart.setLegendVisible(false);
         myDayBarChart.setTitle("Time spent on today's top 5 categories");
     }
