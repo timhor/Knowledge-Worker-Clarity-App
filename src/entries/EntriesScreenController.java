@@ -22,6 +22,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TableColumn.CellEditEvent;
@@ -204,6 +205,19 @@ public class EntriesScreenController {
             }
         });
 
+        // custom row colour adapted from: https://stackoverflow.com/a/56309916
+        entryList.setRowFactory(value -> new TableRow<Entry>() {
+            @Override
+            protected void updateItem(Entry item, boolean empty) {
+                super.updateItem(item, empty);
+                if (item == null || item.getCategoryColour() == null) {
+                    setStyle("");
+                } else {
+                    setStyle("-fx-background-color: " + item.getCategoryColour() + ";");
+                }
+            }
+        });
+
         populateCategories();
         populateEntries();
     }
@@ -332,12 +346,10 @@ public class EntriesScreenController {
             return;
         }
 
-        Color colorValue = categoryColourPicker.getValue();
-        int red = (int) colorValue.getRed();
-        int green = (int) colorValue.getGreen();
-        int blue = (int) colorValue.getBlue();
-
-        String hexString = String.format("#%02X%02X%02X", red, green, blue);
+        // colour conversion adapted from: https://stackoverflow.com/a/18803814
+        Color colourValue = categoryColourPicker.getValue();
+        String hexString = String.format("#%02X%02X%02X", (int) (colourValue.getRed() * 255),
+                (int) (colourValue.getGreen() * 255), (int) (colourValue.getBlue() * 255));
 
         try {
             Database.updateFromPreparedStatement("INSERT INTO categories (categoryname, hexstring) VALUES ( ?, ?)",
