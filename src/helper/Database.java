@@ -112,7 +112,7 @@ public class Database {
         String createQuery = "CREATE TABLE IF NOT EXISTS categories" +
             "(id INTEGER PRIMARY KEY," +
             "categoryname TEXT NOT NULL," +
-            "hexString TEXT)";
+            "hexString TEXT NOT NULL)";
 
         stmt.execute(createQuery);
 
