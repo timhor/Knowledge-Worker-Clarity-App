@@ -175,6 +175,8 @@ public class MyDayScreenController {
             }
         }
         
+        //colour coding each bar depending on category hexString
+        //adapted from https://stackoverflow.com/questions/43396419/how-to-change-the-colors-of-specific-bars-using-javafx-barchart 
         try {
             Node n = myDayBarChart.lookup(".data0.chart-bar");
             n.setStyle("-fx-bar-fill: " + colourCodes.get(0));
@@ -195,7 +197,7 @@ public class MyDayScreenController {
     }
     
     // Method for finding the top n values in a hashmap
-    // Adapted from 
+    // Adapted from https://stackoverflow.com/questions/23805861/finding-the-n-largest-values-in-a-hashmap
     static HashMap<String, Float> nLargest(HashMap<String, Float> map, int n) { //map and n largest values to search for
         Float value;
         ArrayList<String> keys = new ArrayList<>(n); //to store keys of the n largest values
