@@ -42,7 +42,7 @@ public class EntriesScreenController {
     private TextField entryDescriptionTextField;
 
     @FXML
-    private DatePicker datePicker = new DatePicker(LocalDate.now());
+    private DatePicker datePicker;
 
     @FXML
     private TextField startTimeTextField;
@@ -57,7 +57,7 @@ public class EntriesScreenController {
     private TextField categoryNameTextField;
 
     @FXML
-    private ColorPicker colorPicker;
+    private ColorPicker categoryColourPicker;
 
     @FXML
     private Button saveCategoryButton;
@@ -325,7 +325,6 @@ public class EntriesScreenController {
         statusLabel.setVisible(false);
 
         String categoryName = categoryNameTextField.getText();
-
         if (categoryName.length() == 0) {
             statusLabel.setVisible(true);
             statusLabel.setTextFill(Color.RED);
@@ -333,8 +332,7 @@ public class EntriesScreenController {
             return;
         }
 
-        colorPicker = new ColorPicker();
-        Color colorValue = colorPicker.getValue();
+        Color colorValue = categoryColourPicker.getValue();
         int red = (int) colorValue.getRed();
         int green = (int) colorValue.getGreen();
         int blue = (int) colorValue.getBlue();
@@ -342,17 +340,14 @@ public class EntriesScreenController {
         String hexString = String.format("#%02X%02X%02X", red, green, blue);
 
         try {
-
             Database.updateFromPreparedStatement("INSERT INTO categories (categoryname, hexstring) VALUES ( ?, ?)",
                     new String[] { categoryName, hexString });
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            initialize();
+            populateCategories();
             categoryNameTextField.setText("");
-
         }
-
     }
 
     private String validateAndFormatTime(String time) throws ParseException {
