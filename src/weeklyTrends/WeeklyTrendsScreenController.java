@@ -116,9 +116,9 @@ public class WeeklyTrendsScreenController {
         List categoryNames = new ArrayList();
         try {
 
-            ResultSet rs = Database.getResultSet("SELECT DISTINCT category FROM entries");
+            ResultSet rs = Database.getResultSet("SELECT DISTINCT categoryname FROM categories");
             while (rs.next()){
-                categoryNames.add(rs.getString("category"));
+                categoryNames.add(rs.getString("categoryname"));
             }
         } catch (SQLException e){
             e.printStackTrace();            
@@ -159,9 +159,9 @@ public class WeeklyTrendsScreenController {
                     String st = "";
                     if (i < weeksAxis.size() - 1)
                     {
-                        st = "SELECT starttime, endtime FROM entries WHERE date BETWEEN '" + weeksAxis.get(i) + "' AND '" + weeksAxis.get(i + 1) + "' AND category = '" + categoryNames.get(j) + "'";
+                        st = "SELECT starttime, endtime FROM entries e LEFT JOIN categories c ON e.category = c.id WHERE e.date BETWEEN '" + weeksAxis.get(i) + "' AND '" + weeksAxis.get(i + 1) + "' AND c.categoryname = '" + categoryNames.get(j) + "'";
                     } else if (i == weeksAxis.size() - 1) {
-                        st = "SELECT starttime, endtime FROM entries WHERE date BETWEEN '" + weeksAxis.get(i) + "' AND '" + LocalDate.now() + "' AND category = '" + categoryNames.get(j) + "'";
+                        st = "SELECT starttime, endtime FROM entries e LEFT JOIN categories c ON e.category = c.id WHERE e.date BETWEEN '" + weeksAxis.get(i) + "' AND '" + LocalDate.now() + "' AND c.categoryname = '" + categoryNames.get(j) + "'";
                     }
                     ResultSet rs = Database.getResultSet(st);
                     while (rs.next()){
