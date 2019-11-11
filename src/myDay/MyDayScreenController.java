@@ -8,22 +8,16 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
-import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
-import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
-import javafx.scene.chart.XYChart.Series;
 import layout.LayoutScreenController;
-import javafx.scene.chart.XYChart.Data;
 public class MyDayScreenController {
 
     LayoutScreenController layoutController = new LayoutScreenController();
@@ -194,11 +188,10 @@ public class MyDayScreenController {
             n.setStyle("-fx-bar-fill: " + colourCodes.get(4));
         } catch (Exception e){
             e.printStackTrace();
+        } finally {
+            myDayBarChart.setLegendVisible(false);
+            myDayBarChart.setTitle("Time spent on today's top 5 categories");            
         }
-    
-        
-        myDayBarChart.setLegendVisible(false);
-        myDayBarChart.setTitle("Time spent on today's top 5 categories");
     }
     
     // Method for finding the top n values in a hashmap
