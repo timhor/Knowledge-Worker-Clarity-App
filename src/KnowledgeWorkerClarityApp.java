@@ -27,6 +27,7 @@ public class KnowledgeWorkerClarityApp extends Application {
 
     private void loadDatabase() throws SQLException {
         Database.createEntriesTable();
+        Database.createTasksTable();
     }
 
 }

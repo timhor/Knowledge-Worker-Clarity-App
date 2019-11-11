@@ -104,5 +104,43 @@ public class Database {
 
         stmt.close();
     }
+    
+    //editted
+    public static void createTasksTable() throws SQLException {
+        openConnection();
+        Statement stmt = conn.createStatement();
+        String createQuery = "CREATE TABLE IF NOT EXISTS tasks" +
+            "(title TEXT NOT NULL," +
+            "description TEXT NOT NULL," +
+            "priority TEXT NOT NULL," +
+            "dueDate TEXT NOT NULL," +
+            "doDate TEXT NOT NULL)";
+        stmt.execute(createQuery);
+
+        String checkExistingQuery = "SELECT COUNT(*) FROM tasks";
+        ResultSet rs = getResultSet(checkExistingQuery);
+        int rowCount = rs.getInt(1);
+
+        if (rowCount == 0) {
+            ArrayList<String> insertStatements = new ArrayList<String>();
+
+            insertStatements.add("INSERT INTO tasks (title, description, priority, dueDate, doDate)" +
+                "VALUES ('First task', 'First task', '100', '2019-11-05', '2019-11-05')");
+            insertStatements.add("INSERT INTO tasks (title, description, priority, dueDate, doDate)" +
+                "VALUES ('Second task', 'Second task', '100', '2019-11-05', '2019-11-05')");
+            insertStatements.add("INSERT INTO tasks (title, description, priority, dueDate, doDate)" +
+                "VALUES ('Third task', 'Third task', '100', '2019-11-05', '2019-11-05')");
+
+            for (String statement : insertStatements) {
+                stmt.execute(statement);
+            }
+            
+            while(rs.next()) {
+                System.out.println(rs.getString(1)+ " " +rs.getString(2) + rs.getString(3)+ rs.getString(4) + rs.getString(5));
+            }
+        }
+
+        stmt.close();
+    }
 
 }
