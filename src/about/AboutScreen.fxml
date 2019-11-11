@@ -31,9 +31,23 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
             </GridPane>
-            <Text layoutX="260.0" layoutY="241.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Submission UUID:" />
-            <Text layoutX="260.0" layoutY="277.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Copyright © 2019. We, the developers of this software application, declare that it is our work towards an assessment item submitted to fulfill the requirements of INFS2605 (UNSW Sydney). We declare that it is our own work, except where acknowledged, and has not been submitted for academic credit elsewhere. We acknowledge that the assessor of this item may, for the purpose of assessing this item: Reproduce this assessment item and provide a copy to another member of the University; and/or, Communicate a copy of this assessment item to a plagiarism checking service (which may then retain a copy of the assessment item on its database for the purpose of future plagiarism checking). We certify that we have read and understood the UNSW University Rules in respect of Student Academic Misconduct." textAlignment="JUSTIFY" wrappingWidth="537.84814453125" />
-            <Text layoutX="260.0" layoutY="449.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Third-Party Libraries and Multimedia Items Used:" />
+            <Text layoutX="259.0" layoutY="160.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Submission UUID:">
+               <font>
+                  <Font size="16.0" />
+               </font></Text>
+            <Text layoutX="400.0" layoutY="160.0" strokeType="OUTSIDE" strokeWidth="0.0" text="4E806936-FC25-4913-B255-4A60A26ABF1A">
+               <font>
+                  <Font name="Monaco" size="15.0" />
+               </font>
+            </Text>
+            <Text layoutX="259.0" layoutY="198.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Copyright © 2019. We, the developers of this software application, declare that it is our work towards an assessment item submitted to fulfil the requirements of INFS2605 (UNSW Sydney). We declare that it is our own work, except where acknowledged, and has not been submitted for academic credit elsewhere. We acknowledge that the assessor of this item may, for the purpose of assessing this item: Reproduce this assessment item and provide a copy to another member of the University; and/or, Communicate a copy of this assessment item to a plagiarism checking service (which may then retain a copy of the assessment item on its database for the purpose of future plagiarism checking). We certify that we have read and understood the UNSW University Rules in respect of Student Academic Misconduct." textAlignment="JUSTIFY" wrappingWidth="537.84814453125">
+               <font>
+                  <Font size="16.0" />
+               </font></Text>
+            <Text layoutX="255.0" layoutY="499.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Third-Party Libraries and Multimedia Items Used:" wrappingWidth="545.20263671875">
+               <font>
+                  <Font size="16.0" />
+               </font></Text>
          </children>
       </Group>
    </children>
