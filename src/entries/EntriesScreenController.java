@@ -297,7 +297,7 @@ public class EntriesScreenController {
             if (duration <= 0) {
                 statusLabel.setVisible(true);
                 statusLabel.setTextFill(Color.RED);
-                statusLabel.setText("End time must later than start time");
+                statusLabel.setText("End time must be later than start time");
                 return;
             }
             try {

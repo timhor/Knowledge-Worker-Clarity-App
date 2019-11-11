@@ -104,7 +104,7 @@ public class Database {
 
         stmt.close();
     }
-    
+
     //editted
     public static void createTasksTable() throws SQLException {
         openConnection();
@@ -133,10 +133,6 @@ public class Database {
 
             for (String statement : insertStatements) {
                 stmt.execute(statement);
-            }
-            
-            while(rs.next()) {
-                System.out.println(rs.getString(1)+ " " +rs.getString(2) + rs.getString(3)+ rs.getString(4) + rs.getString(5));
             }
         }
 
