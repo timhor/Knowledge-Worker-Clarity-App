@@ -122,7 +122,6 @@ public class MyDayScreenController {
         } catch (SQLException e){
             e.printStackTrace();            
         }
-        System.out.println(FXCollections.<String>observableArrayList(categoryNames));
 
         //Defining the x axis
         myDayNumberAxis.setLabel("Hours spent (hrs)");
@@ -138,7 +137,6 @@ public class MyDayScreenController {
         String categorySt = "SELECT DISTINCT category FROM entries WHERE date = '" + LocalDate.now() + "'";
         ResultSet rs = Database.getResultSet(categorySt);
         while (rs.next()){
-            System.out.println(rs.getString("category"));
             // sum all the entries in this category
             categoryTimeMap.put(rs.getString("category"), 0.0f);
         }
