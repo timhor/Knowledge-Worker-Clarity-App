@@ -18,6 +18,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -33,6 +34,9 @@ public class EntriesScreenController {
     PageSwitchHelper pageSwitchHelper = new PageSwitchHelper();
 
     LayoutScreenController layoutController = new LayoutScreenController();
+
+    @FXML
+    private ComboBox<Category> categoryDropdown;
 
     @FXML
     private TextField entryDescriptionTextField;
@@ -121,7 +125,7 @@ public class EntriesScreenController {
             String newDescription = t.getNewValue();
             try {
                 Database.updateFromPreparedStatement("UPDATE entries SET description = ? WHERE id = ?",
-                        new String[]{newDescription, t.getRowValue().getId()});
+                        new String[] { newDescription, t.getRowValue().getId() });
                 ((Entry) t.getTableView().getItems().get(t.getTablePosition().getRow()))
                         .setDescriptionProperty(newDescription);
                 populateEntries();
@@ -138,7 +142,7 @@ public class EntriesScreenController {
             String newStartTime = t.getNewValue();
             try {
                 Database.updateFromPreparedStatement("UPDATE entries SET starttime = ? WHERE id = ?",
-                        new String[]{newStartTime, t.getRowValue().getId()});
+                        new String[] { newStartTime, t.getRowValue().getId() });
                 ((Entry) t.getTableView().getItems().get(t.getTablePosition().getRow()))
                         .setStartTimeProperty(newStartTime);
                 populateEntries();
@@ -153,7 +157,7 @@ public class EntriesScreenController {
             String newEndTime = t.getNewValue();
             try {
                 Database.updateFromPreparedStatement("UPDATE entries SET endtime = ? WHERE id = ?",
-                        new String[]{newEndTime, t.getRowValue().getId()});
+                        new String[] { newEndTime, t.getRowValue().getId() });
                 ((Entry) t.getTableView().getItems().get(t.getTablePosition().getRow())).setEndTimeProperty(newEndTime);
                 populateEntries();
             } catch (SQLException e) {
@@ -163,7 +167,8 @@ public class EntriesScreenController {
 
         durationColumn.setCellValueFactory(cellData -> cellData.getValue().getDurationProperty());
 
-        // date picker formatting adapted from: https://code.makery.ch/blog/javafx-8-date-picker/
+        // date picker formatting adapted from:
+        // https://code.makery.ch/blog/javafx-8-date-picker/
         datePicker.setConverter(new StringConverter<LocalDate>() {
             DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
@@ -186,7 +191,40 @@ public class EntriesScreenController {
             }
         });
 
+        // StringConverter adapted from: https://stackoverflow.com/a/38367739
+        categoryDropdown.setConverter(new StringConverter<Category>() {
+            @Override
+            public String toString(Category category) {
+                return category.getCategoryName();
+            }
+
+            @Override
+            public Category fromString(String string) {
+                return null;
+            }
+        });
+
+        populateCategories();
         populateEntries();
+    }
+
+    private void populateCategories() {
+        try {
+            categoryDropdown.setItems(getCategories());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    private ObservableList<Category> getCategories() throws SQLException {
+        ArrayList<Category> categories = new ArrayList<Category>();
+        ResultSet rs = Database.getResultSet("SELECT * FROM categories");
+        while (rs.next()) {
+            Category category = new Category(rs.getString("id"), rs.getString("categoryname"),
+                    rs.getString("hexstring"));
+            categories.add(category);
+        }
+        return FXCollections.observableList(categories);
     }
 
     private void populateEntries() {
@@ -217,6 +255,9 @@ public class EntriesScreenController {
         statusLabel.setVisible(false);
 
         String category = null;
+        if (categoryDropdown.getValue() != null) {
+            category = categoryDropdown.getValue().getId();
+        }
         String description = entryDescriptionTextField.getText();
         if (description.length() == 0) {
             statusLabel.setVisible(true);
@@ -245,11 +286,12 @@ public class EntriesScreenController {
             try {
                 Database.updateFromPreparedStatement(
                         "INSERT INTO entries (category, description, date, starttime, endtime) VALUES (?,?,?,?,?)",
-                        new String[]{category, description, date.toString(), startTime, endTime});
+                        new String[] { category, description, date.toString(), startTime, endTime });
             } catch (SQLException e) {
                 e.printStackTrace();
             } finally {
                 populateEntries();
+                categoryDropdown.setValue(null);
                 entryDescriptionTextField.setText("");
                 startTimeTextField.setText("");
                 endTimeTextField.setText("");
@@ -267,7 +309,7 @@ public class EntriesScreenController {
         if (entryToDelete != null) {
             try {
                 Database.updateFromPreparedStatement("DELETE FROM entries WHERE id = ?",
-                        new String[]{entryToDelete.getId()});
+                        new String[] { entryToDelete.getId() });
                 populateEntries();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -299,7 +341,7 @@ public class EntriesScreenController {
         try {
 
             Database.updateFromPreparedStatement("INSERT INTO categories (categoryname, hexstring) VALUES ( ?, ?)",
-                    new String[]{categoryName, hexString});
+                    new String[] { categoryName, hexString });
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {

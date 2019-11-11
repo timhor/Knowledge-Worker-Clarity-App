@@ -83,7 +83,7 @@
             <Label fx:id="statusLabel" layoutX="110.0" layoutY="727.0" prefHeight="29.0" prefWidth="528.0" visible="false" />
             <Button layoutX="833.0" layoutY="728.0" mnemonicParsing="false" onAction="#handleDeleteButtonAction" text="Delete Selected Entry" />
             <DatePicker fx:id="datePicker" layoutX="429.0" layoutY="245.0" prefHeight="33.0" prefWidth="109.0" promptText="Date" />
-            <ComboBox layoutX="112.0" layoutY="245.0" prefHeight="32.0" prefWidth="150.0" promptText="Category" />
+            <ComboBox fx:id="categoryDropdown" layoutX="112.0" layoutY="245.0" prefHeight="32.0" prefWidth="150.0" promptText="Category" />
          </children>
       </Group>
    </children>
