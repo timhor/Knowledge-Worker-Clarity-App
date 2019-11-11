@@ -11,12 +11,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import layout.LayoutScreenController;
 
@@ -110,7 +112,7 @@ public class MyDayScreenController {
  
         // get all the categories available
         //Get all the categories we have in the database
-        List categoryNames = new ArrayList();
+        ArrayList<String> categoryNames = new ArrayList<>();
         try {
 
             ResultSet rs = Database.getResultSet("SELECT DISTINCT category FROM entries");
@@ -120,15 +122,17 @@ public class MyDayScreenController {
         } catch (SQLException e){
             e.printStackTrace();            
         }
+        System.out.println(FXCollections.<String>observableArrayList(categoryNames));
 
         //Defining the x axis
         myDayNumberAxis.setLabel("Hours spent (hrs)");
         
         //Defining the y axis
+        //myDayCategoryAxis.setCategories(FXCollections.<String>observableArrayList(categoryNames));
         myDayCategoryAxis.setLabel("Category");
 
         //We want to find out how much time we've spent on each category
-        Map<String,Float> categoryTimeMap = new HashMap<String, Float>();
+        HashMap<String,Float> categoryTimeMap = new HashMap<String, Float>();
                 
         // get the categories first
         String categorySt = "SELECT DISTINCT category FROM entries WHERE date = '" + LocalDate.now() + "'";
@@ -138,7 +142,6 @@ public class MyDayScreenController {
             // sum all the entries in this category
             categoryTimeMap.put(rs.getString("category"), 0.0f);
         }
-        System.out.println(categoryTimeMap);
         
         // then go through every single entry, and add to it
         String timeSt = "SELECT category, starttime, endtime FROM entries WHERE date = '" + LocalDate.now() + "'";
@@ -154,15 +157,49 @@ public class MyDayScreenController {
             categoryTimeMap.put(timeRs.getString("category"), categoryTimeMap.get(timeRs.getString("category")) + durationInHours);
         }        
         
-        System.out.println(categoryTimeMap);
+        //System.out.println(categoryTimeMap);
+        
+        HashMap<String,Float> sortedDailyHashMap = nLargest(categoryTimeMap, 5);
     
         // BAR CHART
         // adapted from https://o7planning.org/en/11107/javafx-barchart-and-stackedbarchart-tutorial 
-        System.out.println(categoryTimeMap.keySet());
-
+        XYChart.Series<String, Float> series = new XYChart.Series<String, Float>();
+        for (Map.Entry<String, Float> entry : sortedDailyHashMap.entrySet()) {
+            String key = entry.getKey();
+            Float value = entry.getValue();
+            series.getData().add(new XYChart.Data(key, value));
+        }
+        myDayBarChart.getData().add(series);
+        myDayBarChart.setLegendVisible(false);
+        myDayBarChart.setTitle("Time spent on today's top 5 categories");
     }
-        
-
-
-
+    
+    // Method for finding the top n values in a hashmap
+    // Adapted from 
+    static HashMap<String, Float> nLargest(HashMap<String, Float> map, int n) { //map and n largest values to search for
+        Float value;
+        ArrayList<String> keys = new ArrayList<>(n); //to store keys of the n largest values
+        ArrayList<Float> values = new ArrayList<>(n); //to store n largest values (same index as keys)
+        int index;
+        for (String key : map.keySet()) { //iterate on all the keys (i.e. on all the values)
+            value = map.get(key); //get the corresponding value
+            index = keys.size() - 1; //initialize to search the right place to insert (in a sorted order) current value within the n largest values
+            while (index >= 0 && value > values.get(index)) { //we traverse the array of largest values from smallest to biggest
+                index--; //until we found the right place to insert the current value
+            }
+            index = index + 1; //adapt the index (come back by one)
+            values.add(index, value); //insert the current value in the right place
+            keys.add(index, key); //and also the corresponding key
+            if (values.size() > n) { //if we have already found enough number of largest values
+                values.remove(n); //we remove the last largest value (i.e. the smallest within the largest)
+                keys.remove(n); //actually we store at most n+1 largest values and therefore we can discard just the last one (smallest)
+            }
+        }
+        HashMap<String, Float> result = new HashMap<>(values.size());
+        for (int i = 0; i < values.size(); i++) { //copy keys and value into an HashMap
+            result.put(keys.get(i), values.get(i));
+        }
+        return result;
+    }
+    
 }
