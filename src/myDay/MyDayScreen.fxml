@@ -53,12 +53,12 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
             </GridPane>
-            <BarChart layoutX="144.0" layoutY="161.0" prefHeight="578.0" prefWidth="807.0">
+            <BarChart fx:id="myDayLineChart" layoutX="144.0" layoutY="161.0" prefHeight="578.0" prefWidth="807.0">
               <xAxis>
-                <CategoryAxis side="BOTTOM" />
+                <CategoryAxis fx:id="myDayCategoryAxis" side="BOTTOM" />
               </xAxis>
               <yAxis>
-                <NumberAxis side="LEFT" />
+                <NumberAxis fx:id="myDayNumberAxis" side="LEFT" />
               </yAxis>
             </BarChart>
          </children>

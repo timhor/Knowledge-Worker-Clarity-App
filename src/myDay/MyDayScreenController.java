@@ -1,8 +1,16 @@
 package myDay;
 
+import static entries.Entry.parseTimeInMs;
 import helper.Database;
 import java.io.IOException;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.chart.BarChart;
@@ -45,7 +53,7 @@ public class MyDayScreenController {
    
     // Chart items
     @FXML
-    public BarChart myDayLineChart;
+    public BarChart myDayBarChart;
     
     @FXML
     public CategoryAxis myDayCategoryAxis;
@@ -98,36 +106,60 @@ public class MyDayScreenController {
     
       
     @FXML
-    public void initialize() {
-        // add in some entries first 
+    public void initialize() throws SQLException {
+ 
+        // get all the categories available
+        //Get all the categories we have in the database
+        List categoryNames = new ArrayList();
         try {
-                Database.updateFromPreparedStatement(
-                        "INSERT INTO entries (category, description, date, starttime, endtime) VALUES (?,?,?,?,?)",
-                        new String[]{"Social", "Shopping at Westfield", "2019-11-11", "13:00", "16:00"});
-                Database.updateFromPreparedStatement(
-                        "INSERT INTO entries (category, description, date, starttime, endtime) VALUES (?,?,?,?,?)",
-                        new String[]{"Study", "Doing my java assignment", "2019-11-11", "16:00", "21:00"});
-                Database.updateFromPreparedStatement(
-                        "INSERT INTO entries (category, description, date, starttime, endtime) VALUES (?,?,?,?,?)",
-                        new String[]{"Work", "Shift in the morning", "2019-11-11", "09:00", "12:00"});
-                Database.updateFromPreparedStatement(
-                        "INSERT INTO entries (category, description, date, starttime, endtime) VALUES (?,?,?,?,?)",
-                        new String[]{"Exercise", "Went for a jog", "2019-11-11", "12:00", "13:00"});
-                Database.updateFromPreparedStatement(
-                        "INSERT INTO entries (category, description, date, starttime, endtime) VALUES (?,?,?,?,?)",
-                        new String[]{"Relax", "Meditated", "2019-11-11", "22:00", "23:15"});
-                Database.updateFromPreparedStatement(
-                        "INSERT INTO entries (category, description, date, starttime, endtime) VALUES (?,?,?,?,?)",
-                        new String[]{"Travel", "going to work", "2019-11-11", "07:30", "09:00"});
-                
-            } catch (SQLException e) {
-                e.printStackTrace();
+
+            ResultSet rs = Database.getResultSet("SELECT DISTINCT category FROM entries");
+            while (rs.next()){
+                categoryNames.add(rs.getString("category"));
+            }
+        } catch (SQLException e){
+            e.printStackTrace();            
         }
+
+        //Defining the x axis
+        myDayNumberAxis.setLabel("Hours spent (hrs)");
         
+        //Defining the y axis
+        myDayCategoryAxis.setLabel("Category");
+
+        //We want to find out how much time we've spent on each category
+        Map<String,Float> categoryTimeMap = new HashMap<String, Float>();
+                
+        // get the categories first
+        String categorySt = "SELECT DISTINCT category FROM entries WHERE date = '" + LocalDate.now() + "'";
+        ResultSet rs = Database.getResultSet(categorySt);
+        while (rs.next()){
+            System.out.println(rs.getString("category"));
+            // sum all the entries in this category
+            categoryTimeMap.put(rs.getString("category"), 0.0f);
+        }
+        System.out.println(categoryTimeMap);
+        
+        // then go through every single entry, and add to it
+        String timeSt = "SELECT category, starttime, endtime FROM entries WHERE date = '" + LocalDate.now() + "'";
+        ResultSet timeRs = Database.getResultSet(timeSt);
+        while (timeRs.next()){
+            // calculate the time it takes 
+            String startTime = timeRs.getString("starttime");
+            String endTime = timeRs.getString("endtime");
+            long duration = parseTimeInMs(endTime) - parseTimeInMs(startTime);
+            // convert into hours
+            float durationInHours = duration / 3600000.0f;
+            // append to the hashmap
+            categoryTimeMap.put(timeRs.getString("category"), categoryTimeMap.get(timeRs.getString("category")) + durationInHours);
+        }        
+        
+        System.out.println(categoryTimeMap);
+    
         // BAR CHART
         // adapted from https://o7planning.org/en/11107/javafx-barchart-and-stackedbarchart-tutorial 
-        
-        
+        System.out.println(categoryTimeMap.keySet());
+
     }
         
 
