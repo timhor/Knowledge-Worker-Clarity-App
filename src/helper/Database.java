@@ -143,4 +143,37 @@ public class Database {
         stmt.close();
     }
 
+    public static void createCategoriesTable() throws SQLException {
+        openConnection();
+        Statement stmt = conn.createStatement();
+
+        String createQuery = "CREATE TABLE IF NOT EXISTS categories" +
+            "(id INTEGER PRIMARY KEY," +
+            "categoryname TEXT NOT NULL," +
+            "hexString TEXT NOT NULL)";
+
+        stmt.execute(createQuery);
+
+        String checkExistingQuery = "SELECT COUNT(*) FROM categories";
+        ResultSet rs = getResultSet(checkExistingQuery);
+        int rowCount = rs.getInt(1);
+
+        if (rowCount == 0) {
+            ArrayList<String> insertStatements = new ArrayList<String>();
+
+            insertStatements.add("INSERT INTO categories (categoryname, hexstring)" +
+                "VALUES ('First category', '#FF0000')");
+            insertStatements.add("INSERT INTO categories (categoryname, hexstring)" +
+                "VALUES ('Second category', '#00FF00')");
+            insertStatements.add("INSERT INTO categories (categoryname, hexstring)" +
+                "VALUES ('Third category', '#0000FF')");
+
+            for (String statement : insertStatements) {
+                stmt.execute(statement);
+            }
+        }
+
+        stmt.close();
+    }
+
 }
