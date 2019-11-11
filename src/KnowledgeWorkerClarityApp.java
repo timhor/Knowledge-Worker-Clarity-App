@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 
 public class KnowledgeWorkerClarityApp extends Application {
 
-    @Override   
+    @Override
     public void start(Stage stage) throws Exception {
         loadDatabase();
         Parent root = FXMLLoader.load(getClass().getResource("entries/EntriesScreen.fxml"));
@@ -26,6 +26,7 @@ public class KnowledgeWorkerClarityApp extends Application {
     }
 
     private void loadDatabase() throws SQLException {
+        Database.createCategoriesTable();
         Database.createEntriesTable();
     }
 

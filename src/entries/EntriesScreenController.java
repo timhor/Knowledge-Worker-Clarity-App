@@ -8,17 +8,16 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ColorPicker;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -49,6 +48,15 @@ public class EntriesScreenController {
 
     @FXML
     private Button saveEntryButton;
+
+    @FXML
+    private TextField categoryNameTextField;
+
+    @FXML
+    private ColorPicker colorPicker;
+
+    @FXML
+    private Button saveCategoryButton;
 
     @FXML
     private TableView<Entry> entryList;
@@ -113,7 +121,7 @@ public class EntriesScreenController {
             String newDescription = t.getNewValue();
             try {
                 Database.updateFromPreparedStatement("UPDATE entries SET description = ? WHERE id = ?",
-                        new String[] { newDescription, t.getRowValue().getId() });
+                        new String[]{newDescription, t.getRowValue().getId()});
                 ((Entry) t.getTableView().getItems().get(t.getTablePosition().getRow()))
                         .setDescriptionProperty(newDescription);
                 populateEntries();
@@ -130,7 +138,7 @@ public class EntriesScreenController {
             String newStartTime = t.getNewValue();
             try {
                 Database.updateFromPreparedStatement("UPDATE entries SET starttime = ? WHERE id = ?",
-                        new String[] { newStartTime, t.getRowValue().getId() });
+                        new String[]{newStartTime, t.getRowValue().getId()});
                 ((Entry) t.getTableView().getItems().get(t.getTablePosition().getRow()))
                         .setStartTimeProperty(newStartTime);
                 populateEntries();
@@ -145,7 +153,7 @@ public class EntriesScreenController {
             String newEndTime = t.getNewValue();
             try {
                 Database.updateFromPreparedStatement("UPDATE entries SET endtime = ? WHERE id = ?",
-                        new String[] { newEndTime, t.getRowValue().getId() });
+                        new String[]{newEndTime, t.getRowValue().getId()});
                 ((Entry) t.getTableView().getItems().get(t.getTablePosition().getRow())).setEndTimeProperty(newEndTime);
                 populateEntries();
             } catch (SQLException e) {
@@ -231,13 +239,13 @@ public class EntriesScreenController {
             if (duration <= 0) {
                 statusLabel.setVisible(true);
                 statusLabel.setTextFill(Color.RED);
-                statusLabel.setText("End time must later than start time");
+                statusLabel.setText("End time must be later than start time");
                 return;
             }
             try {
                 Database.updateFromPreparedStatement(
                         "INSERT INTO entries (category, description, date, starttime, endtime) VALUES (?,?,?,?,?)",
-                        new String[] { category, description, date.toString(), startTime, endTime });
+                        new String[]{category, description, date.toString(), startTime, endTime});
             } catch (SQLException e) {
                 e.printStackTrace();
             } finally {
@@ -259,12 +267,47 @@ public class EntriesScreenController {
         if (entryToDelete != null) {
             try {
                 Database.updateFromPreparedStatement("DELETE FROM entries WHERE id = ?",
-                        new String[] { entryToDelete.getId() });
+                        new String[]{entryToDelete.getId()});
                 populateEntries();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    @FXML
+    private void handleSaveCategoryButtonAction(ActionEvent event) {
+        statusLabel.setVisible(false);
+
+        String categoryName = categoryNameTextField.getText();
+
+        if (categoryName.length() == 0) {
+            statusLabel.setVisible(true);
+            statusLabel.setTextFill(Color.RED);
+            statusLabel.setText("Category name cannot be empty");
+            return;
+        }
+
+        colorPicker = new ColorPicker();
+        Color colorValue = colorPicker.getValue();
+        int red = (int) colorValue.getRed();
+        int green = (int) colorValue.getGreen();
+        int blue = (int) colorValue.getBlue();
+
+        String hexString = String.format("#%02X%02X%02X", red, green, blue);
+
+        try {
+
+            Database.updateFromPreparedStatement("INSERT INTO categories (categoryname, hexstring) VALUES ( ?, ?)",
+                    new String[]{categoryName, hexString});
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            initialize();
+            categoryNameTextField.setText("");
+
+        }
+
     }
 
     private String validateAndFormatTime(String time) throws ParseException {
