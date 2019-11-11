@@ -110,4 +110,58 @@ public class LayoutScreenController {
             ex.printStackTrace();
         }
     }
+    
+    //Task Input Handling 
+     //relevant to the task screen - relevant to task handling
+        //do date - havn't done it yet
+//    @FXML
+//    public void handleDoDateAction(ActionEvent event) throws IOException{
+//        try {
+//            pageSwitchHelper.switcher(event, "/weeklyTrends/WeeklyTrendsScreen.fxml");
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
+//        }
+//
+//    }
+
+    //due date - - havn't done it yet
+//    @FXML
+//    public void handleDueDateAction(ActionEvent event) throws IOException{
+//        try {
+//            pageSwitchHelper.switcher(event, "/weeklyTrends/WeeklyTrendsScreen.fxml");
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
+//        }
+//
+//    }
+
+    //sort by -
+    @FXML
+    public void handleSortDueDateButtonAction(ActionEvent event) throws IOException{
+        try {
+            pageSwitchHelper.switcher(event, "/weeklyTrends/WeeklyTrendsScreen.fxml");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+    }
+
+    @FXML
+    public void handleSortDoDateButtonAction(ActionEvent event) throws IOException{
+       try {
+            pageSwitchHelper.switcher(event, "/weeklyTrends/WeeklyTrendsScreen.fxml");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+    }
+
+//    @FXML
+//    public void handlePriorityButtonAction(ActionEvent event) throws IOException{
+//        try {
+//            pageSwitchHelper.switcher(event, "/weeklyTrends/WeeklyTrendsScreen.fxml");
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
+//        }
+//    }
 }
