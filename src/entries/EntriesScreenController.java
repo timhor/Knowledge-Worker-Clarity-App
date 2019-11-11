@@ -117,7 +117,7 @@ public class EntriesScreenController {
     // https://docs.oracle.com/javase/8/javafx/user-interface-tutorial/table-view.htm#CJAGAAEE
     @FXML
     public void initialize() {
-        categoryColumn.setCellValueFactory(cellData -> cellData.getValue().getCategoryProperty());
+        categoryColumn.setCellValueFactory(cellData -> cellData.getValue().getCategoryNameProperty());
 
         descriptionColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         descriptionColumn.setCellValueFactory(cellData -> cellData.getValue().getDescriptionProperty());
@@ -237,14 +237,17 @@ public class EntriesScreenController {
 
     private ObservableList<Entry> getEntryListData() throws SQLException {
         ArrayList<Entry> entryList = new ArrayList<Entry>();
-        ResultSet rs = Database.getResultSet("SELECT * FROM entries");
+        ResultSet rs = Database.getResultSet(
+                "SELECT e.id, c.hexstring AS colour, c.categoryname, e.description, e.date, e.starttime, e.endtime "
+                        + "FROM entries e LEFT JOIN categories c ON e.category = c.id;");
         while (rs.next()) {
-            String category = rs.getString("category");
+            String categoryName = rs.getString("categoryname");
             if (rs.wasNull()) {
-                category = "Not set";
+                categoryName = "Uncategorised";
             }
-            Entry entry = new Entry(rs.getString("id"), category, rs.getString("description"), rs.getString("date"),
-                    rs.getString("starttime"), rs.getString("endtime"));
+            Entry entry = new Entry(rs.getString("id"), rs.getString("colour"), categoryName,
+                    rs.getString("description"), rs.getString("date"), rs.getString("starttime"),
+                    rs.getString("endtime"));
             entryList.add(entry);
         }
         return FXCollections.observableList(entryList);

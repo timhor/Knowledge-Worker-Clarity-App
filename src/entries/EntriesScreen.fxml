@@ -55,8 +55,8 @@
             </GridPane>
             <TableView fx:id="entryList" editable="true" focusTraversable="false" layoutX="110.0" layoutY="319.0" prefHeight="395.0" prefWidth="877.0">
               <columns>
-                <TableColumn fx:id="categoryColumn" prefWidth="87.0" text="Category" />
-                <TableColumn fx:id="descriptionColumn" prefWidth="399.0430145263672" text="Description" />
+                <TableColumn fx:id="categoryColumn" prefWidth="164.0" text="Category" />
+                <TableColumn fx:id="descriptionColumn" prefWidth="323.0" text="Description" />
                   <TableColumn fx:id="dateColumn" editable="false" prefWidth="107.95697021484375" text="Date" />
                   <TableColumn fx:id="startTimeColumn" prefWidth="92.532958984375" text="Start" />
                   <TableColumn fx:id="endTimeColumn" prefWidth="99.60028076171875" text="End" />
