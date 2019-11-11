@@ -115,9 +115,9 @@ public class MyDayScreenController {
         ArrayList<String> categoryNames = new ArrayList<>();
         try {
 
-            ResultSet rs = Database.getResultSet("SELECT DISTINCT category FROM entries");
+            ResultSet rs = Database.getResultSet("SELECT DISTINCT categoryname FROM categories");
             while (rs.next()){
-                categoryNames.add(rs.getString("category"));
+                categoryNames.add(rs.getString("categoryname"));
             }
         } catch (SQLException e){
             e.printStackTrace();            
@@ -134,15 +134,15 @@ public class MyDayScreenController {
         HashMap<String,Float> categoryTimeMap = new HashMap<String, Float>();
                 
         // get the categories first
-        String categorySt = "SELECT DISTINCT category FROM entries WHERE date = '" + LocalDate.now() + "'";
+        String categorySt = "SELECT DISTINCT c.categoryname FROM entries e LEFT JOIN categories c ON e.category = c.id WHERE e.date = '" + LocalDate.now() + "'";
         ResultSet rs = Database.getResultSet(categorySt);
         while (rs.next()){
             // sum all the entries in this category
-            categoryTimeMap.put(rs.getString("category"), 0.0f);
+            categoryTimeMap.put(rs.getString("categoryname"), 0.0f);
         }
         
         // then go through every single entry, and add to it
-        String timeSt = "SELECT category, starttime, endtime FROM entries WHERE date = '" + LocalDate.now() + "'";
+        String timeSt = "SELECT c.categoryname, e.starttime, e.endtime FROM entries e LEFT JOIN categories c ON e.category = c.id WHERE e.date = '" + LocalDate.now() + "'";
         ResultSet timeRs = Database.getResultSet(timeSt);
         while (timeRs.next()){
             // calculate the time it takes 
@@ -152,7 +152,7 @@ public class MyDayScreenController {
             // convert into hours
             float durationInHours = duration / 3600000.0f;
             // append to the hashmap
-            categoryTimeMap.put(timeRs.getString("category"), categoryTimeMap.get(timeRs.getString("category")) + durationInHours);
+            categoryTimeMap.put(timeRs.getString("categoryname"), categoryTimeMap.get(timeRs.getString("categoryname")) + durationInHours);
         }        
         
         //System.out.println(categoryTimeMap);
