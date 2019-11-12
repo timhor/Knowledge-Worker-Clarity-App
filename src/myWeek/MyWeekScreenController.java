@@ -19,9 +19,9 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import layout.LayoutScreenController;
-//import org.joda.time.DateTime;
+import org.joda.time.DateTime;
 
-public class MyWeekScreenController {/**
+public class MyWeekScreenController {
 
     LayoutScreenController layoutController = new LayoutScreenController();
 
@@ -237,4 +237,4 @@ public class MyWeekScreenController {/**
         return result;
     }
     
-**/}
+}

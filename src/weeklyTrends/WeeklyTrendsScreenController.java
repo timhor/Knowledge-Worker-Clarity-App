@@ -5,8 +5,8 @@ import helper.Database;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,13 +17,13 @@ import javafx.fxml.FXML;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.control.Button;
 import layout.LayoutScreenController;
-//import org.joda.time.*;
+import org.joda.time.*;
 
 import javafx.scene.chart.LineChart; 
 import javafx.scene.chart.NumberAxis; 
 import javafx.scene.chart.XYChart; 
 
-public class WeeklyTrendsScreenController {/**
+public class WeeklyTrendsScreenController {
 
     LayoutScreenController layoutController = new LayoutScreenController();
 
@@ -236,4 +236,4 @@ public class WeeklyTrendsScreenController {/**
             weeklyTrendsLineChart.getData().add(series);
         });       
     }
-**/}
+}
