@@ -40,8 +40,7 @@ public class FocusModeScreenController {
     @FXML
     private Button startFocusingButton;
     @FXML
-    private Button stopFocusingButton;
-    
+    private Button stopFocusingButton;   
 
     Database database;
 

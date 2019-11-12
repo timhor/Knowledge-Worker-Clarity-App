@@ -23,6 +23,12 @@ public class AboutScreenController {
 
     @FXML
     private Hyperlink jodaTimeLink;
+    
+    @FXML
+    private Hyperlink creativeCommonsLink;
+
+    @FXML
+    private Hyperlink musicLink;
 
     //Navigation
     // Side bar
@@ -110,6 +116,8 @@ public class AboutScreenController {
         // https://www.reddit.com/r/javahelp/comments/4bqcci/how_to_make_a_link_hyperlink_in_javafx/
         jdbcLink.setOnAction(event -> openLinkInBrowser(jdbcLink.getText()));
         jodaTimeLink.setOnAction(event -> openLinkInBrowser(jodaTimeLink.getText()));
+        creativeCommonsLink.setOnAction(event -> openLinkInBrowser(creativeCommonsLink.getText()));
+        musicLink.setOnAction(event -> openLinkInBrowser(musicLink.getText()));
     }
 
     private void openLinkInBrowser(String link) {
