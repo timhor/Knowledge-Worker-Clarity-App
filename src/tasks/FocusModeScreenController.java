@@ -32,6 +32,8 @@ public class FocusModeScreenController {
     @FXML
     private Label focusTaskLabel;    
     @FXML
+    private Label focusTaskDescriptionLabel;    
+    @FXML
     private Label chooseTaskLabel;
     @FXML
     private Label selectTaskWarningLabel;
@@ -108,15 +110,15 @@ public class FocusModeScreenController {
         stopFocusingButton.setVisible(false);
         timeLabel.setVisible(false);
         focusTaskLabel.setVisible(false);
+        focusTaskDescriptionLabel.setVisible(false);
         //selectTaskWarningLabel.setVisible(false);
         
         //we want to populate the combo box with name entries from the database
         try {
-            ResultSet rs = Database.getResultSet("SELECT * FROM entries");
+            ResultSet rs = Database.getResultSet("SELECT title FROM tasks");
             while (rs.next()){
-                taskDropdown.getItems().addAll(rs.getString("description"));
-            }         
-            
+                taskDropdown.getItems().addAll(rs.getString("title"));
+            }
             // set the first value
             taskDropdown.setValue("Select a task first...");
         } catch (SQLException e){
@@ -167,6 +169,18 @@ public class FocusModeScreenController {
         focusTaskLabel.setVisible(true);
         musicDropdown.setVisible(true);
         chooseMusicLabel.setVisible(true);
+        //we want to update the label with the task description
+        try {
+            ResultSet rs = Database.getResultSet("SELECT description FROM tasks WHERE title = '" + currentFocusTask + "'");
+            while (rs.next()){
+                focusTaskDescriptionLabel.setText(rs.getString("description"));
+                focusTaskDescriptionLabel.setVisible(true);
+
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+
 
     }
     
@@ -178,6 +192,7 @@ public class FocusModeScreenController {
         focusTaskLabel.setVisible(false);
         musicDropdown.setVisible(false);
         chooseMusicLabel.setVisible(false);
+        focusTaskDescriptionLabel.setVisible(false);
 
         
         //turn on other items 
@@ -193,9 +208,7 @@ public class FocusModeScreenController {
     Contemporary music: "On My Way" by Kevin MacLeod
     Happy music: "Wholesome" by Kevin MacLeod
     Dance music: "The Lift" by Kevin MacLeod
-    Jazz music: "Airport Lounge" by Kevin MacLeod
-    
-    
+    Jazz music: "Airport Lounge" by Kevin MacLeod    
     */
     
     @FXML

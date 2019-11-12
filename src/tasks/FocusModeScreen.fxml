@@ -54,13 +54,13 @@
                </font>
             </Label>
             <Button fx:id="startFocusingButton" layoutX="575.0" layoutY="297.0" mnemonicParsing="false" onAction="#StartFocusing" prefHeight="73.0" prefWidth="210.0" text="Start Focusing" />
-            <Label fx:id="timeLabel" alignment="CENTER" layoutX="295.0" layoutY="500.0" prefHeight="61.0" prefWidth="435.0" text="Current Time: xxxx">
+            <Label fx:id="timeLabel" alignment="CENTER" layoutX="290.0" layoutY="317.0" prefHeight="61.0" prefWidth="435.0" text="Current Time: xxxx">
                <font>
                   <Font size="30.0" />
                </font>
             </Label>
-            <Button fx:id="stopFocusingButton" layoutX="409.0" layoutY="615.0" mnemonicParsing="false" onAction="#StopFocusing" prefHeight="73.0" prefWidth="210.0" text="Stop Focusing" />
-            <Label fx:id="focusTaskLabel" alignment="CENTER" layoutX="297.0" layoutY="542.0" prefHeight="61.0" prefWidth="435.0" text="Focus task chosen:">
+            <Button fx:id="stopFocusingButton" layoutX="404.0" layoutY="497.0" mnemonicParsing="false" onAction="#StopFocusing" prefHeight="73.0" prefWidth="210.0" text="Stop Focusing" />
+            <Label fx:id="focusTaskLabel" alignment="CENTER" layoutX="292.0" layoutY="359.0" prefHeight="61.0" prefWidth="435.0" text="Focus task chosen:">
                <font>
                   <Font size="30.0" />
                </font>
@@ -74,6 +74,11 @@
             <Label fx:id="chooseMusicLabel" alignment="CENTER" layoutX="100.0" layoutY="723.0" prefHeight="28.0" prefWidth="149.0" text="Choose music to focus to:" visible="false">
                <font>
                   <Font size="12.0" />
+               </font>
+            </Label>
+            <Label fx:id="focusTaskDescriptionLabel" alignment="CENTER" layoutX="296.0" layoutY="417.0" prefHeight="61.0" prefWidth="435.0" text="Task Description">
+               <font>
+                  <Font size="16.0" />
                </font>
             </Label>
          </children>
