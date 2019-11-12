@@ -2,6 +2,7 @@ package entries;
 
 import helper.Database;
 import helper.PageSwitchHelper;
+import helper.SharedComponents;
 import layout.LayoutScreenController;
 
 import java.io.IOException;
@@ -168,29 +169,7 @@ public class EntriesScreenController {
 
         durationColumn.setCellValueFactory(cellData -> cellData.getValue().getDurationProperty());
 
-        // date picker formatting adapted from:
-        // https://code.makery.ch/blog/javafx-8-date-picker/
-        datePicker.setConverter(new StringConverter<LocalDate>() {
-            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
-            @Override
-            public String toString(LocalDate date) {
-                if (date != null) {
-                    return dateFormatter.format(date);
-                } else {
-                    return "";
-                }
-            }
-
-            @Override
-            public LocalDate fromString(String string) {
-                if (string != null && !string.isEmpty()) {
-                    return LocalDate.parse(string, dateFormatter);
-                } else {
-                    return null;
-                }
-            }
-        });
+        datePicker.setConverter(SharedComponents.getDatePickerConverter());
 
         // StringConverter adapted from: https://stackoverflow.com/a/38367739
         categoryDropdown.setConverter(new StringConverter<Category>() {
