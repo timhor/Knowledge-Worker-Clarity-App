@@ -126,7 +126,7 @@ public class TasksScreenController {
             return;
         }
 
-        String priority = Double.toString(prioritySlider.getValue());
+        String priority = Integer.toString((int) prioritySlider.getValue());
 
         LocalDate doDate = doDatePicker.getValue();
         if (doDate == null) {

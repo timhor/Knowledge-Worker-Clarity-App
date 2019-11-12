@@ -64,7 +64,7 @@
               </rowConstraints>
             </GridPane>
             <Label fx:id="statusLabel" layoutX="110.0" layoutY="725.0" prefHeight="19.0" prefWidth="360.0" />
-            <Slider layoutX="184.0" layoutY="167.0" majorTickUnit="10.0" minorTickCount="0" prefHeight="38.0" prefWidth="461.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
+            <Slider fx:id="prioritySlider" layoutX="184.0" layoutY="167.0" majorTickUnit="10.0" minorTickCount="0" prefHeight="38.0" prefWidth="461.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
             <Button fx:id="saveTaskButton" defaultButton="true" layoutX="687.0" layoutY="169.0" mnemonicParsing="false" onAction="#handleSaveTaskButtonAction" prefHeight="33.0" prefWidth="282.0" text="Save Task" />
             <Label layoutX="113.0" layoutY="169.0" text="Priority:" />
          </children>
