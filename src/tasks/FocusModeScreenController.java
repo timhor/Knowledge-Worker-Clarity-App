@@ -16,8 +16,6 @@ import layout.LayoutScreenController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.media.Media;
@@ -192,8 +190,8 @@ public class FocusModeScreenController {
     Music from https://filmmusic.io, downloaded from (https://incompetech.com)
     License: CC BY (http://creativecommons.org/licenses/by/4.0/)
 
-    Classical music: "Waltz - Tschikovsky Ops. 40" by Kevin MacLeod
     Contemporary music: "On My Way" by Kevin MacLeod
+    Happy music: "Wholesome" by Kevin MacLeod
     Dance music: "The Lift" by Kevin MacLeod
     Jazz music: "Airport Lounge" by Kevin MacLeod
     
