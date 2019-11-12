@@ -70,41 +70,6 @@ public class TasksScreenController {
         dueDatePicker.setConverter(SharedComponents.getDatePickerConverter());
     }
 
-    // Navigation
-    // Top Bar Handling
-    @FXML
-    public void handleEntriesScreenButtonAction(ActionEvent event) throws IOException {
-        layoutController.handleEntriesScreenButtonAction(event);
-    }
-
-    @FXML
-    public void handleTasksScreenButtonAction(ActionEvent event) throws IOException {
-        layoutController.handleTasksScreenButtonAction(event);
-    }
-
-    @FXML
-    public void handleAboutScreenButtonAction(ActionEvent event) throws IOException {
-        layoutController.handleAboutScreenButtonAction(event);
-    }
-
-    @FXML
-    public void handleKanbanScreenButtonAction(ActionEvent event) throws IOException {
-        try {
-            pageSwitchHelper.switcher(event, "/tasks/TasksScreen.fxml");
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    @FXML
-    public void handleFocusModeScreenButtonAction(ActionEvent event) throws IOException {
-        try {
-            pageSwitchHelper.switcher(event, "/tasks/FocusModeScreen.fxml");
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-
     @FXML
     private void handleSaveTaskButtonAction(ActionEvent event) {
         statusLabel.setVisible(false);
@@ -158,4 +123,40 @@ public class TasksScreenController {
             doDatePicker.setValue(null);
         }
     }
+
+    // Navigation
+    // Top Bar Handling
+    @FXML
+    public void handleEntriesScreenButtonAction(ActionEvent event) throws IOException {
+        layoutController.handleEntriesScreenButtonAction(event);
+    }
+
+    @FXML
+    public void handleTasksScreenButtonAction(ActionEvent event) throws IOException {
+        layoutController.handleTasksScreenButtonAction(event);
+    }
+
+    @FXML
+    public void handleAboutScreenButtonAction(ActionEvent event) throws IOException {
+        layoutController.handleAboutScreenButtonAction(event);
+    }
+
+    @FXML
+    public void handleKanbanScreenButtonAction(ActionEvent event) throws IOException {
+        try {
+            pageSwitchHelper.switcher(event, "/tasks/TasksScreen.fxml");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void handleFocusModeScreenButtonAction(ActionEvent event) throws IOException {
+        try {
+            pageSwitchHelper.switcher(event, "/tasks/FocusModeScreen.fxml");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
 }
