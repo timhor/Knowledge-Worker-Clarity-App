@@ -1,59 +1,54 @@
 package tasks;
 
-import entries.Entry;
 import helper.Database;
 import helper.PageSwitchHelper;
+import java.io.File;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import layout.LayoutScreenController;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaPlayer.Status;
 import javafx.util.Duration;
 
 public class FocusModeScreenController {
 
     @FXML
     private ComboBox<String> taskDropdown;
-
-    @FXML
-    private Button startFocusingButton;
-     
-    @FXML
-    private Button stopFocusingButton;   
-    
-    // Focus items
     @FXML
     private Label timeLabel;
-    
+    @FXML
+    private Label focusTaskLabel;    
     @FXML
     private Label chooseTaskLabel;
-    
-    @FXML
-    private Label focusTaskLabel;
-    
     @FXML
     private Label selectTaskWarningLabel;
+    @FXML
+    private Button startFocusingButton;
+    @FXML
+    private Button stopFocusingButton;
+    
 
     Database database;
 
     PageSwitchHelper pageSwitchHelper = new PageSwitchHelper();
 
     LayoutScreenController layoutController = new LayoutScreenController();
+
 
     //Navigation
     // Side bar 
@@ -63,8 +58,16 @@ public class FocusModeScreenController {
     // Top Bar
     @FXML
     public Button focusModeScreenButton;
-
-    //Navigation
+    
+    
+    // Music 
+    @FXML
+    public ComboBox<String> musicDropdown;
+    @FXML
+    public Label chooseMusicLabel; 
+    MediaPlayer mediaPlayer;
+    
+//Navigation
     // Top Bar Handling 
     @FXML
     public void handleEntriesScreenButtonAction(ActionEvent event) throws IOException {
@@ -123,15 +126,16 @@ public class FocusModeScreenController {
         }
 
         
-//        
-//        try {
-//            taskDropdown.setItems(list);
-//            taskDropdown.setValue("A");
-//        } catch (Exception ex) {
-//            ex.printStackTrace();
-//        }
+        //MUSIC PLAYER
+        try {
+            musicDropdown.getItems().addAll("Contemporary", "Dance", "Happy", "Jazz");
+            musicDropdown.setValue("Choose a genre");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
         
         // populate the time 
+        // adapted from https://stackoverflow.com/questions/42383857/javafx-live-time-and-date
         Timeline clock = new Timeline(new KeyFrame(Duration.ZERO, e -> {        
         LocalTime currentTime = LocalTime.now();
         timeLabel.setText("Current Time: " + currentTime.truncatedTo(ChronoUnit.SECONDS));
@@ -163,6 +167,8 @@ public class FocusModeScreenController {
         String currentFocusTask = taskDropdown.getValue();
         focusTaskLabel.setText("Time to focus on: " + currentFocusTask);
         focusTaskLabel.setVisible(true);
+        musicDropdown.setVisible(true);
+        chooseMusicLabel.setVisible(true);
 
     }
     
@@ -172,11 +178,30 @@ public class FocusModeScreenController {
         stopFocusingButton.setVisible(false);
         timeLabel.setVisible(false);
         focusTaskLabel.setVisible(false);
+        musicDropdown.setVisible(false);
+        chooseMusicLabel.setVisible(false);
 
         
         //turn on other items 
         startFocusingButton.setVisible(true);
         chooseTaskLabel.setVisible(true);
         taskDropdown.setVisible(true);
+    }
+    
+    @FXML
+    public void handleMusicAction(ActionEvent event) {
+        // if there is music playing already, stop the music
+        if(mediaPlayer != null){
+            boolean playing = mediaPlayer.getStatus().equals(Status.PLAYING);
+            System.out.println(playing);
+            if (mediaPlayer.getStatus().equals(Status.PLAYING)){
+                mediaPlayer.stop();
+            }
+        }
+        // get whatever the user has chosen to play
+        String songTitle = musicDropdown.getValue();
+        Media sound = new Media(new File("music//" + songTitle + ".mp3").toURI().toString());
+        mediaPlayer = new MediaPlayer(sound);
+        mediaPlayer.play();
     }
 }

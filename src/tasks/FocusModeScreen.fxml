@@ -70,6 +70,12 @@
                   <Font size="12.0" />
                </font>
             </Label>
+            <ComboBox fx:id="musicDropdown" layoutX="247.0" layoutY="723.0" onAction="#handleMusicAction" prefHeight="17.0" prefWidth="165.0" promptText="Select a genre" visible="false" />
+            <Label fx:id="chooseMusicLabel" alignment="CENTER" layoutX="100.0" layoutY="723.0" prefHeight="28.0" prefWidth="149.0" text="Choose music to focus to:" visible="false">
+               <font>
+                  <Font size="12.0" />
+               </font>
+            </Label>
          </children>
       </Group>
    </children>
