@@ -2,6 +2,8 @@ package tasks;
 
 import helper.Database;
 import helper.PageSwitchHelper;
+import helper.SharedComponents;
+
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -61,6 +63,12 @@ public class TasksScreenController {
 
     @FXML
     private Label statusLabel;
+
+    @FXML
+    public void initialize() {
+        doDatePicker.setConverter(SharedComponents.getDatePickerConverter());
+        dueDatePicker.setConverter(SharedComponents.getDatePickerConverter());
+    }
 
     // Navigation
     // Top Bar Handling
