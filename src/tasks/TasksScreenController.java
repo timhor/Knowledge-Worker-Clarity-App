@@ -1,16 +1,12 @@
 package tasks;
 
-import entries.Entry;
 import helper.Database;
 import helper.PageSwitchHelper;
+import helper.SharedComponents;
+
 import java.io.IOException;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import layout.LayoutScreenController;
 
 import javafx.event.ActionEvent;
@@ -18,11 +14,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
 
 public class TasksScreenController {
 
@@ -30,7 +24,7 @@ public class TasksScreenController {
 
     LayoutScreenController layoutController = new LayoutScreenController();
 
-    //Navigation
+    // Navigation
     // Side bar
     @FXML
     public Button kanbanScreenButton;
@@ -48,47 +42,89 @@ public class TasksScreenController {
     @FXML
     public Button aboutScreenButton;
 
-    //inputting task 
+    // inputting task
     @FXML
-    private TextField TaskDescription;
-
-    @FXML
-    private TextField TaskTitle;
+    private TextField taskDescriptionTextField;
 
     @FXML
-    private DatePicker DueDate;
+    private TextField taskTitleTextField;
 
     @FXML
-    private Button InputTask;
+    private DatePicker dueDatePicker;
 
     @FXML
-    private DatePicker DoDate;
+    private DatePicker doDatePicker;
 
     @FXML
-    private Button SortDoDate;
+    private Button saveTaskButton;
 
     @FXML
-    private Button SortDueDate;
+    private Slider prioritySlider;
 
     @FXML
-    private TextField Priority;
+    private Label statusLabel;
 
     @FXML
-    private Label SortBy;
+    public void initialize() {
+        doDatePicker.setConverter(SharedComponents.getDatePickerConverter());
+        dueDatePicker.setConverter(SharedComponents.getDatePickerConverter());
+    }
 
     @FXML
-    private Text InputATask;
+    private void handleSaveTaskButtonAction(ActionEvent event) {
+        statusLabel.setVisible(false);
 
-    @FXML
-    private Text priorityText;
+        String title = taskTitleTextField.getText();
 
-    @FXML
-    private Label statusLabelTask;
+        if (title.length() == 0) {
+            statusLabel.setVisible(true);
+            statusLabel.setTextFill(Color.RED);
+            statusLabel.setText("Title cannot be empty");
+            return;
+        }
 
+        String description = taskDescriptionTextField.getText();
+        if (description.length() == 0) {
+            statusLabel.setVisible(true);
+            statusLabel.setTextFill(Color.RED);
+            statusLabel.setText("Description cannot be empty");
+            return;
+        }
 
+        String priority = Integer.toString((int) prioritySlider.getValue());
 
+        LocalDate doDate = doDatePicker.getValue();
+        if (doDate == null) {
+            statusLabel.setVisible(true);
+            statusLabel.setTextFill(Color.RED);
+            statusLabel.setText("Please set a do date");
+            return;
+        }
 
-    //Navigation
+        LocalDate dueDate = dueDatePicker.getValue();
+        if (dueDate == null) {
+            statusLabel.setVisible(true);
+            statusLabel.setTextFill(Color.RED);
+            statusLabel.setText("Please set a due date");
+            return;
+        }
+
+        try {
+            Database.updateFromPreparedStatement(
+                    "INSERT INTO tasks (title, description, priority, dueDate, doDate) VALUES (?,?,?,?,?)",
+                    new String[] { title, description, priority, dueDate.toString(), doDate.toString() });
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            taskTitleTextField.setText("");
+            taskDescriptionTextField.setText("");
+            prioritySlider.setValue(0);
+            dueDatePicker.setValue(null);
+            doDatePicker.setValue(null);
+        }
+    }
+
+    // Navigation
     // Top Bar Handling
     @FXML
     public void handleEntriesScreenButtonAction(ActionEvent event) throws IOException {
@@ -122,89 +158,5 @@ public class TasksScreenController {
             ex.printStackTrace();
         }
     }
-    
-        
-    //everything at the bottom moved up - relevant to the task screen 
-        //do date 
 
-    //sort by
-    @FXML
-    void handleSortDueDateButtonAction(ActionEvent event) throws IOException{
-        layoutController.handleSortDueDateButtonAction(event);
-
-    }
-
-    @FXML
-    void handleSortDoDateButtonAction(ActionEvent event) throws IOException{
-        layoutController.handleSortDoDateButtonAction(event);
-
-    }
-    //button button
-    
-    //not sure if correct - its never used
-    @FXML
-    private void handleInputTaskButtonAction(ActionEvent event) {
-        statusLabelTask.setVisible(false);
-
-        String title = TaskTitle.getText();
-        
-        //if stuff goes wrong
-        if (title.length() == 0) {
-            statusLabelTask.setVisible(true);
-            statusLabelTask.setTextFill(Color.RED);
-            statusLabelTask.setText("Title cannot be empty");
-            return;
-        }
-
-        String description = TaskDescription.getText();
-        if (description.length() == 0) {
-            statusLabelTask.setVisible(true);
-            statusLabelTask.setTextFill(Color.RED);
-            statusLabelTask.setText("Description cannot be empty");
-            return;
-        }
-        
-                String priority = Priority.getText();
-        if (priority.length() == 0) {
-            statusLabelTask.setVisible(true);
-            statusLabelTask.setTextFill(Color.RED);
-            statusLabelTask.setText("Priority cannot be empty");
-            return;
-        }
-        LocalDate doDate = DoDate.getValue();
-        
-        //what happens when setuff goes wrong
-        if (doDate == null) {
-            statusLabelTask.setVisible(true);
-            statusLabelTask.setTextFill(Color.RED);
-            statusLabelTask.setText("Please set a do date");
-            return;
-        }
-        
-                LocalDate dueDate = DueDate.getValue();
-        if (dueDate == null) {
-            statusLabelTask.setVisible(true);
-            statusLabelTask.setTextFill(Color.RED);
-            statusLabelTask.setText("Please set a due date");
-            return;
-        }
-        try {
-            
-            //actually inserting the values
-            Database.updateFromPreparedStatement(
-                    "INSERT INTO tasks (title, description, priority, dueDate, doDate) VALUES (?,?,?,?,?)",
-                    new String[]{title, description, priority, dueDate.toString(), doDate.toString()});
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-//            populateEntries();
-            //setting everything back to null 
-            TaskTitle.setText("");
-            TaskDescription.setText("");
-            Priority.setText("");
-            DueDate.setValue(null);
-          DoDate.setValue(null);
-        }
-    }
 }
-
