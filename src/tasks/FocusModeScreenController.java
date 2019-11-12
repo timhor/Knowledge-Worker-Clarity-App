@@ -192,8 +192,8 @@ public class FocusModeScreenController {
     public void handleMusicAction(ActionEvent event) {
         // if there is music playing already, stop the music
         if(mediaPlayer != null){
-            boolean playing = mediaPlayer.getStatus().equals(Status.PLAYING);
-            System.out.println(playing);
+            // check status - stop playing if something is playing 
+            // adapted from https://stackoverflow.com/questions/18340125/how-to-tell-if-mediaplayer-is-playing
             if (mediaPlayer.getStatus().equals(Status.PLAYING)){
                 mediaPlayer.stop();
             }
