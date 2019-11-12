@@ -5,28 +5,25 @@
  */
 package tasks;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-
 /**
  *
  * @author jenniferruan
  */
 public class Task {
     private String taskID;
-    private StringProperty title;
-    private StringProperty description;
-    private StringProperty priority;
-    private StringProperty dueDate;
-    private StringProperty doDate;
+    private String title;
+    private String description;
+    private String priority;
+    private String dueDate;
+    private String doDate;
 
     public Task(String taskID, String title, String description, String priority, String dueDate, String doDate) {
         this.taskID = taskID;
-        this.title = new SimpleStringProperty(title);
-        this.description = new SimpleStringProperty(description);
-        this.priority = new SimpleStringProperty(priority);
-        this.dueDate = new SimpleStringProperty(dueDate);
-        this.doDate = new SimpleStringProperty(doDate);
+        this.title = title;
+        this.description = description;
+        this.priority = priority;
+        this.dueDate = dueDate;
+        this.doDate = doDate;
     }
 
     public String getTaskID() {
@@ -37,44 +34,48 @@ public class Task {
         this.taskID = taskID;
     }
 
-    public StringProperty getTitleProperty() {
+    public String getTitle() {
         return title;
     }
 
-    public void setTitleProperty(StringProperty title) {
+    public void setTitle(String title) {
         this.title = title;
     }
 
-    public StringProperty getDescriptionProperty() {
+    public String getDescription() {
         return description;
     }
 
-    public void setDescriptionProperty(StringProperty description) {
+    public void setDescription(String description) {
         this.description = description;
     }
 
-    public StringProperty getPriorityProperty() {
+    public String getPriority() {
         return priority;
     }
 
-    public void setPriorityProperty(StringProperty priority) {
+    public void setPriority(String priority) {
         this.priority = priority;
     }
 
-    public StringProperty getDoDateProperty() {
+    public String getDoDate() {
         return doDate;
     }
 
-    public void setDoDateProperty(StringProperty doDate) {
+    public void setDoDate(String doDate) {
         this.doDate = doDate;
     }
 
-    public StringProperty getDueDateProperty() {
+    public String getDueDate() {
         return dueDate;
     }
 
-    public void setDueDateProperty(StringProperty dueDate) {
+    public void setDueDate(String dueDate) {
         this.dueDate = dueDate;
+    }
+
+    public String toString() {
+        return this.title + " [Priority " + this.priority + "]";
     }
 
 }

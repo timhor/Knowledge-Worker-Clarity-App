@@ -5,10 +5,14 @@ import helper.PageSwitchHelper;
 import helper.SharedComponents;
 
 import java.io.IOException;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import layout.LayoutScreenController;
+import java.util.ArrayList;
 
+import layout.LayoutScreenController;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -24,6 +28,18 @@ public class KanbanScreenController {
     PageSwitchHelper pageSwitchHelper = new PageSwitchHelper();
 
     LayoutScreenController layoutController = new LayoutScreenController();
+
+    private enum TimePeriod {
+        COMPLETED,
+        TODAY,
+        TOMORROW,
+        NEXT_SEVEN_DAYS
+    };
+
+    private enum Mode {
+        DO_DATE,
+        DUE_DATE
+    }
 
     // Navigation
     // Side bar
@@ -69,7 +85,47 @@ public class KanbanScreenController {
 
     @FXML
     public void initialize() {
+        try {
+            populateTasks(Mode.DO_DATE);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
+    private void populateTasks(Mode mode) throws SQLException {
+        completedListView.setItems(getTasks(TimePeriod.COMPLETED, mode));
+        todayListView.setItems(getTasks(TimePeriod.TODAY, mode));
+        tomorrowListView.setItems(getTasks(TimePeriod.TOMORROW, mode));
+        nextSevenDaysListView.setItems(getTasks(TimePeriod.NEXT_SEVEN_DAYS, mode));
+    }
+
+    private ObservableList<Task> getTasks(TimePeriod timePeriod, Mode mode) throws SQLException {
+        String query;
+        String column = mode == Mode.DO_DATE ? "doDate" : "dueDate";
+        switch (timePeriod) {
+            case COMPLETED:
+                query = "SELECT * FROM tasks WHERE completed > 0";
+                break;
+            case TODAY:
+                query = "SELECT * FROM tasks WHERE " + column + " = date('now', 'localtime')";
+                break;
+            case TOMORROW:
+                query = "SELECT * FROM tasks WHERE " + column + " = date('now', 'localtime', '+1 day')";
+                break;
+            case NEXT_SEVEN_DAYS:
+                query = "SELECT * FROM tasks WHERE " + column + " BETWEEN date('now', 'localtime', '+2 day') AND date('now', 'localtime', '+7 day')";
+                break;
+            default:
+                query = "SELECT * FROM tasks";
+        }
+        ArrayList<Task> tasks = new ArrayList<Task>();
+        ResultSet rs = Database.getResultSet(query);
+        while (rs.next()) {
+            Task task = new Task(rs.getString("taskid"), rs.getString("title"), rs.getString("description"),
+                    rs.getString("priority"), rs.getString("dueDate"), rs.getString("doDate"));
+            tasks.add(task);
+        }
+        return FXCollections.observableList(tasks);
     }
 
     // Navigation
