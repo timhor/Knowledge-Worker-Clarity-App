@@ -188,6 +188,18 @@ public class FocusModeScreenController {
         taskDropdown.setVisible(true);
     }
     
+    /*
+    Music from https://filmmusic.io, downloaded from (https://incompetech.com)
+    License: CC BY (http://creativecommons.org/licenses/by/4.0/)
+
+    Classical music: "Waltz - Tschikovsky Ops. 40" by Kevin MacLeod
+    Contemporary music: "On My Way" by Kevin MacLeod
+    Dance music: "The Lift" by Kevin MacLeod
+    Jazz music: "Airport Lounge" by Kevin MacLeod
+    
+    
+    */
+    
     @FXML
     public void handleMusicAction(ActionEvent event) {
         // if there is music playing already, stop the music
