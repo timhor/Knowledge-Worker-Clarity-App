@@ -11,7 +11,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="768.0" prefWidth="917.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tasks.TasksScreenController">
+<AnchorPane id="AnchorPane" prefHeight="768.0" prefWidth="917.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tasks.KanbanScreenController">
     <children>
         <Group>
             <children>
@@ -59,7 +59,7 @@
                                                 <Font name="Lucida Grande Bold" size="14.0" />
                                             </font>
                                         </Label>
-                                        <ListView prefHeight="685.0" prefWidth="223.0" />
+                                        <ListView fx:id="completedListView" prefHeight="685.0" prefWidth="223.0" />
                                     </children>
                                 </VBox>
                             </content>
@@ -68,7 +68,7 @@
                      <content>
                         <VBox prefHeight="673.0" prefWidth="223.0">
                            <children>
-                                        <Label alignment="CENTER" prefHeight="30.0" prefWidth="223.0" text="Do Today">
+                                        <Label fx:id="todayLabel" alignment="CENTER" prefHeight="30.0" prefWidth="223.0" text="Do Today">
                                             <font>
                                                 <Font name="Lucida Grande Bold" size="14.0" />
                                             </font>
@@ -76,7 +76,7 @@
                                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                             </padding>
                                         </Label>
-                                        <ListView prefHeight="685.0" prefWidth="223.0" />
+                                        <ListView fx:id="todayListView" prefHeight="685.0" prefWidth="223.0" />
                            </children>
                         </VBox>
                      </content>
@@ -85,7 +85,7 @@
                      <content>
                         <VBox prefHeight="673.0" prefWidth="223.0">
                            <children>
-                                        <Label alignment="CENTER" prefHeight="30.0" prefWidth="223.0" text="Do Tomorrow">
+                                        <Label fx:id="tomorrowLabel" alignment="CENTER" prefHeight="30.0" prefWidth="223.0" text="Do Tomorrow">
                                             <font>
                                                 <Font name="Lucida Grande Bold" size="14.0" />
                                             </font>
@@ -93,7 +93,7 @@
                                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                             </padding>
                                         </Label>
-                              <ListView prefHeight="685.0" prefWidth="223.0" />
+                              <ListView fx:id="tomorrowListView" prefHeight="685.0" prefWidth="223.0" />
                            </children>
                         </VBox>
                      </content>
@@ -102,7 +102,7 @@
                      <content>
                         <VBox prefHeight="673.0" prefWidth="223.0">
                            <children>
-                                        <Label alignment="CENTER" prefHeight="30.0" prefWidth="223.0" text="Next 7 Days">
+                                        <Label fx:id="nextSevenDaysLabel" alignment="CENTER" prefHeight="30.0" prefWidth="223.0" text="Next 7 Days">
                                             <font>
                                                 <Font name="Lucida Grande Bold" size="14.0" />
                                             </font>
@@ -110,14 +110,14 @@
                                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                             </padding>
                                         </Label>
-                              <ListView prefHeight="685.0" prefWidth="223.0" />
+                              <ListView fx:id="nextSevenDaysListView" prefHeight="685.0" prefWidth="223.0" />
                            </children>
                         </VBox>
                      </content>
                   </ScrollPane>
                     </children>
                 </HBox>
-            <Button layoutX="814.0" layoutY="731.0" mnemonicParsing="false" text="Switch to Due Date mode" />
+            <Button fx:id="switchModeButton" layoutX="814.0" layoutY="731.0" mnemonicParsing="false" text="Switch to Due Date mode" />
             </children>
         </Group>
     </children>
