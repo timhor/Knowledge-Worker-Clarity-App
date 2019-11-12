@@ -138,7 +138,7 @@ public class WeeklyTrendsScreenController {
         } else {
             startDate = thisMonday; // start on this monday
         }
-        ArrayList<String> weeksAxis = new ArrayList<>();
+            ArrayList<String> weeksAxis = new ArrayList<>();
         while (startDate.isBefore(endDate)) {
             weeksAxis.add(startDate.toString());
             startDate = startDate.plusWeeks(1);

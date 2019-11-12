@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.chart.*?>
 <?import javafx.scene.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
@@ -52,6 +53,14 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
             </GridPane>
+            <BarChart fx:id="myDayBarChart" layoutX="144.0" layoutY="161.0" prefHeight="578.0" prefWidth="807.0">
+              <xAxis>
+                <CategoryAxis fx:id="myDayCategoryAxis" side="BOTTOM" />
+              </xAxis>
+              <yAxis>
+                <NumberAxis fx:id="myDayNumberAxis" side="LEFT" />
+              </yAxis>
+            </BarChart>
          </children>
       </Group>
    </children>
