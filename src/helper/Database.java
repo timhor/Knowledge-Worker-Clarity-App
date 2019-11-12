@@ -110,12 +110,13 @@ public class Database {
         openConnection();
         Statement stmt = conn.createStatement();
         String createQuery = "CREATE TABLE IF NOT EXISTS tasks" +
-            "(taskid INTEGER PRIMARY KEY," +
+            "(taskId INTEGER PRIMARY KEY," +
             "title TEXT NOT NULL," +
             "description TEXT NOT NULL," +
             "priority TEXT NOT NULL," +
             "dueDate TEXT NOT NULL," +
-            "doDate TEXT NOT NULL)";
+            "doDate TEXT NOT NULL," +
+            "completed INTEGER NOT NULL)";
         stmt.execute(createQuery);
 
         String checkExistingQuery = "SELECT COUNT(*) FROM tasks";
@@ -125,12 +126,12 @@ public class Database {
         if (rowCount == 0) {
             ArrayList<String> insertStatements = new ArrayList<String>();
 
-            insertStatements.add("INSERT INTO tasks (title, description, priority, dueDate, doDate)" +
-                "VALUES ('First task', 'First task', '100', '2019-11-05', '2019-11-05')");
-            insertStatements.add("INSERT INTO tasks (title, description, priority, dueDate, doDate)" +
-                "VALUES ('Second task', 'Second task', '100', '2019-11-05', '2019-11-05')");
-            insertStatements.add("INSERT INTO tasks (title, description, priority, dueDate, doDate)" +
-                "VALUES ('Third task', 'Third task', '100', '2019-11-05', '2019-11-05')");
+            insertStatements.add("INSERT INTO tasks (title, description, priority, dueDate, doDate, completed)" +
+                "VALUES ('First task', 'First task', '100', '2019-11-05', '2019-11-05', '0')");
+            insertStatements.add("INSERT INTO tasks (title, description, priority, dueDate, doDate, completed)" +
+                "VALUES ('Second task', 'Second task', '100', '2019-11-05', '2019-11-05', '0')");
+            insertStatements.add("INSERT INTO tasks (title, description, priority, dueDate, doDate, completed)" +
+                "VALUES ('Third task', 'Third task', '100', '2019-11-05', '2019-11-05', '1')");
 
             for (String statement : insertStatements) {
                 stmt.execute(statement);

@@ -111,8 +111,8 @@ public class TasksScreenController {
 
         try {
             Database.updateFromPreparedStatement(
-                    "INSERT INTO tasks (title, description, priority, dueDate, doDate) VALUES (?,?,?,?,?)",
-                    new String[] { title, description, priority, dueDate.toString(), doDate.toString() });
+                    "INSERT INTO tasks (title, description, priority, dueDate, doDate, completed) VALUES (?,?,?,?,?,?)",
+                    new String[] { title, description, priority, dueDate.toString(), doDate.toString(), "0" });
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
