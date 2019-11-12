@@ -45,20 +45,15 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
             </GridPane>
-            <TextField fx:id="taskTitleTextField" layoutX="110.0" layoutY="660.0" prefHeight="27.0" prefWidth="550.0" promptText="Task Title" />
-            <TextField fx:id="taskDescriptionTextField" alignment="TOP_LEFT" layoutX="110.0" layoutY="689.0" prefHeight="74.0" prefWidth="549.0" promptText="Task Description" />
-            <Text layoutX="117.0" layoutY="656.0" strokeType="OUTSIDE" strokeWidth="0.0" text="New task" wrappingWidth="245.98785972595215">
+            <Label layoutX="113.0" layoutY="76.0" text="Create Task">
                <font>
                   <Font size="18.0" />
                </font>
-            </Text>
-            <Button fx:id="saveTaskButton" layoutX="876.0" layoutY="680.0" mnemonicParsing="false" onAction="#handleInputTaskButtonAction" prefHeight="43.0" prefWidth="109.0" text="Save">
-               <font>
-                  <Font size="17.0" />
-               </font>
-            </Button>
-            <DatePicker fx:id="doDatePicker" layoutX="673.0" layoutY="704.0" promptText="Do Date " />
-            <DatePicker fx:id="dueDatePicker" layoutX="673.0" layoutY="735.0" promptText="Due Date" />
+            </Label>
+            <TextField fx:id="taskTitleTextField" layoutX="112.0" layoutY="113.0" prefHeight="31.0" prefWidth="157.0" promptText="Task Title" />
+            <TextField fx:id="taskDescriptionTextField" layoutX="283.0" layoutY="113.0" prefHeight="31.0" prefWidth="368.0" promptText="Task Description" />
+            <DatePicker fx:id="doDatePicker" layoutX="664.0" layoutY="113.0" prefHeight="31.0" prefWidth="144.0" promptText="Do Date " />
+            <DatePicker fx:id="dueDatePicker" layoutX="825.0" layoutY="113.0" prefHeight="31.0" prefWidth="144.0" promptText="Due Date" />
             <GridPane layoutX="449.0" layoutY="46.0" prefHeight="30.0" prefWidth="152.0">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -68,8 +63,10 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
             </GridPane>
-            <TextField fx:id="priorityTextField" alignment="CENTER" layoutX="672.0" layoutY="657.0" prefHeight="43.0" prefWidth="195.0" promptText="Task Priority (0-100)" />
-            <Label fx:id="statusLabel" layoutX="283.0" layoutY="639.0" prefHeight="19.0" prefWidth="360.0" />
+            <Label fx:id="statusLabel" layoutX="110.0" layoutY="725.0" prefHeight="19.0" prefWidth="360.0" />
+            <Slider layoutX="184.0" layoutY="167.0" majorTickUnit="10.0" minorTickCount="0" prefHeight="38.0" prefWidth="461.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
+            <Button fx:id="saveTaskButton" defaultButton="true" layoutX="687.0" layoutY="169.0" mnemonicParsing="false" onAction="#handleSaveTaskButtonAction" prefHeight="33.0" prefWidth="282.0" text="Save Task" />
+            <Label layoutX="113.0" layoutY="169.0" text="Priority:" />
          </children>
       </Group>
    </children>

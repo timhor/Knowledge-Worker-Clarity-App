@@ -12,9 +12,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
 
 public class TasksScreenController {
 
@@ -57,7 +57,7 @@ public class TasksScreenController {
     private Button saveTaskButton;
 
     @FXML
-    private TextField priorityTextField;
+    private Slider prioritySlider;
 
     @FXML
     private Label statusLabel;
@@ -98,7 +98,7 @@ public class TasksScreenController {
     }
 
     @FXML
-    private void handleInputTaskButtonAction(ActionEvent event) {
+    private void handleSaveTaskButtonAction(ActionEvent event) {
         statusLabel.setVisible(false);
 
         String title = taskTitleTextField.getText();
@@ -118,15 +118,9 @@ public class TasksScreenController {
             return;
         }
 
-        String priority = priorityTextField.getText();
-        if (priority.length() == 0) {
-            statusLabel.setVisible(true);
-            statusLabel.setTextFill(Color.RED);
-            statusLabel.setText("Priority cannot be empty");
-            return;
-        }
-        LocalDate doDate = doDatePicker.getValue();
+        String priority = Double.toString(prioritySlider.getValue());
 
+        LocalDate doDate = doDatePicker.getValue();
         if (doDate == null) {
             statusLabel.setVisible(true);
             statusLabel.setTextFill(Color.RED);
@@ -151,7 +145,7 @@ public class TasksScreenController {
         } finally {
             taskTitleTextField.setText("");
             taskDescriptionTextField.setText("");
-            priorityTextField.setText("");
+            prioritySlider.setValue(0);
             dueDatePicker.setValue(null);
             doDatePicker.setValue(null);
         }
