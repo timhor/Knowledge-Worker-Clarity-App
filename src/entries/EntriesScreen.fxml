@@ -55,34 +55,35 @@
             </GridPane>
             <TableView fx:id="entryList" editable="true" focusTraversable="false" layoutX="110.0" layoutY="319.0" prefHeight="395.0" prefWidth="877.0">
               <columns>
-                <TableColumn fx:id="categoryColumn" prefWidth="87.0" text="Category" />
-                <TableColumn fx:id="descriptionColumn" prefWidth="399.0430145263672" text="Description" />
+                <TableColumn fx:id="categoryColumn" prefWidth="164.0" text="Category" />
+                <TableColumn fx:id="descriptionColumn" prefWidth="323.0" text="Description" />
                   <TableColumn fx:id="dateColumn" editable="false" prefWidth="107.95697021484375" text="Date" />
                   <TableColumn fx:id="startTimeColumn" prefWidth="92.532958984375" text="Start" />
                   <TableColumn fx:id="endTimeColumn" prefWidth="99.60028076171875" text="End" />
                   <TableColumn fx:id="durationColumn" editable="false" minWidth="0.0" prefWidth="88.0" sortable="false" text="Duration" />
               </columns>
             </TableView>
-            <TextField fx:id="entryDescriptionTextField" layoutX="123.0" layoutY="244.0" prefHeight="33.0" prefWidth="209.0" promptText="Entry Description" />
-            <TextField fx:id="startTimeTextField" layoutX="527.0" layoutY="244.0" prefHeight="33.0" prefWidth="148.0" promptText="Start Time (HH:MM)" />
-            <TextField fx:id="endTimeTextField" layoutX="686.0" layoutY="244.0" prefHeight="33.0" prefWidth="148.0" promptText="End Time (HH:MM)" />
-            <Button fx:id="saveEntryButton" defaultButton="true" layoutX="848.0" layoutY="244.0" mnemonicParsing="false" onAction="#handleSaveEntryButtonAction" prefHeight="33.0" prefWidth="121.0" text="Save Entry" />
-            <Label layoutX="123.0" layoutY="205.0" text="Create Entry">
+            <TextField fx:id="entryDescriptionTextField" layoutX="277.0" layoutY="245.0" prefHeight="33.0" prefWidth="139.0" promptText="Entry Description" />
+            <TextField fx:id="startTimeTextField" layoutX="569.0" layoutY="245.0" prefHeight="33.0" prefWidth="139.0" promptText="Start Time (HH:MM)" />
+            <TextField fx:id="endTimeTextField" layoutX="716.0" layoutY="245.0" prefHeight="33.0" prefWidth="139.0" promptText="End Time (HH:MM)" />
+            <Button fx:id="saveEntryButton" defaultButton="true" layoutX="867.0" layoutY="245.0" mnemonicParsing="false" onAction="#handleSaveEntryButtonAction" prefHeight="33.0" prefWidth="121.0" text="Save Entry" />
+            <Label layoutX="113.0" layoutY="205.0" text="Create Entry">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <Label layoutX="123.0" layoutY="85.0" text="Create Category">
+            <Label layoutX="111.0" layoutY="85.0" text="Create Category">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <TextField fx:id="categoryNameTextField" layoutX="123.0" layoutY="121.0" prefHeight="33.0" prefWidth="209.0" promptText="Category Name" />
-            <ColorPicker layoutX="356.0" layoutY="121.0" prefHeight="33.0" prefWidth="149.0" />
-            <Button fx:id="saveCategoryButton" layoutX="534.0" layoutY="120.0" mnemonicParsing="false" onAction="#handleSaveCategoryButtonAction" prefHeight="34.0" prefWidth="138.0" text="Save Category" />
+            <TextField fx:id="categoryNameTextField" layoutX="112.0" layoutY="120.0" prefHeight="33.0" prefWidth="209.0" promptText="Category Name" />
+            <ColorPicker fx:id="categoryColourPicker" layoutX="341.0" layoutY="120.0" prefHeight="33.0" prefWidth="149.0" />
+            <Button fx:id="saveCategoryButton" layoutX="511.0" layoutY="120.0" mnemonicParsing="false" onAction="#handleSaveCategoryButtonAction" prefHeight="34.0" prefWidth="138.0" text="Save Category" />
             <Label fx:id="statusLabel" layoutX="110.0" layoutY="727.0" prefHeight="29.0" prefWidth="528.0" visible="false" />
             <Button layoutX="833.0" layoutY="728.0" mnemonicParsing="false" onAction="#handleDeleteButtonAction" text="Delete Selected Entry" />
-            <DatePicker fx:id="datePicker" layoutX="348.0" layoutY="244.0" prefHeight="33.0" prefWidth="163.0" promptText="Date" />
+            <DatePicker fx:id="datePicker" layoutX="429.0" layoutY="245.0" prefHeight="33.0" prefWidth="130.0" promptText="Date" />
+            <ComboBox fx:id="categoryDropdown" layoutX="112.0" layoutY="245.0" prefHeight="32.0" prefWidth="150.0" promptText="Category" />
          </children>
       </Group>
    </children>

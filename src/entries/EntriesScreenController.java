@@ -18,9 +18,11 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TableColumn.CellEditEvent;
@@ -35,10 +37,13 @@ public class EntriesScreenController {
     LayoutScreenController layoutController = new LayoutScreenController();
 
     @FXML
+    private ComboBox<Category> categoryDropdown;
+
+    @FXML
     private TextField entryDescriptionTextField;
 
     @FXML
-    private DatePicker datePicker = new DatePicker(LocalDate.now());
+    private DatePicker datePicker;
 
     @FXML
     private TextField startTimeTextField;
@@ -53,7 +58,7 @@ public class EntriesScreenController {
     private TextField categoryNameTextField;
 
     @FXML
-    private ColorPicker colorPicker;
+    private ColorPicker categoryColourPicker;
 
     @FXML
     private Button saveCategoryButton;
@@ -113,7 +118,7 @@ public class EntriesScreenController {
     // https://docs.oracle.com/javase/8/javafx/user-interface-tutorial/table-view.htm#CJAGAAEE
     @FXML
     public void initialize() {
-        categoryColumn.setCellValueFactory(cellData -> cellData.getValue().getCategoryProperty());
+        categoryColumn.setCellValueFactory(cellData -> cellData.getValue().getCategoryNameProperty());
 
         descriptionColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         descriptionColumn.setCellValueFactory(cellData -> cellData.getValue().getDescriptionProperty());
@@ -163,7 +168,8 @@ public class EntriesScreenController {
 
         durationColumn.setCellValueFactory(cellData -> cellData.getValue().getDurationProperty());
 
-        // date picker formatting adapted from: https://code.makery.ch/blog/javafx-8-date-picker/
+        // date picker formatting adapted from:
+        // https://code.makery.ch/blog/javafx-8-date-picker/
         datePicker.setConverter(new StringConverter<LocalDate>() {
             DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
@@ -186,7 +192,53 @@ public class EntriesScreenController {
             }
         });
 
+        // StringConverter adapted from: https://stackoverflow.com/a/38367739
+        categoryDropdown.setConverter(new StringConverter<Category>() {
+            @Override
+            public String toString(Category category) {
+                return category.getCategoryName();
+            }
+
+            @Override
+            public Category fromString(String string) {
+                return null;
+            }
+        });
+
+        // custom row colour adapted from: https://stackoverflow.com/a/56309916
+        entryList.setRowFactory(value -> new TableRow<Entry>() {
+            @Override
+            protected void updateItem(Entry item, boolean empty) {
+                super.updateItem(item, empty);
+                if (item == null || item.getCategoryColour() == null) {
+                    setStyle("");
+                } else {
+                    setStyle("-fx-background-color: " + item.getCategoryColour() + ";");
+                }
+            }
+        });
+
+        populateCategories();
         populateEntries();
+    }
+
+    private void populateCategories() {
+        try {
+            categoryDropdown.setItems(getCategories());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    private ObservableList<Category> getCategories() throws SQLException {
+        ArrayList<Category> categories = new ArrayList<Category>();
+        ResultSet rs = Database.getResultSet("SELECT * FROM categories");
+        while (rs.next()) {
+            Category category = new Category(rs.getString("id"), rs.getString("categoryname"),
+                    rs.getString("hexstring"));
+            categories.add(category);
+        }
+        return FXCollections.observableList(categories);
     }
 
     private void populateEntries() {
@@ -199,14 +251,17 @@ public class EntriesScreenController {
 
     private ObservableList<Entry> getEntryListData() throws SQLException {
         ArrayList<Entry> entryList = new ArrayList<Entry>();
-        ResultSet rs = Database.getResultSet("SELECT * FROM entries");
+        ResultSet rs = Database.getResultSet(
+                "SELECT e.id, c.hexstring AS colour, c.categoryname, e.description, e.date, e.starttime, e.endtime "
+                        + "FROM entries e LEFT JOIN categories c ON e.category = c.id;");
         while (rs.next()) {
-            String category = rs.getString("category");
+            String categoryName = rs.getString("categoryname");
             if (rs.wasNull()) {
-                category = "Not set";
+                categoryName = "Uncategorised";
             }
-            Entry entry = new Entry(rs.getString("id"), category, rs.getString("description"), rs.getString("date"),
-                    rs.getString("starttime"), rs.getString("endtime"));
+            Entry entry = new Entry(rs.getString("id"), rs.getString("colour"), categoryName,
+                    rs.getString("description"), rs.getString("date"), rs.getString("starttime"),
+                    rs.getString("endtime"));
             entryList.add(entry);
         }
         return FXCollections.observableList(entryList);
@@ -217,6 +272,9 @@ public class EntriesScreenController {
         statusLabel.setVisible(false);
 
         String category = null;
+        if (categoryDropdown.getValue() != null) {
+            category = categoryDropdown.getValue().getId();
+        }
         String description = entryDescriptionTextField.getText();
         if (description.length() == 0) {
             statusLabel.setVisible(true);
@@ -250,6 +308,7 @@ public class EntriesScreenController {
                 e.printStackTrace();
             } finally {
                 populateEntries();
+                categoryDropdown.setValue(null);
                 entryDescriptionTextField.setText("");
                 startTimeTextField.setText("");
                 endTimeTextField.setText("");
@@ -277,30 +336,30 @@ public class EntriesScreenController {
 
     @FXML
     private void handleSaveCategoryButtonAction(ActionEvent event) {
+        statusLabel.setVisible(false);
 
-        String categoryName = null;
-        colorPicker = new ColorPicker();
-        Color colorValue = colorPicker.getValue();
-        int red = (int) colorValue.getRed();
-        int green = (int) colorValue.getGreen();
-        int blue = (int) colorValue.getBlue();
+        String categoryName = categoryNameTextField.getText();
+        if (categoryName.length() == 0) {
+            statusLabel.setVisible(true);
+            statusLabel.setTextFill(Color.RED);
+            statusLabel.setText("Category name cannot be empty");
+            return;
+        }
 
-        String hexString = String.format("#%02X%02X%02X", red, green, blue);
+        // colour conversion adapted from: https://stackoverflow.com/a/18803814
+        Color colourValue = categoryColourPicker.getValue();
+        String hexString = String.format("#%02X%02X%02X", (int) (colourValue.getRed() * 255),
+                (int) (colourValue.getGreen() * 255), (int) (colourValue.getBlue() * 255));
 
-        // AWAITING DROPDOWN LIST TO INPUT VALUES
         try {
-            categoryName = categoryNameTextField.getText();
-
-            Database.updateFromPreparedStatement("INSERT INTO entries (category, description) VALUES ( ?, ?)",
+            Database.updateFromPreparedStatement("INSERT INTO categories (categoryname, hexstring) VALUES ( ?, ?)",
                     new String[] { categoryName, hexString });
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            initialize();
+            populateCategories();
             categoryNameTextField.setText("");
-
         }
-
     }
 
     private String validateAndFormatTime(String time) throws ParseException {

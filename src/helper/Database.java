@@ -104,15 +104,50 @@ public class Database {
 
         stmt.close();
     }
-    
+
+    //editted
+    public static void createTasksTable() throws SQLException {
+        openConnection();
+        Statement stmt = conn.createStatement();
+        String createQuery = "CREATE TABLE IF NOT EXISTS tasks" +
+            "(title TEXT NOT NULL," +
+            "description TEXT NOT NULL," +
+            "priority TEXT NOT NULL," +
+            "dueDate TEXT NOT NULL," +
+            "doDate TEXT NOT NULL)";
+        stmt.execute(createQuery);
+
+        String checkExistingQuery = "SELECT COUNT(*) FROM tasks";
+        ResultSet rs = getResultSet(checkExistingQuery);
+        int rowCount = rs.getInt(1);
+
+        if (rowCount == 0) {
+            ArrayList<String> insertStatements = new ArrayList<String>();
+
+            insertStatements.add("INSERT INTO tasks (title, description, priority, dueDate, doDate)" +
+                "VALUES ('First task', 'First task', '100', '2019-11-05', '2019-11-05')");
+            insertStatements.add("INSERT INTO tasks (title, description, priority, dueDate, doDate)" +
+                "VALUES ('Second task', 'Second task', '100', '2019-11-05', '2019-11-05')");
+            insertStatements.add("INSERT INTO tasks (title, description, priority, dueDate, doDate)" +
+                "VALUES ('Third task', 'Third task', '100', '2019-11-05', '2019-11-05')");
+
+            for (String statement : insertStatements) {
+                stmt.execute(statement);
+            }
+        }
+
+        stmt.close();
+    }
+
     public static void createCategoriesTable() throws SQLException {
         openConnection();
         Statement stmt = conn.createStatement();
 
         String createQuery = "CREATE TABLE IF NOT EXISTS categories" +
-            "(categoryname TEXT NOT NULL, " +
-            "hexString TEXT";
-        
+            "(id INTEGER PRIMARY KEY," +
+            "categoryname TEXT NOT NULL," +
+            "hexString TEXT NOT NULL)";
+
         stmt.execute(createQuery);
 
         String checkExistingQuery = "SELECT COUNT(*) FROM categories";
@@ -123,11 +158,11 @@ public class Database {
             ArrayList<String> insertStatements = new ArrayList<String>();
 
             insertStatements.add("INSERT INTO categories (categoryname, hexstring)" +
-                "VALUES (First category, '#FF0000')");
+                "VALUES ('First category', '#FF0000')");
             insertStatements.add("INSERT INTO categories (categoryname, hexstring)" +
-                "VALUES (Second category, '#00FF00')");
+                "VALUES ('Second category', '#00FF00')");
             insertStatements.add("INSERT INTO categories (categoryname, hexstring)" +
-                "VALUES (Third category, '#0000FF')");
+                "VALUES ('Third category', '#0000FF')");
 
             for (String statement : insertStatements) {
                 stmt.execute(statement);
