@@ -110,7 +110,8 @@ public class Database {
         openConnection();
         Statement stmt = conn.createStatement();
         String createQuery = "CREATE TABLE IF NOT EXISTS tasks" +
-            "(title TEXT NOT NULL," +
+            "(taskid INTEGER PRIMARY KEY," +
+            "title TEXT NOT NULL," +
             "description TEXT NOT NULL," +
             "priority TEXT NOT NULL," +
             "dueDate TEXT NOT NULL," +
