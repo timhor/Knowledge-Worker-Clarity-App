@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.chart.*?>
 <?import javafx.scene.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
@@ -47,6 +48,7 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
             </GridPane>
+            <PieChart fx:id="myPieChart" layoutX="250.0" layoutY="231.0" title="My Life" />
          </children>
       </Group>
       <Label layoutX="112.0" layoutY="117.0" text="My Life Screen">
