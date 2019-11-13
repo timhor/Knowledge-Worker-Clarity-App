@@ -1,12 +1,12 @@
 package weeklyTrends;
 
+import com.sun.javafx.charts.Legend;
 import static entries.Entry.parseTimeInMs;
 import helper.Database;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +14,8 @@ import java.util.concurrent.TimeUnit;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Cursor;
+import javafx.scene.Node;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.control.Button;
 import layout.LayoutScreenController;
@@ -22,6 +24,7 @@ import org.joda.time.*;
 import javafx.scene.chart.LineChart; 
 import javafx.scene.chart.NumberAxis; 
 import javafx.scene.chart.XYChart; 
+import javafx.scene.input.MouseButton;
 
 public class WeeklyTrendsScreenController {
 
@@ -55,7 +58,7 @@ public class WeeklyTrendsScreenController {
     
     // Chart items
     @FXML
-    public LineChart weeklyTrendsLineChart;
+    public LineChart<Number, Float> weeklyTrendsLineChart;
     
     @FXML
     public CategoryAxis weeklyTrendsCategoryAxis;
@@ -105,7 +108,7 @@ public class WeeklyTrendsScreenController {
     public void handleWeeklyTrendsScreenButtonAction(ActionEvent event) throws IOException {
         layoutController.handleWeeklyTrendsScreenButtonAction(event);
     }
-    
+            
     @FXML
     public void initialize() {
 
@@ -195,7 +198,6 @@ public class WeeklyTrendsScreenController {
                 ArrayList<Float> value = entry.getValue();
                 totalHoursInWeek += value.get(i);
             }            
-            //System.out.println("Total hrs spent in week: " + weeksAxis.get(i) + " is: " + totalHoursInWeek);
             totalHoursInWeekArray.add(i, totalHoursInWeek);
 
         }
@@ -205,10 +207,7 @@ public class WeeklyTrendsScreenController {
             //now convert each of the current existing values into the percentage
             //accessing array lists in a hashmap adapted from https://stackoverflow.com/questions/10562834/how-to-iterate-hashmap-with-containing-arraylist
             for (Map.Entry<String, ArrayList<Float>> entry : dataHashmap.entrySet()) {
-                String key = entry.getKey();
                 ArrayList<Float> value = entry.getValue();
-                //System.out.println(key + value.get(i));
-                //System.out.println(totalHoursInWeekArray.get(i));
                 float percentage = (value.get(i) / totalHoursInWeekArray.get(i)) * 100;
                 if (Float.isNaN(percentage)){
                     percentage = 0;
@@ -216,10 +215,6 @@ public class WeeklyTrendsScreenController {
                 percentageArrayListForThisWeek.add(percentage);   
                 
                 //Now update the values to reflect %, not hours 
-                // update this value...
-                //System.out.println(entry.getValue().get(i));
-                // with this value: 
-                //System.out.println(weeksAxis.get(i) + " " + percentageArrayListForThisWeek.get(percentageArrayListForThisWeek.size() - 1));
                 entry.getValue().set(i, percentageArrayListForThisWeek.get(percentageArrayListForThisWeek.size() - 1));
             }
         }
@@ -227,13 +222,45 @@ public class WeeklyTrendsScreenController {
         // now create series for each category and add to them
         dataHashmap.keySet().stream().forEach((key) -> {
             //iterate over keys
-            XYChart.Series series = new XYChart.Series(); 
-            series.setName("Category: " + key);
+            XYChart.Series<Number, Float> series = new XYChart.Series(); 
+            series.setName(key);
             // iterate over the array list, and add the date to it from weeksAxis
             for (int i = 0; i < weeksAxis.size(); i++){
-                series.getData().add(new XYChart.Data( weeksAxis.get(i), dataHashmap.get(key).get(i)));
+                series.getData().add(new XYChart.Data(weeksAxis.get(i), dataHashmap.get(key).get(i)));
             }
             weeklyTrendsLineChart.getData().add(series);
-        });       
+        });
+        
+        // toggle ability on series
+        // adapted from https://stackoverflow.com/questions/44956955/javafx-use-chart-legend-to-toggle-show-hide-series-possible
+        for (Node n : weeklyTrendsLineChart.getChildrenUnmodifiable()) {
+            if (n instanceof Legend) {
+                Legend l = (Legend) n;
+                for (Legend.LegendItem li : l.getItems()) {
+                   for (XYChart.Series<Number, Float> s : weeklyTrendsLineChart.getData()) {
+                        if (s.getName().equals(li.getText())) {
+                            li.getSymbol().setCursor(Cursor.HAND); // Hint user that legend symbol is clickable
+                            li.getSymbol().setOnMouseClicked(me -> {
+                                if (me.getButton() == MouseButton.PRIMARY) {
+                                    s.getNode().setVisible(!s.getNode().isVisible()); // Toggle visibility of line
+                                    for (XYChart.Data<Number, Float> d : s.getData()) {
+                                        if (d.getNode() != null) {
+                                            d.getNode().setVisible(s.getNode().isVisible()); // Toggle visibility of every node in the series
+                                        }
+                                    }
+                                    // also change the colour of the label if visible
+                                    if (!s.getNode().isVisible()){
+                                        li.getSymbol().setStyle("-fx-opacity: 0.25;");
+                                    } else {
+                                        li.getSymbol().setStyle("-fx-opacity: 1;");
+                                    }
+                                }
+                            });
+                            break;
+                        }
+                   }
+                }
+            }
+        }
     }
 }
