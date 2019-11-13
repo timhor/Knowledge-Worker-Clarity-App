@@ -69,5 +69,6 @@
             <TableColumn fx:id="dueDateColumn" prefWidth="128.676513671875" text="Due Date" />
          </columns>
       </TableView>
+      <Button layoutX="833.0" layoutY="724.0" mnemonicParsing="false" onAction="#handleDeleteButtonAction" text="Delete Selected Task" />
    </children>
 </AnchorPane>

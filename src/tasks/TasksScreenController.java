@@ -178,6 +178,20 @@ public class TasksScreenController {
         }
     }
 
+    @FXML
+    private void handleDeleteButtonAction(ActionEvent event) {
+        Task taskToDelete = taskList.getSelectionModel().getSelectedItem();
+        if (taskToDelete != null) {
+            try {
+                Database.updateFromPreparedStatement("DELETE FROM tasks WHERE taskId = ?",
+                        new String[] { taskToDelete.getTaskID() });
+                populateTasks();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     // Navigation
     // Top Bar Handling
     @FXML
