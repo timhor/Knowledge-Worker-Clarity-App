@@ -41,6 +41,8 @@ public class KanbanScreenController {
         DUE_DATE
     }
 
+    private boolean isDoDate;
+
     // Navigation
     // Side bar
     @FXML
@@ -85,18 +87,20 @@ public class KanbanScreenController {
 
     @FXML
     public void initialize() {
+        isDoDate = true;
+        populateTasks();
+    }
+
+    private void populateTasks() {
+        Mode mode = isDoDate ? Mode.DO_DATE : Mode.DUE_DATE;
         try {
-            populateTasks(Mode.DO_DATE);
+            completedListView.setItems(getTasks(TimePeriod.COMPLETED, mode));
+            todayListView.setItems(getTasks(TimePeriod.TODAY, mode));
+            tomorrowListView.setItems(getTasks(TimePeriod.TOMORROW, mode));
+            nextSevenDaysListView.setItems(getTasks(TimePeriod.NEXT_SEVEN_DAYS, mode));
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    private void populateTasks(Mode mode) throws SQLException {
-        completedListView.setItems(getTasks(TimePeriod.COMPLETED, mode));
-        todayListView.setItems(getTasks(TimePeriod.TODAY, mode));
-        tomorrowListView.setItems(getTasks(TimePeriod.TOMORROW, mode));
-        nextSevenDaysListView.setItems(getTasks(TimePeriod.NEXT_SEVEN_DAYS, mode));
     }
 
     private ObservableList<Task> getTasks(TimePeriod timePeriod, Mode mode) throws SQLException {
@@ -126,6 +130,17 @@ public class KanbanScreenController {
             tasks.add(task);
         }
         return FXCollections.observableList(tasks);
+    }
+
+    @FXML
+    private void handleSwitchModeButtonAction(ActionEvent event) {
+        isDoDate = !isDoDate;
+        if (isDoDate) {
+            switchModeButton.setText("Switch to Due Date mode");
+        } else {
+            switchModeButton.setText("Switch to Do Date mode");
+        }
+        populateTasks();
     }
 
     // Navigation

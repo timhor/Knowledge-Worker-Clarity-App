@@ -117,7 +117,7 @@
                   </ScrollPane>
                     </children>
                 </HBox>
-            <Button fx:id="switchModeButton" layoutX="814.0" layoutY="731.0" mnemonicParsing="false" text="Switch to Due Date mode" />
+            <Button fx:id="switchModeButton" layoutX="814.0" layoutY="731.0" minWidth="174.0" mnemonicParsing="false" onAction="#handleSwitchModeButtonAction" text="Switch to Due Date mode" />
             </children>
         </Group>
     </children>
