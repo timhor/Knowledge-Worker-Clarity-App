@@ -101,6 +101,9 @@ public class EntriesScreenController {
 
     @FXML
     public Button weeklyTrendsScreenButton;
+    
+    @FXML
+    public Button dailyLearningScreenButton;
 
     // Top Bar
     @FXML
@@ -395,5 +398,9 @@ public class EntriesScreenController {
     public void handleWeeklyTrendsScreenButtonAction(ActionEvent event) throws IOException {
         layoutController.handleWeeklyTrendsScreenButtonAction(event);
     }
-
+    
+    @FXML
+    public void handleDailyLearningScreenButtonAction(ActionEvent event) throws IOException {
+        layoutController.handleDailyLearningScreenButtonAction(event);
+    }
 }
