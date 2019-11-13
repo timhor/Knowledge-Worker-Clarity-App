@@ -2,12 +2,10 @@ package tasks;
 
 import helper.Database;
 import helper.PageSwitchHelper;
-import helper.SharedComponents;
 
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 import layout.LayoutScreenController;
@@ -16,12 +14,8 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.control.Slider;
-import javafx.scene.control.TextField;
-import javafx.scene.paint.Color;
 
 public class KanbanScreenController {
 
@@ -125,7 +119,7 @@ public class KanbanScreenController {
         ArrayList<Task> tasks = new ArrayList<Task>();
         ResultSet rs = Database.getResultSet(query);
         while (rs.next()) {
-            Task task = new Task(rs.getString("taskid"), rs.getString("title"), rs.getString("description"),
+            Task task = new Task(rs.getString("taskId"), rs.getString("title"), rs.getString("description"),
                     rs.getString("priority"), rs.getString("dueDate"), rs.getString("doDate"));
             tasks.add(task);
         }
