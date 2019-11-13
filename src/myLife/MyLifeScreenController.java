@@ -6,19 +6,25 @@ import helper.Database;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.paint.Color;
 import layout.LayoutScreenController;
 
 public class MyLifeScreenController {
 
     @FXML
     public PieChart myPieChart;
-    
+
     LayoutScreenController layoutController = new LayoutScreenController();
 
     @FXML
@@ -92,7 +98,7 @@ public class MyLifeScreenController {
     private void handleBackButtonAction(ActionEvent event) throws IOException {
         layoutController.handleWeeklyTrendsScreenButtonAction(event);
     }
-   
+
     @FXML
     public void initialize() {
 
@@ -110,23 +116,77 @@ public class MyLifeScreenController {
                 // calculate the time it takes 
                 String startTime = timeRs.getString("starttime");
                 String endTime = timeRs.getString("endtime");
-                long duration = parseTimeInMs(endTime) - parseTimeInMs(startTime);                
-                float durationInHours = duration / 360000.0f;  
+                long duration = parseTimeInMs(endTime) - parseTimeInMs(startTime);
+                float durationInHours = duration / 360000.0f;
                 totalTimeSpent += durationInHours;
-                
                 // append to the hashmap
-                data.put(timeRs.getString("categoryname"), data.get(timeRs.getString("categoryname")) + durationInHours); 
-            }
+                data.put(timeRs.getString("categoryname"), data.get(timeRs.getString("categoryname")) + durationInHours);
+            } 
+                        
             for (Map.Entry<String, Float> entry : data.entrySet()) {
                 String key = entry.getKey();
                 Float value = entry.getValue();
                 // jeff: % of time spent = value / totalTimeSpent * 100. so try and add the label here
-                myPieChart.getData().add(new PieChart.Data(key, value / totalTimeSpent));
+               Float valuePercentage = 100*value / totalTimeSpent;
+               DecimalFormat df = new DecimalFormat("0"); 
+               String valuePercentageString = String.valueOf(df.format(valuePercentage));
+                //ngl cant tell if this is fkn retarded or im a genius 
+                myPieChart.getData().add(new PieChart.Data(key + "\n " + valuePercentageString + "%" , value / totalTimeSpent));
+            }
+            
+            ArrayList<String> colourCodes = new ArrayList<>();
+            try {
+                
+                for (Map.Entry<String, Float> entry : data.entrySet()) {
+                    String key = entry.getKey();
+                    String colourSt = "SELECT DISTINCT c.hexString FROM entries e LEFT JOIN categories c ON e.category = c.id WHERE c.categoryname = '" + key + "'";
+                    ResultSet colourRs = Database.getResultSet(colourSt);
+                    while (colourRs.next()) {
+                        String categoryColour = colourRs.getString("hexString");
+                        colourCodes.add(categoryColour);
+                        System.out.println(categoryColour);
+                    }
+                }
+                System.out.println(colourCodes);
+                try {
+                    Node n = myPieChart.lookup(".data0.chart-pie");
+                    for (int i = 0; i < colourCodes.size(); i++){
+                        if (i != 0){
+                            n = myPieChart.lookup(".data" + i + ".chart-pie");
+                            System.out.println(".data" + i + ".chart-pie");
+                        }
+                        System.out.println(colourCodes.get(i));
+                        n.setStyle("-fx-pie-colour: " + colourCodes.get(i) + ";");
+                        System.out.println("-fx-pie-colour: " + colourCodes.get(i) + ";");
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+//                Node n = myPieChart.lookup(".default-color0.chart-pie");
+//                n.setStyle("-fx-pie-colour: " + colourCodes.get(0) + ";");
+//                n = myPieChart.lookup(".default-color1.chart-pie");
+//                n.setStyle("-fx-pie-colour: " + colourCodes.get(1) + ";");
+//                n = myPieChart.lookup(".default-color2.chart-pie");
+//                n.setStyle("-fx-pie-colour: " + colourCodes.get(2) + ";");
+//                n = myPieChart.lookup(".default-color2.chart-pie");
+//                n.setStyle("-fx-pie-colour: " + colourCodes.get(3) + ";");
+//                n = myPieChart.lookup(".default-color2.chart-pie");
+//                n.setStyle("-fx-pie-colour: " + colourCodes.get(4) + ";");
+
+            } catch (Exception e) {
+                e.printStackTrace();
             }
             // here you'll probably add the color code work (i think). make sure you do it in a try/catch.
             // you'll need to do a sql query to get the colours from the categories table 
+            // IDK why it doesnt work, the data is coming in properly and ive changed it in pie terms as well.. 
+
+            myPieChart.setLegendVisible(false);
+            // jeff todo : you need to change this title
+            myPieChart.setTitle("Time spent on today's top 5 categories");
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
     }
 }
