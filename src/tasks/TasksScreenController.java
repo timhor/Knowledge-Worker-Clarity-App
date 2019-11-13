@@ -5,16 +5,22 @@ import helper.PageSwitchHelper;
 import helper.SharedComponents;
 
 import java.io.IOException;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import layout.LayoutScreenController;
+import java.util.ArrayList;
 
+import layout.LayoutScreenController;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 
@@ -65,9 +71,56 @@ public class TasksScreenController {
     private Label statusLabel;
 
     @FXML
+    private TableView<Task> taskList;
+
+    @FXML
+    private TableColumn<Task, String> titleColumn;
+
+    @FXML
+    private TableColumn<Task, String> descriptionColumn;
+
+    @FXML
+    private TableColumn<Task, String> priorityColumn;
+
+    @FXML
+    private TableColumn<Task, String> doDateColumn;
+
+    @FXML
+    private TableColumn<Task, String> dueDateColumn;
+
+    // table cell editing adapted from:
+    // https://docs.oracle.com/javase/8/javafx/user-interface-tutorial/table-view.htm#CJAGAAEE
+    @FXML
     public void initialize() {
         doDatePicker.setConverter(SharedComponents.getDatePickerConverter());
         dueDatePicker.setConverter(SharedComponents.getDatePickerConverter());
+
+        titleColumn.setCellValueFactory(cellData -> cellData.getValue().getTitleProperty());
+        descriptionColumn.setCellValueFactory(cellData -> cellData.getValue().getDescriptionProperty());
+        priorityColumn.setCellValueFactory(cellData -> cellData.getValue().getPriorityProperty());
+        doDateColumn.setCellValueFactory(cellData -> cellData.getValue().getDoDateProperty());
+        dueDateColumn.setCellValueFactory(cellData -> cellData.getValue().getDueDateProperty());
+
+        populateTasks();
+    }
+
+    private void populateTasks() {
+        try {
+            taskList.setItems(getTasks());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    private ObservableList<Task> getTasks() throws SQLException {
+        ArrayList<Task> tasks = new ArrayList<Task>();
+        ResultSet rs = Database.getResultSet("SELECT * FROM tasks WHERE completed = '0'");
+        while (rs.next()) {
+            Task task = new Task(rs.getString("taskId"), rs.getString("title"), rs.getString("description"),
+                    rs.getString("priority"), rs.getString("dueDate"), rs.getString("doDate"));
+            tasks.add(task);
+        }
+        return FXCollections.observableList(tasks);
     }
 
     @FXML
@@ -116,6 +169,7 @@ public class TasksScreenController {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
+            populateTasks();
             taskTitleTextField.setText("");
             taskDescriptionTextField.setText("");
             prioritySlider.setValue(0);
