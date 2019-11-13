@@ -13,7 +13,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="768.0" prefWidth="917.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="entries.EntriesScreenController">
+<AnchorPane id="AnchorPane" prefHeight="768.0" prefWidth="917.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dailyLearning.DailyLearningScreenController">
    <children>
       <Group>
          <children>
@@ -53,23 +53,31 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
             </GridPane>
-            <TableView fx:id="entryList" editable="true" focusTraversable="false" layoutX="114.0" layoutY="195.0" prefHeight="532.0" prefWidth="869.0">
+            <TableView fx:id="learningList" editable="true" focusTraversable="false" layoutX="114.0" layoutY="219.0" prefHeight="489.0" prefWidth="869.0">
               <columns>
                   <TableColumn fx:id="dateColumn" editable="false" prefWidth="107.95697021484375" text="Date" />
-                <TableColumn fx:id="descriptionColumn" prefWidth="397.92901611328125" text="What Went Well?" />
-                  <TableColumn fx:id="descriptionColumn1" prefWidth="361.99993896484375" text="What Could Be Better?" />
+                <TableColumn fx:id="wentWellColumn" prefWidth="397.92901611328125" text="What Went Well?" />
+                  <TableColumn fx:id="couldImproveColumn" prefWidth="361.99993896484375" text="What Could Be Better?" />
               </columns>
             </TableView>
-            <TextField fx:id="entryDescriptionTextField" layoutX="273.0" layoutY="119.0" prefHeight="51.0" prefWidth="260.0" promptText="What Went Well?" />
-            <Button fx:id="saveEntryButton" defaultButton="true" layoutX="824.0" layoutY="119.0" mnemonicParsing="false" onAction="#handleSaveEntryButtonAction" prefHeight="51.0" prefWidth="160.0" text="Save" />
-            <Label layoutX="111.0" layoutY="79.0" text="Enter your Daily Learnings">
+            <TextField fx:id="wentWellTextField" layoutX="273.0" layoutY="96.0" prefHeight="30.0" prefWidth="260.0" promptText="What Went Well?" />
+            <Button fx:id="saveLearningButton" defaultButton="true" layoutX="824.0" layoutY="96.0" mnemonicParsing="false" onAction="#handleSaveLearningButtonAction" prefHeight="30.0" prefWidth="160.0" text="Save Learning" />
+            <Label layoutX="111.0" layoutY="56.0" text="Enter your Daily Learnings">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
             <Label fx:id="statusLabel" layoutX="350.0" layoutY="80.0" prefHeight="35.0" prefWidth="278.0" />
-            <DatePicker fx:id="datePicker" layoutX="111.0" layoutY="118.0" prefHeight="51.0" prefWidth="154.0" promptText="Date" />
-            <TextField fx:id="entryDescriptionTextField1" layoutX="543.0" layoutY="119.0" prefHeight="51.0" prefWidth="270.0" promptText="What Could Be Better?" />
+            <DatePicker fx:id="datePicker" layoutX="111.0" layoutY="95.0" prefHeight="30.0" prefWidth="154.0" promptText="Date" />
+            <TextField fx:id="couldImproveTextField" layoutX="543.0" layoutY="96.0" prefHeight="30.0" prefWidth="270.0" promptText="What Could Be Better?" />
+            <Label layoutX="113.0" layoutY="154.0" prefHeight="53.0" prefWidth="152.0" text="Choose a previous&#10;answer:">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <ComboBox fx:id="wentWellComboBox" layoutX="277.0" layoutY="160.0" prefHeight="51.0" prefWidth="256.0" />
+            <ComboBox fx:id="couldImproveComboBox" layoutX="554.0" layoutY="163.0" prefHeight="51.0" prefWidth="256.0" />
+            <Button fx:id="generateReportButton" defaultButton="true" layoutX="426.0" layoutY="712.0" mnemonicParsing="false" onAction="#handleGenerateReportButtonAction" prefHeight="30.0" prefWidth="160.0" text="Generate Report" />
          </children>
       </Group>
    </children>

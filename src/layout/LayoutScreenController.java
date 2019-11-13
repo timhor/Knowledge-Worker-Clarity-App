@@ -117,7 +117,7 @@ public class LayoutScreenController {
     @FXML
     public void handleDailyLearningScreenButtonAction(ActionEvent event) throws IOException {
         try {
-            pageSwitchHelper.switcher(event, "/dailylearnings/DailyLearningScreen.fxml");
+            pageSwitchHelper.switcher(event, "/dailyLearning/DailyLearningScreen.fxml");
         } catch (Exception ex) {
             ex.printStackTrace();
         }

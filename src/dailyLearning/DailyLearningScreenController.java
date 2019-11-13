@@ -1,3 +1,10 @@
+/* TODO
+
+- limit the date after choosing the first date - only 1x a day 
+- save learning button does not check for what's in the combobox
+- data validation - if they choose from the combobox AND enter in the textlabel, should show a status label.
+- move items from generate report handler into its own page, design that ui, etc
+*/
 package dailyLearning;
 
 import helper.Database;
@@ -10,12 +17,19 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -24,6 +38,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.paint.Color;
+import org.joda.time.DateTime;
 
 public class DailyLearningScreenController {
 
@@ -41,7 +56,13 @@ public class DailyLearningScreenController {
     private TextField couldImproveTextField;
 
     @FXML
-    private Button saveEntryButton;
+    private Button saveLearningButton;
+    
+    @FXML
+    private ComboBox<String> wentWellComboBox;
+    
+    @FXML
+    private ComboBox<String> couldImproveComboBox;
 
     @FXML
     private TableView<Learning> learningList;
@@ -54,6 +75,9 @@ public class DailyLearningScreenController {
 
     @FXML
     private TableColumn<Learning, String> couldImproveColumn;
+    
+    @FXML
+    private Button generateReportButton;
 
     // Navigation
     // Side bar
@@ -88,31 +112,30 @@ public class DailyLearningScreenController {
     // table cell editing adapted from:
     // https://docs.oracle.com/javase/8/javafx/user-interface-tutorial/table-view.htm#CJAGAAEE
     @FXML
-    public void initialize() {
-
+    public void initialize() throws SQLException {
         wentWellColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        wentWellColumn.setCellValueFactory(cellData -> cellData.getValue().getDescriptionProperty());
+        wentWellColumn.setCellValueFactory(cellData -> cellData.getValue().getWentWellProperty());
         wentWellColumn.setOnEditCommit((CellEditEvent<Learning, String> t) -> {
-            String newDescription = t.getNewValue();
+            String newWentWell = t.getNewValue();
             try {
-                Database.updateFromPreparedStatement("UPDATE entries SET description = ? WHERE id = ?",
-                        new String[] { newDescription, t.getRowValue().getId() });
+                Database.updateFromPreparedStatement("UPDATE daily_learning SET wentWell = ? WHERE id = ?",
+                        new String[] { newWentWell, t.getRowValue().getId() });
                 ((Learning) t.getTableView().getItems().get(t.getTablePosition().getRow()))
-                        .setDescriptionProperty(newDescription);
+                        .setWentWellProperty(newWentWell);
                 populateEntries();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         });
         couldImproveColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        couldImproveColumn.setCellValueFactory(cellData -> cellData.getValue().getDescriptionProperty());
+        couldImproveColumn.setCellValueFactory(cellData -> cellData.getValue().getCouldImproveProperty());
         couldImproveColumn.setOnEditCommit((CellEditEvent<Learning, String> t) -> {
-            String newDescription = t.getNewValue();
+            String newCouldImprove = t.getNewValue();
             try {
-                Database.updateFromPreparedStatement("UPDATE entries SET description = ? WHERE id = ?",
-                        new String[] { newDescription, t.getRowValue().getId() });
+                Database.updateFromPreparedStatement("UPDATE daily_learning SET couldImprove = ? WHERE id = ?",
+                        new String[] { newCouldImprove, t.getRowValue().getId() });
                 ((Learning) t.getTableView().getItems().get(t.getTablePosition().getRow()))
-                        .setDescriptionProperty(newDescription);
+                        .setCouldImproveProperty(newCouldImprove);
                 populateEntries();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -123,6 +146,8 @@ public class DailyLearningScreenController {
         datePicker.setConverter(SharedComponents.getDatePickerConverter());
 
         populateEntries();
+        
+        populateComboBox();
     }
     
     private void populateEntries() {
@@ -132,27 +157,38 @@ public class DailyLearningScreenController {
             ex.printStackTrace();
         }
     }
+    
+    private void populateComboBox() throws SQLException{
+        ObservableList<String>  wentWellList = FXCollections.observableArrayList();
+        ObservableList<String>  couldImproveList = FXCollections.observableArrayList();
+        ResultSet wwRs = Database.getResultSet(
+                "SELECT DISTINCT wentWell from daily_learning;");
+        while (wwRs.next()){
+            wentWellList.add(wwRs.getString("wentWell"));
+        }
+        ResultSet ciRs = Database.getResultSet(
+                "SELECT DISTINCT couldImprove from daily_learning;");
+        while (ciRs.next()){
+            couldImproveList.add(ciRs.getString("couldImprove"));
+        }
+        wentWellComboBox.setItems(wentWellList);
+        couldImproveComboBox.setItems(couldImproveList);
+    }
 
     private ObservableList<Learning> getLearningListData() throws SQLException {
         ArrayList<Learning> learningList = new ArrayList<Learning>();
         ResultSet rs = Database.getResultSet(
-                "SELECT e.id, c.hexstring AS colour, c.categoryname, e.description, e.date, e.starttime, e.endtime "
-                        + "FROM entries e LEFT JOIN categories c ON e.category = c.id;");
+                "SELECT id, date, wentWell, couldImprove from daily_learning;");
         while (rs.next()) {
-            String categoryName = rs.getString("categoryname");
-            if (rs.wasNull()) {
-                categoryName = "Uncategorised";
-            }
-            Learning entry = new Learning(rs.getString("id"), rs.getString("colour"), categoryName,
-                    rs.getString("description"), rs.getString("date"), rs.getString("starttime"),
-                    rs.getString("endtime"));
-            learningList.add(entry);
+            Learning learning = new Learning(rs.getString("id"), rs.getString("date"), 
+                    rs.getString("wentWell"), rs.getString("couldImprove"));
+            learningList.add(learning);
         }
         return FXCollections.observableList(learningList);
     }
 
     @FXML
-    private void handleSaveEntryButtonAction(ActionEvent event) {
+    public void handleSaveLearningButtonAction(ActionEvent event) {
         statusLabel.setVisible(false);
 
         String wentWellString = wentWellTextField.getText();
@@ -180,8 +216,8 @@ public class DailyLearningScreenController {
 
         try {
             Database.updateFromPreparedStatement(
-                    "INSERT INTO entries (category, description, date, starttime, endtime) VALUES (?,?,?,?,?)",
-                    new String[] { category, description, date.toString(), startTime, endTime });
+                    "INSERT INTO daily_learning (date, wentWell, couldImprove) VALUES (?,?,?)",
+                    new String[] { date.toString(), wentWellString, couldImproveString});
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -189,6 +225,66 @@ public class DailyLearningScreenController {
             wentWellTextField.setText("");
             couldImproveTextField.setText("");
         }
+    }
+    
+    @FXML
+    public void handleGenerateReportButtonAction(ActionEvent event) throws IOException, SQLException{
+        // should load a new page and then do this but for the sake of time...
+        calculateFrequency();
+    }
+    
+    public void calculateFrequency() throws SQLException{
+        // we want to only look at the last 30 days 
+        // get the dates for the last seven days
+        org.joda.time.LocalDate monthEarlier = new DateTime().minusMonths(1).toLocalDate();
+        
+        // get the unique entries
+        ArrayList<String>  wentWellList = new ArrayList<>();
+        ArrayList<String>  couldImproveList = new ArrayList<>();
+        ResultSet wwRs = Database.getResultSet(
+                "SELECT DISTINCT wentWell from daily_learning WHERE DATE BETWEEN '" + monthEarlier + "' AND '" + LocalDate.now() + "'");
+        while (wwRs.next()){
+            wentWellList.add(wwRs.getString("wentWell"));
+        }
+        ResultSet ciRs = Database.getResultSet(
+                "SELECT DISTINCT couldImprove from daily_learning WHERE DATE BETWEEN '" + monthEarlier + "' AND '" + LocalDate.now() + "'");
+        while (ciRs.next()){
+            couldImproveList.add(ciRs.getString("couldImprove"));
+        }
+        
+        // for each entry, count how many times it occurs
+        Map<String,Integer> wentWellFrequencyMap =  new HashMap<String,Integer>(); 
+        Map<String,Integer> couldImproveFrequencyMap =  new HashMap<String,Integer>(); 
+        for (String wentWell : wentWellList) {
+            ResultSet rs = Database.getResultSet("SELECT COUNT(wentWell) FROM daily_learning WHERE wentWell = '" + wentWell + "' AND DATE BETWEEN '" + monthEarlier + "' AND '" + LocalDate.now() + "'");
+            while (rs.next()){
+                wentWellFrequencyMap.put(wentWell, Integer.parseInt(rs.getString("COUNT(wentWell)")));
+            }
+        }
+        for (String couldImprove : couldImproveList) {
+            ResultSet rs = Database.getResultSet("SELECT COUNT(couldImprove) FROM daily_learning WHERE couldImprove = '" + couldImprove + "' AND DATE BETWEEN '" + monthEarlier + "' AND '" + LocalDate.now() + "'");
+            while (rs.next()){
+                couldImproveFrequencyMap.put(couldImprove, Integer.parseInt(rs.getString("COUNT(couldImprove)")));
+            }
+        }
+        System.out.println(entriesSortedByValues(wentWellFrequencyMap));
+        System.out.println(entriesSortedByValues(couldImproveFrequencyMap));
+    }
+    
+    // sorting the map in descending order so we can display it 
+    // adapted from https://stackoverflow.com/questions/11647889/sorting-the-mapkey-value-in-descending-order-based-on-the-value
+    static <K,V extends Comparable<? super V>> List<Entry<K, V>> entriesSortedByValues(Map<K,V> map) {
+
+        List<Entry<K,V>> sortedEntries = new ArrayList<Entry<K,V>>(map.entrySet());
+
+        Collections.sort(sortedEntries, new Comparator<Entry<K,V>>() {
+                    @Override
+                    public int compare(Entry<K,V> e1, Entry<K,V> e2) {
+                        return e2.getValue().compareTo(e1.getValue());
+                    }
+                }
+        );
+        return sortedEntries;
     }
 
     // Navigation
@@ -234,4 +330,5 @@ public class DailyLearningScreenController {
         layoutController.handleWeeklyTrendsScreenButtonAction(event);
     }
 
+    
 }
