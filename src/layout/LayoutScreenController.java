@@ -58,7 +58,24 @@ public class LayoutScreenController {
             ex.printStackTrace();
         }
     }
+    
+        @FXML
+    public void handleEnterDailyLearningsButtonAction(ActionEvent event) throws IOException {
+        try {
+            pageSwitchHelper.switcher(event, "/dailyLearning/DailyLearningScreen.fxml");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
 
+        public void handleGenerateReportButtonAction(ActionEvent event) throws IOException {
+        try {
+            pageSwitchHelper.switcher(event, "/dailyLearning/DailyLearningReportScreen.fxml");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+        
     @FXML
     public void handleAboutScreenButtonAction(ActionEvent event) throws IOException {
         try {

@@ -67,6 +67,7 @@ public class DailyLearningScreenController {
     @FXML
     private TableView<Learning> learningList;
     
+    //these controllers have access to columns
     @FXML
     private TableColumn<Learning, String> dateColumn;
 
@@ -108,14 +109,22 @@ public class DailyLearningScreenController {
 
     @FXML
     private Label statusLabel;
+    
+    //not sure if correct - what is this? 
+//    @FXML
+//    private TableColumn<Learning, Integer> countColumn;
 
     // table cell editing adapted from:
     // https://docs.oracle.com/javase/8/javafx/user-interface-tutorial/table-view.htm#CJAGAAEE
+    
+    //the method that javafx expects to be there - when the screen starts up, its doing stuff to the table 
     @FXML
     public void initialize() throws SQLException {
+        // defining where the data is coming from and what its doing - talking directly to the database
         wentWellColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        wentWellColumn.setCellValueFactory(cellData -> cellData.getValue().getWentWellProperty());
+        wentWellColumn.setCellValueFactory(cellData -setCellFactory> cellData.getValue().getWentWellProperty());
         wentWellColumn.setOnEditCommit((CellEditEvent<Learning, String> t) -> {
+            //anonynomous function - edit the underlying data it executes the sequel statement written in orange
             String newWentWell = t.getNewValue();
             try {
                 Database.updateFromPreparedStatement("UPDATE daily_learning SET wentWell = ? WHERE id = ?",
@@ -186,26 +195,45 @@ public class DailyLearningScreenController {
         }
         return FXCollections.observableList(learningList);
     }
-
+            
     @FXML
     public void handleSaveLearningButtonAction(ActionEvent event) {
         statusLabel.setVisible(false);
+        String wentWellString; 
 
-        String wentWellString = wentWellTextField.getText();
-        if (wentWellString.length() == 0) {
+        //restrict data - either choose from combo box, or data from the textfield
+        //hook up combo box to save learning button
+        if (wentWellTextField.getText() == null && wentWellComboBox.getValue() != null) {
+            wentWellString = wentWellComboBox.getValue();
+        }
+        else if (wentWellComboBox.getValue() == null && wentWellTextField.getText() != null) {
+            wentWellString = wentWellComboBox.getValue();
+        }
+        
+        else {
+//        if (wentWellString.length() == 0) {
             statusLabel.setVisible(true);
             statusLabel.setTextFill(Color.RED);
             statusLabel.setText("Went Well field cannot be empty");
             return;
         }
 
-        String couldImproveString = couldImproveTextField.getText();
-        if (couldImproveString.length() == 0) {
+        String couldImproveString; 
+                if (couldImproveTextField.getText() == null && couldImproveComboBox.getValue() != null) {
+            couldImproveString = couldImproveComboBox.getValue();
+        }
+        else if (couldImproveComboBox.getValue() == null && couldImproveTextField.getText() != null) {
+            couldImproveString = couldImproveComboBox.getValue();
+        }
+        
+        else {
+//        if (wentWellString.length() == 0) {
             statusLabel.setVisible(true);
             statusLabel.setTextFill(Color.RED);
-            statusLabel.setText("Could Improve field cannot be empty");
+            statusLabel.setText("Went Well field cannot be empty");
             return;
         }
+                
         LocalDate date = datePicker.getValue();
         if (date == null) {
             statusLabel.setVisible(true);
@@ -225,12 +253,6 @@ public class DailyLearningScreenController {
             wentWellTextField.setText("");
             couldImproveTextField.setText("");
         }
-    }
-    
-    @FXML
-    public void handleGenerateReportButtonAction(ActionEvent event) throws IOException, SQLException{
-        // should load a new page and then do this but for the sake of time...
-        calculateFrequency();
     }
     
     public void calculateFrequency() throws SQLException{
@@ -286,7 +308,19 @@ public class DailyLearningScreenController {
         );
         return sortedEntries;
     }
+    
+            @FXML
+    public void handleGenerateReportButtonAction(ActionEvent event) throws IOException, SQLException{
+        // should load a new page and then do this but for the sake of time...
+        calculateFrequency();
+    }
 
+    //put onto new page
+        @FXML
+//    public void handleGenerateReportButtonAction(ActionEvent event) throws IOException {
+//        layoutController.handleGenerateReportButtonAction(event);
+//    }
+    
     // Navigation
     // Top Bar Handling
     @FXML
