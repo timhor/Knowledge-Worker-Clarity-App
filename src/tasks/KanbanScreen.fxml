@@ -59,7 +59,7 @@
                                                 <Font name="Lucida Grande" size="14.0" />
                                             </font>
                                         </Label>
-                                        <ListView fx:id="completedListView" prefHeight="685.0" prefWidth="223.0" />
+                                        <ListView fx:id="completedListView" onDragDetected="#handleDragDetected" prefHeight="685.0" prefWidth="223.0" />
                                     </children>
                                 </VBox>
                             </content>
