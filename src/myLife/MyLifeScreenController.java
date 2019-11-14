@@ -113,8 +113,9 @@ public class MyLifeScreenController {
                 // calculate the time it takes 
                 String startTime = timeRs.getString("starttime");
                 String endTime = timeRs.getString("endtime");
-                long duration = parseTimeInMs(endTime) - parseTimeInMs(startTime);
-                float durationInHours = duration / 3600000.0f;
+                long duration = parseTimeInMs(endTime) - parseTimeInMs(startTime);                
+                float durationInHours = duration / 3600000.0f;  
+
                 totalTimeSpent += durationInHours;
 
                 // append to the hashmap
