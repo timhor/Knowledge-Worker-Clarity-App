@@ -118,6 +118,12 @@
                     </children>
                 </HBox>
             <Button fx:id="switchModeButton" layoutX="814.0" layoutY="731.0" minWidth="174.0" mnemonicParsing="false" onAction="#handleSwitchModeButtonAction" text="Switch to Due Date mode" />
+            <Label layoutX="122.0" layoutY="736.0" text="Details:">
+               <font>
+                  <Font name="Lucida Grande Bold" size="13.0" />
+               </font>
+            </Label>
+            <Label fx:id="taskDetailsLabel" layoutX="183.0" layoutY="736.0" prefHeight="17.0" prefWidth="591.0" text="(select a task first)" />
             </children>
         </Group>
     </children>
