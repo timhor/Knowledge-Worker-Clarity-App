@@ -20,9 +20,12 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
+import javafx.util.Callback;
 
 public class TasksScreenController {
 
@@ -101,6 +104,30 @@ public class TasksScreenController {
         doDateColumn.setCellValueFactory(cellData -> cellData.getValue().getDoDateProperty());
         dueDateColumn.setCellValueFactory(cellData -> cellData.getValue().getDueDateProperty());
 
+        // deselect rows adapted from: https://stackoverflow.com/a/30194680
+        taskList.setRowFactory(new Callback<TableView<Task>, TableRow<Task>>() {
+            @Override
+            public TableRow<Task> call(TableView<Task> tableView2) {
+                TableRow<Task> row = new TableRow<>();
+                row.setOnMouseClicked(event -> {
+                    if (!row.isEmpty() && event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
+                        saveTaskButton.setText("Update Existing Task");
+                        Task selectedTask = row.getItem();
+                        taskTitleTextField.setText(selectedTask.getTitle());
+                        taskDescriptionTextField.setText(selectedTask.getDescription());
+                        prioritySlider.setValue(Double.parseDouble(selectedTask.getPriority()));
+                        doDatePicker.setValue(LocalDate.parse(selectedTask.getDoDate()));
+                        dueDatePicker.setValue(LocalDate.parse(selectedTask.getDueDate()));
+                    } else {
+                        taskList.getSelectionModel().clearSelection();
+                        clearInputFields();
+                        saveTaskButton.setText("Save New Task");
+                    }
+                });
+                return row;
+            }
+        });
+
         populateTasks();
     }
 
@@ -170,12 +197,16 @@ public class TasksScreenController {
             e.printStackTrace();
         } finally {
             populateTasks();
-            taskTitleTextField.setText("");
-            taskDescriptionTextField.setText("");
-            prioritySlider.setValue(0);
-            dueDatePicker.setValue(null);
-            doDatePicker.setValue(null);
+            clearInputFields();
         }
+    }
+
+    private void clearInputFields() {
+        taskTitleTextField.setText("");
+        taskDescriptionTextField.setText("");
+        prioritySlider.setValue(0);
+        dueDatePicker.setValue(null);
+        doDatePicker.setValue(null);
     }
 
     @FXML
