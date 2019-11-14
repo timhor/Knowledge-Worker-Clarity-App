@@ -10,14 +10,11 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.paint.Color;
 import layout.LayoutScreenController;
 
 public class MyLifeScreenController {
@@ -126,21 +123,11 @@ public class MyLifeScreenController {
             for (Map.Entry<String, Float> entry : data.entrySet()) {
                 String key = entry.getKey();
                 Float value = entry.getValue();
-                System.out.println(key);
-                System.out.println(value);
-                // jeff: % of time spent = value / totalTimeSpent * 100. so try and add the label here
                Float valuePercentage = 100*value / totalTimeSpent;
                DecimalFormat df = new DecimalFormat("0"); 
                String valuePercentageString = String.valueOf(df.format(valuePercentage));
                 myPieChart.getData().add(new PieChart.Data(key + "\n " + valuePercentageString + "%" , value / totalTimeSpent));
             }
-            
-            
-            
-            
-            // here you'll probably add the color code work (i think). make sure you do it in a try/catch.
-            // you'll need to do a sql query to get the colours from the categories table 
-            // IDK why it doesnt work, the data is coming in properly and ive changed it in pie terms as well.. 
             try {
                 ArrayList<String> colourCodes = new ArrayList<>();
                 for (Map.Entry<String, Float> entry : data.entrySet()) {
@@ -150,25 +137,26 @@ public class MyLifeScreenController {
                     while (colourRs.next()) {
                         String categoryColour = colourRs.getString("hexString");
                         colourCodes.add(categoryColour);
-                        System.out.println(categoryColour);
                     }
                 }
-                Node n = myPieChart.lookup(".data0.chart-pie");
-                n.setStyle("-fx-pie-color: " + colourCodes.get(0));
-                n = myPieChart.lookup(".data1.chart-pie");
-                n.setStyle("-fx-pie-color: " + colourCodes.get(1));
-                n = myPieChart.lookup(".data2.chart-pie");
-                n.setStyle("-fx-pie-color: " + colourCodes.get(2));
-                n = myPieChart.lookup(".data3.chart-pie");
-                n.setStyle("-fx-pie-color: " + colourCodes.get(3));
-                n = myPieChart.lookup(".data4.chart-pie");
-                n.setStyle("-fx-pie-color: " + colourCodes.get(4));
-
+                try {
+                    Node n = myPieChart.lookup(".data0.chart-pie");
+                    for (int i = 0; i < colourCodes.size(); i++){
+                        if (i != 0){
+                            n = myPieChart.lookup(".data" + i + ".chart-pie");
+                            //System.out.println(".data" + i + ".chart-pie");
+                        }
+                        n.setStyle("-fx-pie-color: " + colourCodes.get(i) + ";");
+                        //System.out.println("-fx-pie-color: " + colourCodes.get(i) + ";");
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
                 myPieChart.setLegendVisible(false);
-                myPieChart.setTitle("Time spent on today's top 5 categories");
+                myPieChart.setTitle("Breakdown of my time spent");
             }
 
         } catch (SQLException e) {
