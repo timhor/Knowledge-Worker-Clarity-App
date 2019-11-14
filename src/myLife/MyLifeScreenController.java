@@ -52,7 +52,7 @@ public class MyLifeScreenController {
     @FXML
     public Button aboutScreenButton;
 
-    // Top Bar Handling 
+    // Top Bar Handling
     @FXML
     public void handleEntriesScreenButtonAction(ActionEvent event) throws IOException {
         layoutController.handleEntriesScreenButtonAction(event);
@@ -68,7 +68,7 @@ public class MyLifeScreenController {
         layoutController.handleAboutScreenButtonAction(event);
     }
 
-    // Add Data Handling  
+    // Add Data Handling
     @FXML
     public void handleHomeScreenButtonAction(ActionEvent event) throws IOException {
         layoutController.handleHomeScreenButtonAction(event);
@@ -113,11 +113,11 @@ public class MyLifeScreenController {
             ResultSet timeRs = Database.getResultSet(timeSt);
             long totalTimeSpent = 0;
             while (timeRs.next()) {
-                // calculate the time it takes 
+                // calculate the time it takes
                 String startTime = timeRs.getString("starttime");
                 String endTime = timeRs.getString("endtime");
                 long duration = parseTimeInMs(endTime) - parseTimeInMs(startTime);
-                float durationInHours = duration / 360000.0f;
+                float durationInHours = duration / 3600000.0f;
                 totalTimeSpent += durationInHours;
 
                 // append to the hashmap
@@ -130,18 +130,18 @@ public class MyLifeScreenController {
                 System.out.println(value);
                 // jeff: % of time spent = value / totalTimeSpent * 100. so try and add the label here
                Float valuePercentage = 100*value / totalTimeSpent;
-               DecimalFormat df = new DecimalFormat("0"); 
+               DecimalFormat df = new DecimalFormat("0");
                String valuePercentageString = String.valueOf(df.format(valuePercentage));
-                //ngl cant tell if this is fkn retarded or im a genius 
+                //ngl cant tell if this is fkn retarded or im a genius
                 myPieChart.getData().add(new PieChart.Data(key + "\n " + valuePercentageString + "%" , value / totalTimeSpent));
             }
-            
-            
-            
-            
+
+
+
+
             // here you'll probably add the color code work (i think). make sure you do it in a try/catch.
-            // you'll need to do a sql query to get the colours from the categories table 
-            // IDK why it doesnt work, the data is coming in properly and ive changed it in pie terms as well.. 
+            // you'll need to do a sql query to get the colours from the categories table
+            // IDK why it doesnt work, the data is coming in properly and ive changed it in pie terms as well..
             try {
                 ArrayList<String> colourCodes = new ArrayList<>();
                 for (Map.Entry<String, Float> entry : data.entrySet()) {
