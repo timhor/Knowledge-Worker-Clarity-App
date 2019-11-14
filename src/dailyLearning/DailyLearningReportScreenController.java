@@ -40,82 +40,84 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.paint.Color;
 import org.joda.time.DateTime;
 
-public class DailyLearningScreenController {
+public class DailyLearningReportScreenController {
 
     PageSwitchHelper pageSwitchHelper = new PageSwitchHelper();
 
     LayoutScreenController layoutController = new LayoutScreenController();
 
     @FXML
-    private DatePicker datePicker;
-
-    @FXML
-    private TextField wentWellTextField;
-    
-    @FXML
-    private TextField couldImproveTextField;
-
-    @FXML
-    private Button saveLearningButton;
-    
-    @FXML
-    private ComboBox<String> wentWellComboBox;
-    
-    @FXML
-    private ComboBox<String> couldImproveComboBox;
-
-    @FXML
-    private TableView<Learning> learningList;
-    
-    @FXML
-    private TableColumn<Learning, String> dateColumn;
+    private Button myDayScreenButton;
 
     @FXML
     private TableColumn<Learning, String> wentWellColumn;
 
     @FXML
-    private TableColumn<Learning, String> couldImproveColumn;
-    
-    @FXML
-    private Button generateReportButton;
-
-    // Navigation
-    // Side bar
-    @FXML
-    public Button homeScreenButton;
+    private Button myWeekScreenButton;
 
     @FXML
-    public Button myLifeScreenButton;
+    private Button myLifeScreenButton;
 
     @FXML
-    public Button myDayScreenButton;
-
-    @FXML
-    public Button myWeekScreenButton;
-
-    @FXML
-    public Button weeklyTrendsScreenButton;
-
-    // Top Bar
-    @FXML
-    public Button entriesScreenButton;
-
-    @FXML
-    public Button tasksScreenButton;
-
-    @FXML
-    public Button aboutScreenButton;
+    private Button tasksScreenButton;
 
     @FXML
     private Label statusLabel;
 
-    // table cell editing adapted from:
-    // https://docs.oracle.com/javase/8/javafx/user-interface-tutorial/table-view.htm#CJAGAAEE
+    @FXML
+    private Button homeScreenButton;
+
+    @FXML
+    private Button entriesScreenButton;
+
+    @FXML
+    private Button aboutScreenButton;
+
+    @FXML
+    private Button weeklyTrendsScreenButton;
+    
+    
+    //went well list
+    @FXML
+    private TableView<Learning> wentWellList;
+    
+    @FXML
+    private TableColumn<Learning, String> countColumn1;
+        
+    @FXML
+    private TableColumn<Learning, String> wentWellColumn1;
+        
+    @FXML
+    private TableColumn<Learning, String> dateColumn1;
+    
+    //could improve list
+    @FXML
+    private TableView<Learning> couldImproveList;
+    
+    @FXML
+    private TableColumn<Learning, String> countColumn;
+    
+    @FXML
+    private TableColumn<Learning, String> couldImproveColumn;
+    
+    @FXML
+    private TableColumn<Learning, String> dateColumn;
+    
+    //also new
+    @FXML
+    private Button EnterDailyLearningsButton;
+            
+        
+    
+//// all the stuff below is from the DailyLearningScreen
+    //this is probably needed
     @FXML
     public void initialize() throws SQLException {
+        // defining where the data is coming from and what its doing - talking directly to the database
         wentWellColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         wentWellColumn.setCellValueFactory(cellData -> cellData.getValue().getWentWellProperty());
         wentWellColumn.setOnEditCommit((CellEditEvent<Learning, String> t) -> {
+            //anonynomous function - edit the underlying data it executes the sequel statement written in orange
             String newWentWell = t.getNewValue();
             try {
                 Database.updateFromPreparedStatement("UPDATE daily_learning SET wentWell = ? WHERE id = ?",
@@ -127,6 +129,8 @@ public class DailyLearningScreenController {
                 e.printStackTrace();
             }
         });
+        
+        //
         couldImproveColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         couldImproveColumn.setCellValueFactory(cellData -> cellData.getValue().getCouldImproveProperty());
         couldImproveColumn.setOnEditCommit((CellEditEvent<Learning, String> t) -> {
@@ -145,40 +149,31 @@ public class DailyLearningScreenController {
         dateColumn.setCellValueFactory(cellData -> cellData.getValue().getDateProperty());
         datePicker.setConverter(SharedComponents.getDatePickerConverter());
 
-        populateEntries();
-        
-        populateComboBox();
+        populateWentWell();
+        populateCouldImprove();
     }
     
-    private void populateEntries() {
+    private void populateWentWell() {
         try {
-            learningList.setItems(getLearningListData());
+            wentWellList.setItems(getWentWellData());
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
     
-    private void populateComboBox() throws SQLException{
-        ObservableList<String>  wentWellList = FXCollections.observableArrayList();
-        ObservableList<String>  couldImproveList = FXCollections.observableArrayList();
-        ResultSet wwRs = Database.getResultSet(
-                "SELECT DISTINCT wentWell from daily_learning;");
-        while (wwRs.next()){
-            wentWellList.add(wwRs.getString("wentWell"));
+        private void populateCouldImprove() {
+        try {
+            couldImproveList.setItems(getCouldImproveData());
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
-        ResultSet ciRs = Database.getResultSet(
-                "SELECT DISTINCT couldImprove from daily_learning;");
-        while (ciRs.next()){
-            couldImproveList.add(ciRs.getString("couldImprove"));
-        }
-        wentWellComboBox.setItems(wentWellList);
-        couldImproveComboBox.setItems(couldImproveList);
     }
-
-    private ObservableList<Learning> getLearningListData() throws SQLException {
+    
+//
+    private ObservableList<Learning> getWentWellData() throws SQLException {
         ArrayList<Learning> learningList = new ArrayList<Learning>();
         ResultSet rs = Database.getResultSet(
-                "SELECT id, date, wentWell, couldImprove from daily_learning;");
+                "SELECT wentWell, COUNT(*) from daily_learning GROUP BY wentWell ORDER BY COUNT(*) DESC;");
         while (rs.next()) {
             Learning learning = new Learning(rs.getString("id"), rs.getString("date"), 
                     rs.getString("wentWell"), rs.getString("couldImprove"));
@@ -186,74 +181,21 @@ public class DailyLearningScreenController {
         }
         return FXCollections.observableList(learningList);
     }
-
-    @FXML
-    public void handleSaveLearningButtonAction(ActionEvent event) {
-        statusLabel.setVisible(false);
-        String wentWellString; 
-
-                if (wentWellTextField.getText() == null && wentWellComboBox.getValue() != null) {
-            wentWellString = wentWellComboBox.getValue();
+    
+        private ObservableList<Learning> getCouldImproveData() throws SQLException {
+        ArrayList<Learning> learningList = new ArrayList<Learning>();
+        ResultSet rs = Database.getResultSet(
+                "SELECT couldImprove, COUNT(*) from daily_learning GROUP BY couldImprove ORDER BY COUNT(*) DESC;");
+        while (rs.next()) {
+            Learning learning = new Learning(rs.getString("id"), rs.getString("date"), 
+                    rs.getString("wentWell"), rs.getString("couldImprove"));
+            learningList.add(learning);
         }
-        else if (wentWellComboBox.getValue() == null && wentWellTextField.getText() != null) {
-            wentWellString = wentWellComboBox.getValue();
-        }
-        
-        else {
-            statusLabel.setVisible(true);
-            statusLabel.setTextFill(Color.RED);
-            statusLabel.setText("Went Well field entered incorrectly: cannot be left blank or filled in twice");
-            return;
-        }
-
-        String couldImproveString; 
-                if (couldImproveTextField.getText() == null && couldImproveComboBox.getValue() != null) {
-            couldImproveString = couldImproveComboBox.getValue();
-        }
-        else if (couldImproveComboBox.getValue() == null && couldImproveTextField.getText() != null) {
-            couldImproveString = couldImproveComboBox.getValue();
-        }
-        
-        else {
-//        if (wentWellString.length() == 0) {
-            statusLabel.setVisible(true);
-            statusLabel.setTextFill(Color.RED);
-            statusLabel.setText("Could Improve field entered incorrectly: cannot be left blank or filled in twice");
-            return;
-        }
-
-        LocalDate date = datePicker.getValue();
-        if (date == null) {
-            statusLabel.setVisible(true);
-            statusLabel.setTextFill(Color.RED);
-            statusLabel.setText("Please set a date");
-            return;
-        }
-
-        try {
-            Database.updateFromPreparedStatement(
-                    "INSERT INTO daily_learning (date, wentWell, couldImprove) VALUES (?,?,?)",
-                    new String[] { date.toString(), wentWellString, couldImproveString});
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            populateEntries();
-            wentWellTextField.setText("");
-            couldImproveTextField.setText("");
-        }
+        return FXCollections.observableList(learningList);
     }
     
-//    @FXML
-//    public void handleGenerateReportButtonAction(ActionEvent event) throws IOException, SQLException{
-//        // should load a new page and then do this but for the sake of time...
-//        calculateFrequency();
-//    }
-    
-    @FXML
-    public void handleGenerateReportButtonAction(ActionEvent event) throws IOException {
-        layoutController.handleGenerateReportButtonAction(event);
-    }
-    
+        
+        //is not needed? 
     public void calculateFrequency() throws SQLException{
         // we want to only look at the last 30 days 
         // get the dates for the last seven days
@@ -292,21 +234,21 @@ public class DailyLearningScreenController {
         System.out.println(entriesSortedByValues(couldImproveFrequencyMap));
     }
     
-    // sorting the map in descending order so we can display it 
-    // adapted from https://stackoverflow.com/questions/11647889/sorting-the-mapkey-value-in-descending-order-based-on-the-value
-    static <K,V extends Comparable<? super V>> List<Entry<K, V>> entriesSortedByValues(Map<K,V> map) {
-
-        List<Entry<K,V>> sortedEntries = new ArrayList<Entry<K,V>>(map.entrySet());
-
-        Collections.sort(sortedEntries, new Comparator<Entry<K,V>>() {
-                    @Override
-                    public int compare(Entry<K,V> e1, Entry<K,V> e2) {
-                        return e2.getValue().compareTo(e1.getValue());
-                    }
-                }
-        );
-        return sortedEntries;
-    }
+//    // sorting the map in descending order so we can display it 
+//    // adapted from https://stackoverflow.com/questions/11647889/sorting-the-mapkey-value-in-descending-order-based-on-the-value
+//    static <K,V extends Comparable<? super V>> List<Entry<K, V>> entriesSortedByValues(Map<K,V> map) {
+//
+//        List<Entry<K,V>> sortedEntries = new ArrayList<Entry<K,V>>(map.entrySet());
+//
+//        Collections.sort(sortedEntries, new Comparator<Entry<K,V>>() {
+//                    @Override
+//                    public int compare(Entry<K,V> e1, Entry<K,V> e2) {
+//                        return e2.getValue().compareTo(e1.getValue());
+//                    }
+//                }
+//        );
+//        return sortedEntries;
+//    }
 
     // Navigation
     // Top Bar Handling
@@ -351,5 +293,10 @@ public class DailyLearningScreenController {
         layoutController.handleWeeklyTrendsScreenButtonAction(event);
     }
 
+    //new for the this controller
+        @FXML
+    void handleEnterDailyLearningsButtonAction(ActionEvent event) throws IOException {
+        layoutController.handleEnterDailyLearningsButtonAction(event);
+    }
     
 }

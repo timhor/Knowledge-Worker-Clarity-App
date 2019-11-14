@@ -29,6 +29,7 @@ public class KnowledgeWorkerClarityApp extends Application {
         Database.createCategoriesTable();
         Database.createEntriesTable();
         Database.createTasksTable();
+        Database.createDailyLearningTable();
     }
 
 }
