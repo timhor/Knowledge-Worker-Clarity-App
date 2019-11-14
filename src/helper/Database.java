@@ -127,11 +127,11 @@ public class Database {
             ArrayList<String> insertStatements = new ArrayList<String>();
 
             insertStatements.add("INSERT INTO tasks (title, description, priority, dueDate, doDate, completed)" +
-                "VALUES ('First task', 'First task', '100', '2019-11-05', '2019-11-05', '0')");
+                "VALUES ('First task', 'First task', '100', '2019-11-05', '2019-11-05', '1')");
             insertStatements.add("INSERT INTO tasks (title, description, priority, dueDate, doDate, completed)" +
-                "VALUES ('Second task', 'Second task', '100', '2019-11-05', '2019-11-05', '0')");
+                "VALUES ('Second task', 'Second task', '100', '2019-11-13', '2019-11-14', '0')");
             insertStatements.add("INSERT INTO tasks (title, description, priority, dueDate, doDate, completed)" +
-                "VALUES ('Third task', 'Third task', '100', '2019-11-05', '2019-11-05', '1')");
+                "VALUES ('Third task', 'Third task', '100', '2019-11-17', '2019-11-17', '0')");
 
             for (String statement : insertStatements) {
                 stmt.execute(statement);

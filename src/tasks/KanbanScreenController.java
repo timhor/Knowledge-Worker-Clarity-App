@@ -12,10 +12,19 @@ import layout.LayoutScreenController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.SelectionMode;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.DataFormat;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TransferMode;
+import javafx.util.Callback;
 
 public class KanbanScreenController {
 
@@ -81,12 +90,39 @@ public class KanbanScreenController {
     private ListView<Task> nextSevenDaysListView;
 
     @FXML
+    private Label taskDetailsLabel;
+
+    @FXML
     private Button switchModeButton;
 
     @FXML
     public void initialize() {
         isDoDate = true;
         populateTasks();
+
+        completedListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        todayListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        tomorrowListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        nextSevenDaysListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+
+        // mouseover handling adapted from: https://stackoverflow.com/a/14019063
+        // completedListView.setCellFactory(new Callback<ListView<Task>, ListCell<Task>>() {
+        //     @Override
+        //     public ListCell<Task> call(ListView<Task> list) {
+        //         final ListCell<Task> cell = new ListCell<Task>();
+        //         cell.setOnMouseEntered(new EventHandler<MouseEvent>() {
+        //             @Override
+        //             public void handle(MouseEvent event) {
+        //                 if (cell.getItem() != null) {
+        //                     taskDetailsLabel.setText(cell.getItem().getDescription());
+        //                 } else {
+        //                     taskDetailsLabel.setText("(mouse over a task)");
+        //                 }
+        //             }
+        //         });
+        //         return cell;
+        //     }
+        // });
     }
 
     private void populateTasks() {
@@ -128,6 +164,26 @@ public class KanbanScreenController {
             tasks.add(task);
         }
         return FXCollections.observableList(tasks);
+    }
+
+    // the following drag-and-drop handlers adapted from:
+    // - https://examples.javacodegeeks.com/desktop-java/javafx/event-javafx/javafx-drag-drop-example/
+    // - https://docs.oracle.com/javafx/2/drag_drop/jfxpub-drag_drop.htm
+
+    @FXML
+    @SuppressWarnings("unchecked")
+    private void handleDragDetected(MouseEvent event) {
+        ListView<Task> listView = (ListView<Task>) event.getSource();
+        Task selection = listView.getSelectionModel().getSelectedItem();
+        if (selection == null) {
+            event.consume();
+            return;
+        }
+        Dragboard dragboard = listView.startDragAndDrop(TransferMode.MOVE);
+        ClipboardContent content = new ClipboardContent();
+        content.putString(selection.getTaskID());
+        dragboard.setContent(content);
+        event.consume();
     }
 
     @FXML
