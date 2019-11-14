@@ -33,6 +33,8 @@ public class TasksScreenController {
 
     LayoutScreenController layoutController = new LayoutScreenController();
 
+    private String selectedTaskId = "";
+
     // Navigation
     // Side bar
     @FXML
@@ -113,6 +115,7 @@ public class TasksScreenController {
                     if (!row.isEmpty() && event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
                         saveTaskButton.setText("Update Existing Task");
                         Task selectedTask = row.getItem();
+                        selectedTaskId = selectedTask.getTaskID();
                         taskTitleTextField.setText(selectedTask.getTitle());
                         taskDescriptionTextField.setText(selectedTask.getDescription());
                         prioritySlider.setValue(Double.parseDouble(selectedTask.getPriority()));
@@ -122,6 +125,7 @@ public class TasksScreenController {
                         taskList.getSelectionModel().clearSelection();
                         clearInputFields();
                         saveTaskButton.setText("Save New Task");
+                        selectedTaskId = "";
                     }
                 });
                 return row;
@@ -190,9 +194,15 @@ public class TasksScreenController {
         }
 
         try {
-            Database.updateFromPreparedStatement(
-                    "INSERT INTO tasks (title, description, priority, dueDate, doDate, completed) VALUES (?,?,?,?,?,?)",
-                    new String[] { title, description, priority, dueDate.toString(), doDate.toString(), "0" });
+            if (selectedTaskId.length() > 0) {
+                Database.updateFromPreparedStatement(
+                        "UPDATE tasks SET title = ?, description = ?, priority = ?, dueDate = ?, doDate = ? WHERE taskId = ?",
+                        new String[] { title, description, priority, dueDate.toString(), doDate.toString(), selectedTaskId });
+            } else {
+                Database.updateFromPreparedStatement(
+                        "INSERT INTO tasks (title, description, priority, dueDate, doDate, completed) VALUES (?,?,?,?,?,?)",
+                        new String[] { title, description, priority, dueDate.toString(), doDate.toString(), "0" });
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
