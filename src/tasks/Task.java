@@ -5,10 +5,9 @@
  */
 package tasks;
 
-/**
- *
- * @author jenniferruan
- */
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
 public class Task {
     private String taskID;
     private String title;
@@ -38,12 +37,20 @@ public class Task {
         return title;
     }
 
+    public StringProperty getTitleProperty() {
+        return new SimpleStringProperty(title);
+    }
+
     public void setTitle(String title) {
         this.title = title;
     }
 
     public String getDescription() {
         return description;
+    }
+
+    public StringProperty getDescriptionProperty() {
+        return new SimpleStringProperty(description);
     }
 
     public void setDescription(String description) {
@@ -54,6 +61,10 @@ public class Task {
         return priority;
     }
 
+    public StringProperty getPriorityProperty() {
+        return new SimpleStringProperty(priority);
+    }
+
     public void setPriority(String priority) {
         this.priority = priority;
     }
@@ -62,12 +73,20 @@ public class Task {
         return doDate;
     }
 
+    public StringProperty getDoDateProperty() {
+        return new SimpleStringProperty(doDate);
+    }
+
     public void setDoDate(String doDate) {
         this.doDate = doDate;
     }
 
     public String getDueDate() {
         return dueDate;
+    }
+
+    public StringProperty getDueDateProperty() {
+        return new SimpleStringProperty(dueDate);
     }
 
     public void setDueDate(String dueDate) {
