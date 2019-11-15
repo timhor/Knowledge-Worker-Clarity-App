@@ -125,14 +125,18 @@ public class CategoriesScreenController {
 
     @FXML
     private void handleDeleteButtonAction(ActionEvent event) {
-        Category categoryToDelete = categoryList.getSelectionModel().getSelectedItem();
-        if (categoryToDelete != null) {
+        if (selectedCategoryId.length() > 0) {
             try {
-                Database.updateFromPreparedStatement("DELETE FROM entries WHERE id = ?",
-                        new String[] { categoryToDelete.getId() });
+                Database.updateFromPreparedStatement("DELETE FROM categories WHERE id = ?",
+                        new String[] { selectedCategoryId });
+                // ON DELETE SET NULL didn't work for some reason...
+                Database.updateFromPreparedStatement("UPDATE entries SET category = NULL WHERE category = ?",
+                        new String[] { selectedCategoryId });
                 populateCategories();
             } catch (SQLException e) {
                 e.printStackTrace();
+            } finally {
+                clearInputFields();
             }
         }
     }

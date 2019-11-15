@@ -10,7 +10,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import javafx.collections.FXCollections;
@@ -26,8 +25,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TableColumn.CellEditEvent;
-import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
 import javafx.util.Callback;
@@ -152,7 +149,7 @@ public class EntriesScreenController {
                     @Override
                     protected void updateItem(Entry item, boolean empty) {
                         super.updateItem(item, empty);
-                        if (item == null || item.getCategory().getHexString() == null) {
+                        if (item == null || item.getCategory() == null || item.getCategory().getHexString() == null) {
                             setStyle("");
                         } else {
                             setStyle("-fx-background-color: " + item.getCategory().getHexString() + ";");
@@ -219,10 +216,14 @@ public class EntriesScreenController {
                         + "FROM entries e LEFT JOIN categories c ON e.category = c.id;");
         while (rs.next()) {
             String categoryName = rs.getString("categoryname");
+            String categoryId = rs.getString("categoryid");
+            String categoryColour = rs.getString("colour");
             if (rs.wasNull()) {
                 categoryName = "Uncategorised";
+                categoryId = "-1";
+                categoryColour = "#FFF";
             }
-            Entry entry = new Entry(rs.getString("entryid"), rs.getString("categoryid"), rs.getString("colour"), categoryName,
+            Entry entry = new Entry(rs.getString("entryid"), categoryId, categoryColour, categoryName,
                     rs.getString("description"), rs.getString("date"), rs.getString("starttime"),
                     rs.getString("endtime"));
             entryList.add(entry);
@@ -288,14 +289,15 @@ public class EntriesScreenController {
 
     @FXML
     private void handleDeleteButtonAction(ActionEvent event) {
-        Entry entryToDelete = entryList.getSelectionModel().getSelectedItem();
-        if (entryToDelete != null) {
+        if (selectedEntryId.length() > 0) {
             try {
                 Database.updateFromPreparedStatement("DELETE FROM entries WHERE id = ?",
-                        new String[] { entryToDelete.getId() });
+                        new String[] { selectedEntryId });
                 populateEntries();
             } catch (SQLException e) {
                 e.printStackTrace();
+            } finally {
+                clearInputFields();
             }
         }
     }
