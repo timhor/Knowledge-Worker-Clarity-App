@@ -192,11 +192,11 @@ public class DailyLearningScreenController {
         statusLabel.setVisible(false);
         String wentWellString; 
 
-                if (wentWellTextField.getText() == null && wentWellComboBox.getValue() != null) {
+                if (wentWellTextField.getText().trim().length() ==0 && wentWellComboBox.getValue() != null) {
             wentWellString = wentWellComboBox.getValue();
         }
-        else if (wentWellComboBox.getValue() == null && wentWellTextField.getText() != null) {
-            wentWellString = wentWellComboBox.getValue();
+        else if (wentWellComboBox.getValue() == null && wentWellTextField.getText().trim().length()>0) {
+            wentWellString = wentWellTextField.getText();
         }
         
         else {
@@ -207,11 +207,11 @@ public class DailyLearningScreenController {
         }
 
         String couldImproveString; 
-                if (couldImproveTextField.getText() == null && couldImproveComboBox.getValue() != null) {
+                if (couldImproveTextField.getText().trim().length() ==0 && couldImproveComboBox.getValue() != null) {
             couldImproveString = couldImproveComboBox.getValue();
         }
-        else if (couldImproveComboBox.getValue() == null && couldImproveTextField.getText() != null) {
-            couldImproveString = couldImproveComboBox.getValue();
+        else if (couldImproveComboBox.getValue() == null && couldImproveTextField.getText().trim().length() >0) {
+            couldImproveString = couldImproveTextField.getText();
         }
         
         else {
@@ -240,14 +240,11 @@ public class DailyLearningScreenController {
             populateEntries();
             wentWellTextField.setText("");
             couldImproveTextField.setText("");
+            couldImproveComboBox.setValue(null);
+            wentWellComboBox.setValue(null);
         }
     }
     
-//    @FXML
-//    public void handleGenerateReportButtonAction(ActionEvent event) throws IOException, SQLException{
-//        // should load a new page and then do this but for the sake of time...
-//        calculateFrequency();
-//    }
     
     @FXML
     public void handleGenerateReportButtonAction(ActionEvent event) throws IOException {
@@ -307,6 +304,19 @@ public class DailyLearningScreenController {
         );
         return sortedEntries;
     }
+    
+//            private void handleDeleteButtonAction(ActionEvent event) {
+//        Learning learningToDelete = learningList.getSelectionModel().getSelectedItem();
+//        if (learningToDelete != null) {
+//            try {
+//                Database.updateFromPreparedStatement("DELETE FROM daily_learning WHERE id = ?",
+//                        new String[] { learningToDelete.getId() });
+//                populateEntries();
+//            } catch (SQLException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//    }
 
     // Navigation
     // Top Bar Handling

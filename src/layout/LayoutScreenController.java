@@ -68,6 +68,7 @@ public class LayoutScreenController {
         }
     }
 
+        @FXML
         public void handleGenerateReportButtonAction(ActionEvent event) throws IOException {
         try {
             pageSwitchHelper.switcher(event, "/dailyLearning/DailyLearningReportScreen.fxml");
@@ -131,6 +132,8 @@ public class LayoutScreenController {
         }
     }
 
+    
+    //unnecessary
     @FXML
     public void handleDailyLearningScreenButtonAction(ActionEvent event) throws IOException {
         try {

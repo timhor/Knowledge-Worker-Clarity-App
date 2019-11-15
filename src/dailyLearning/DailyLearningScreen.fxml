@@ -62,12 +62,12 @@
             </TableView>
             <TextField fx:id="wentWellTextField" layoutX="273.0" layoutY="96.0" prefHeight="30.0" prefWidth="260.0" promptText="What Went Well?" />
             <Button fx:id="saveLearningButton" defaultButton="true" layoutX="824.0" layoutY="96.0" mnemonicParsing="false" onAction="#handleSaveLearningButtonAction" prefHeight="30.0" prefWidth="160.0" text="Save Learning" />
-            <Label layoutX="111.0" layoutY="56.0" text="Enter your Daily Learnings">
+            <Label layoutX="111.0" layoutY="56.0" text="Enter Your Learnings For Today">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <Label fx:id="statusLabel" layoutX="379.0" layoutY="51.0" prefHeight="35.0" prefWidth="278.0" />
+            <Label fx:id="statusLabel" layoutX="379.0" layoutY="51.0" prefHeight="35.0" prefWidth="594.0" />
             <DatePicker fx:id="datePicker" layoutX="111.0" layoutY="95.0" prefHeight="30.0" prefWidth="154.0" promptText="Date" />
             <TextField fx:id="couldImproveTextField" layoutX="543.0" layoutY="96.0" prefHeight="30.0" prefWidth="270.0" promptText="What Could Be Better?" />
             <Label layoutX="113.0" layoutY="154.0" prefHeight="53.0" prefWidth="152.0" text="Choose a previous&#10;answer:">
@@ -80,5 +80,6 @@
             <Button fx:id="generateReportButton" defaultButton="true" layoutX="426.0" layoutY="712.0" mnemonicParsing="false" onAction="#handleGenerateReportButtonAction" prefHeight="30.0" prefWidth="160.0" text="Generate Report" />
          </children>
       </Group>
+      <Button mnemonicParsing="false" text="Button" />
    </children>
 </AnchorPane>
