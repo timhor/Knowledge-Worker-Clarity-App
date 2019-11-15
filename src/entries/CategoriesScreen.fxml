@@ -13,7 +13,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="768.0" prefWidth="917.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="entries.EntriesScreenController">
+<AnchorPane id="AnchorPane" prefHeight="768.0" prefWidth="917.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="entries.CategoriesScreenController">
    <children>
       <Group>
          <children>
@@ -53,29 +53,22 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
             </GridPane>
-            <TableView fx:id="entryList" editable="true" focusTraversable="false" layoutX="110.0" layoutY="177.0" prefHeight="538.0" prefWidth="877.0">
+            <TableView fx:id="categoryList" editable="true" focusTraversable="false" layoutX="110.0" layoutY="174.0" prefHeight="541.0" prefWidth="877.0">
               <columns>
-                <TableColumn fx:id="categoryColumn" prefWidth="164.0" text="Category" />
-                <TableColumn fx:id="descriptionColumn" prefWidth="323.0" text="Description" />
-                  <TableColumn fx:id="dateColumn" editable="false" prefWidth="107.95697021484375" text="Date" />
-                  <TableColumn fx:id="startTimeColumn" prefWidth="92.532958984375" text="Start" />
-                  <TableColumn fx:id="endTimeColumn" prefWidth="99.60028076171875" text="End" />
-                  <TableColumn fx:id="durationColumn" editable="false" minWidth="0.0" prefWidth="88.0" sortable="false" text="Duration" />
+                <TableColumn fx:id="categoryColumn" prefWidth="431.0" text="Category" />
+                <TableColumn fx:id="colourColumn" prefWidth="445.0" text="Colour" />
               </columns>
             </TableView>
-            <ComboBox fx:id="categoryDropdown" layoutX="111.0" layoutY="124.0" prefHeight="32.0" prefWidth="150.0" promptText="Category" />
-            <DatePicker fx:id="datePicker" layoutX="428.0" layoutY="124.0" prefHeight="33.0" prefWidth="130.0" promptText="Date" />
-            <TextField fx:id="entryDescriptionTextField" layoutX="276.0" layoutY="124.0" prefHeight="33.0" prefWidth="139.0" promptText="Entry Description" />
-            <TextField fx:id="startTimeTextField" layoutX="568.0" layoutY="124.0" prefHeight="33.0" prefWidth="139.0" promptText="Start Time (HH:MM)" />
-            <TextField fx:id="endTimeTextField" layoutX="715.0" layoutY="124.0" prefHeight="33.0" prefWidth="139.0" promptText="End Time (HH:MM)" />
-            <Button fx:id="saveEntryButton" defaultButton="true" layoutX="866.0" layoutY="124.0" mnemonicParsing="false" onAction="#handleSaveEntryButtonAction" prefHeight="33.0" prefWidth="121.0" text="Save Entry" />
-            <Label layoutX="111.0" layoutY="85.0" text="Manage Entries">
+            <Label layoutX="111.0" layoutY="85.0" text="Manage Categories">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
+            <TextField fx:id="categoryNameTextField" layoutX="112.0" layoutY="120.0" prefHeight="33.0" prefWidth="209.0" promptText="Category Name" />
+            <ColorPicker fx:id="categoryColourPicker" layoutX="341.0" layoutY="120.0" prefHeight="33.0" prefWidth="149.0" />
+            <Button fx:id="saveCategoryButton" defaultButton="true" layoutX="511.0" layoutY="120.0" mnemonicParsing="false" onAction="#handleSaveCategoryButtonAction" prefHeight="34.0" prefWidth="138.0" text="Save Category" />
             <Label fx:id="statusLabel" layoutX="110.0" layoutY="727.0" prefHeight="29.0" prefWidth="528.0" visible="false" />
-            <Button layoutX="833.0" layoutY="728.0" mnemonicParsing="false" onAction="#handleDeleteButtonAction" text="Delete Selected Entry" />
+            <Button layoutX="811.0" layoutY="728.0" mnemonicParsing="false" onAction="#handleDeleteButtonAction" text="Delete Selected Category" />
          </children>
       </Group>
    </children>

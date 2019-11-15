@@ -181,11 +181,11 @@ public class EntriesScreenController {
             }
         });
 
-        populateCategories();
+        populateCategoriesIntoDropdown();
         populateEntries();
     }
 
-    private void populateCategories() {
+    private void populateCategoriesIntoDropdown() {
         try {
             categoryDropdown.setItems(getCategories());
         } catch (Exception ex) {
@@ -297,34 +297,6 @@ public class EntriesScreenController {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-        }
-    }
-
-    @FXML
-    private void handleSaveCategoryButtonAction(ActionEvent event) {
-        statusLabel.setVisible(false);
-
-        String categoryName = categoryNameTextField.getText();
-        if (categoryName.length() == 0) {
-            statusLabel.setVisible(true);
-            statusLabel.setTextFill(Color.RED);
-            statusLabel.setText("Category name cannot be empty");
-            return;
-        }
-
-        // colour conversion adapted from: https://stackoverflow.com/a/18803814
-        Color colourValue = categoryColourPicker.getValue();
-        String hexString = String.format("#%02X%02X%02X", (int) (colourValue.getRed() * 255),
-                (int) (colourValue.getGreen() * 255), (int) (colourValue.getBlue() * 255));
-
-        try {
-            Database.updateFromPreparedStatement("INSERT INTO categories (categoryname, hexstring) VALUES ( ?, ?)",
-                    new String[] { categoryName, hexString });
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            populateCategories();
-            categoryNameTextField.setText("");
         }
     }
 

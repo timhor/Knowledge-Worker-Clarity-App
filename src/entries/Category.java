@@ -1,5 +1,8 @@
 package entries;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
 public class Category {
 
     private String id;
@@ -20,8 +23,16 @@ public class Category {
         return this.categoryName;
     }
 
+    public StringProperty getCategoryNameProperty() {
+        return new SimpleStringProperty(this.categoryName);
+    }
+
     public String getHexString() {
-        return this.hexString;
+        return this.hexString.trim();
+    }
+
+    public StringProperty getHexStringProperty() {
+        return new SimpleStringProperty(this.hexString);
     }
 
 }
