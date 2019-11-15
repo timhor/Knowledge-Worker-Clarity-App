@@ -194,6 +194,9 @@ public class FocusModeScreenController {
         chooseMusicLabel.setVisible(false);
         focusTaskDescriptionLabel.setVisible(false);
 
+        // reset music
+        stopMusic();
+        musicDropdown.setValue("(None)");
 
         //turn on other items
         startFocusingButton.setVisible(true);
@@ -214,21 +217,25 @@ public class FocusModeScreenController {
     @FXML
     public void handleMusicAction(ActionEvent event) {
         // if there is music playing already, stop the music
-        if(mediaPlayer != null){
-            // check status - stop playing if something is playing
-            // adapted from https://stackoverflow.com/questions/18340125/how-to-tell-if-mediaplayer-is-playing
-            if (mediaPlayer.getStatus().equals(Status.PLAYING)){
-                mediaPlayer.stop();
-            }
-        }
+        stopMusic();
         // get whatever the user has chosen to play
         String songTitle = musicDropdown.getValue();
         if (songTitle.equals("(None)")) {
-            mediaPlayer.stop();
+            stopMusic();
         } else {
             Media sound = new Media(new File("music//" + songTitle + ".mp3").toURI().toString());
             mediaPlayer = new MediaPlayer(sound);
             mediaPlayer.play();
+        }
+    }
+
+    private void stopMusic() {
+        if (mediaPlayer != null) {
+            // check status - stop playing if something is playing
+            // adapted from: https://stackoverflow.com/questions/18340125/how-to-tell-if-mediaplayer-is-playing
+            if (mediaPlayer.getStatus().equals(Status.PLAYING)) {
+                mediaPlayer.stop();
+            }
         }
     }
 }
