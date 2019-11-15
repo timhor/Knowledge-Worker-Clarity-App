@@ -1,5 +1,4 @@
 // THIS FILE ADAPTED FROM INFS2605 19T3 WEEK 5 TUTORIAL
-
 package dailyLearning;
 
 import java.text.ParseException;
@@ -24,7 +23,6 @@ public class LearningAgg {
     }
 
     // to facilitate editing and deleting entries from TableView
-
     public StringProperty getDescProperty() {
         return desc;
     }
@@ -40,5 +38,5 @@ public class LearningAgg {
     public void setCountProperty(Integer count) {
         this.count.set(count);
     }
-    
+
 }
