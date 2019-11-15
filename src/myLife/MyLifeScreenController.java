@@ -119,7 +119,7 @@ public class MyLifeScreenController {
             for (Map.Entry<String, Float> entry : data.entrySet()) {
                 String key = entry.getKey();
                 Float value = entry.getValue();
-               Float valuePercentage = 100*value / totalTimeSpent;
+               Float valuePercentage = 100 * value / totalTimeSpent;
                DecimalFormat df = new DecimalFormat("0");
                String valuePercentageString = String.valueOf(df.format(valuePercentage));
                 myPieChart.getData().add(new PieChart.Data(key + "\n " + valuePercentageString + "%" , value / totalTimeSpent));
@@ -140,10 +140,8 @@ public class MyLifeScreenController {
                     for (int i = 0; i < colourCodes.size(); i++){
                         if (i != 0){
                             n = myPieChart.lookup(".data" + i + ".chart-pie");
-                            //System.out.println(".data" + i + ".chart-pie");
                         }
                         n.setStyle("-fx-pie-color: " + colourCodes.get(i) + ";");
-                        //System.out.println("-fx-pie-color: " + colourCodes.get(i) + ";");
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -152,7 +150,7 @@ public class MyLifeScreenController {
                 e.printStackTrace();
             } finally {
                 myPieChart.setLegendVisible(false);
-                myPieChart.setTitle("Breakdown of my time spent");
+                myPieChart.setTitle("Breakdown of time spent");
             }
 
         } catch (SQLException e) {

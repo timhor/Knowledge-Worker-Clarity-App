@@ -52,10 +52,13 @@ public class FocusModeScreenController {
 
     //Navigation
     // Side bar
+
+    @FXML
+    public Button manageTaskScreenButton;
+
     @FXML
     public Button kanbanScreenButton;
 
-    // Top Bar
     @FXML
     public Button focusModeScreenButton;
 
@@ -67,40 +70,6 @@ public class FocusModeScreenController {
     public Label chooseMusicLabel;
     MediaPlayer mediaPlayer;
 
-//Navigation
-    // Top Bar Handling
-    @FXML
-    public void handleEntriesScreenButtonAction(ActionEvent event) throws IOException {
-        layoutController.handleEntriesScreenButtonAction(event);
-    }
-
-    @FXML
-    public void handleTasksScreenButtonAction(ActionEvent event) throws IOException {
-        layoutController.handleTasksScreenButtonAction(event);
-    }
-
-    @FXML
-    public void handleAboutScreenButtonAction(ActionEvent event) throws IOException {
-        layoutController.handleAboutScreenButtonAction(event);
-    }
-
-    @FXML
-    public void handleKanbanScreenButtonAction(ActionEvent event) throws IOException {
-        try {
-            pageSwitchHelper.switcher(event, "/tasks/TasksScreen.fxml");
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    @FXML
-    public void handleFocusModeScreenButtonAction(ActionEvent event) throws IOException {
-        try {
-            pageSwitchHelper.switcher(event, "/tasks/FocusModeScreen.fxml");
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
 
 
     // when the page loads we want the choice box to populate with all the tasks available
@@ -236,6 +205,51 @@ public class FocusModeScreenController {
             if (mediaPlayer.getStatus().equals(Status.PLAYING)) {
                 mediaPlayer.stop();
             }
+        }
+    }
+
+    // Top Bar Handling
+    @FXML
+    public void handleEntriesScreenButtonAction(ActionEvent event) throws IOException {
+        layoutController.handleEntriesScreenButtonAction(event);
+    }
+
+    @FXML
+    public void handleTasksScreenButtonAction(ActionEvent event) throws IOException {
+        layoutController.handleTasksScreenButtonAction(event);
+    }
+
+    @FXML
+    public void handleAboutScreenButtonAction(ActionEvent event) throws IOException {
+        layoutController.handleAboutScreenButtonAction(event);
+    }
+
+    //Side Bar Handling
+
+    @FXML
+    public void handleManageTaskScreenButtonAction(ActionEvent event) throws IOException{
+        try{
+            pageSwitchHelper.switcher(event, "/tasks/TasksScreen.fxml");
+        } catch (Exception ex){
+            ex.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void handleKanbanScreenButtonAction(ActionEvent event) throws IOException {
+        try {
+            pageSwitchHelper.switcher(event, "/tasks/KanbanScreen.fxml");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void handleFocusModeScreenButtonAction(ActionEvent event) throws IOException {
+        try {
+            pageSwitchHelper.switcher(event, "/tasks/FocusModeScreen.fxml");
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 }

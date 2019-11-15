@@ -37,11 +37,16 @@ public class TasksScreenController {
 
     // Navigation
     // Side bar
+    
+    @FXML
+    public Button manageTaskScreenButton;
+    
     @FXML
     public Button kanbanScreenButton;
 
     @FXML
     public Button focusModeScreenButton;
+    
 
     // Top Bar
     @FXML
@@ -249,11 +254,22 @@ public class TasksScreenController {
     public void handleAboutScreenButtonAction(ActionEvent event) throws IOException {
         layoutController.handleAboutScreenButtonAction(event);
     }
+    
+    //Side Bar Handling
+    
+    @FXML
+    public void handleManageTaskScreenButtonAction(ActionEvent event) throws IOException{
+        try{
+            pageSwitchHelper.switcher(event, "/tasks/TasksScreen.fxml");
+        } catch (Exception ex){
+            ex.printStackTrace();
+        }
+    }
 
     @FXML
     public void handleKanbanScreenButtonAction(ActionEvent event) throws IOException {
         try {
-            pageSwitchHelper.switcher(event, "/tasks/TasksScreen.fxml");
+            pageSwitchHelper.switcher(event, "/tasks/KanbanScreen.fxml");
         } catch (Exception ex) {
             ex.printStackTrace();
         }
