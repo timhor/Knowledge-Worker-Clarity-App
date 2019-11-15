@@ -67,7 +67,7 @@
             <TextField fx:id="startTimeTextField" layoutX="569.0" layoutY="245.0" prefHeight="33.0" prefWidth="139.0" promptText="Start Time (HH:MM)" />
             <TextField fx:id="endTimeTextField" layoutX="716.0" layoutY="245.0" prefHeight="33.0" prefWidth="139.0" promptText="End Time (HH:MM)" />
             <Button fx:id="saveEntryButton" defaultButton="true" layoutX="867.0" layoutY="245.0" mnemonicParsing="false" onAction="#handleSaveEntryButtonAction" prefHeight="33.0" prefWidth="121.0" text="Save Entry" />
-            <Label layoutX="113.0" layoutY="205.0" text="Create Entry">
+            <Label layoutX="113.0" layoutY="205.0" text="Manage Entries">
                <font>
                   <Font size="18.0" />
                </font>

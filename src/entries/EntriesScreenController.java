@@ -28,7 +28,9 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
+import javafx.util.Callback;
 import javafx.util.StringConverter;
 
 public class EntriesScreenController {
@@ -36,6 +38,8 @@ public class EntriesScreenController {
     PageSwitchHelper pageSwitchHelper = new PageSwitchHelper();
 
     LayoutScreenController layoutController = new LayoutScreenController();
+
+    private String selectedEntryId = "";
 
     @FXML
     private ComboBox<Category> categoryDropdown;
@@ -115,58 +119,13 @@ public class EntriesScreenController {
     @FXML
     private Label statusLabel;
 
-    // table cell editing adapted from:
-    // https://docs.oracle.com/javase/8/javafx/user-interface-tutorial/table-view.htm#CJAGAAEE
     @FXML
     public void initialize() {
         categoryColumn.setCellValueFactory(cellData -> cellData.getValue().getCategoryNameProperty());
-
-        descriptionColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         descriptionColumn.setCellValueFactory(cellData -> cellData.getValue().getDescriptionProperty());
-        descriptionColumn.setOnEditCommit((CellEditEvent<Entry, String> t) -> {
-            String newDescription = t.getNewValue();
-            try {
-                Database.updateFromPreparedStatement("UPDATE entries SET description = ? WHERE id = ?",
-                        new String[] { newDescription, t.getRowValue().getId() });
-                ((Entry) t.getTableView().getItems().get(t.getTablePosition().getRow()))
-                        .setDescriptionProperty(newDescription);
-                populateEntries();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        });
-
         dateColumn.setCellValueFactory(cellData -> cellData.getValue().getDateProperty());
-
-        startTimeColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         startTimeColumn.setCellValueFactory(cellData -> cellData.getValue().getStartTimeProperty());
-        startTimeColumn.setOnEditCommit((CellEditEvent<Entry, String> t) -> {
-            String newStartTime = t.getNewValue();
-            try {
-                Database.updateFromPreparedStatement("UPDATE entries SET starttime = ? WHERE id = ?",
-                        new String[] { newStartTime, t.getRowValue().getId() });
-                ((Entry) t.getTableView().getItems().get(t.getTablePosition().getRow()))
-                        .setStartTimeProperty(newStartTime);
-                populateEntries();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        });
-
-        endTimeColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         endTimeColumn.setCellValueFactory(cellData -> cellData.getValue().getEndTimeProperty());
-        endTimeColumn.setOnEditCommit((CellEditEvent<Entry, String> t) -> {
-            String newEndTime = t.getNewValue();
-            try {
-                Database.updateFromPreparedStatement("UPDATE entries SET endtime = ? WHERE id = ?",
-                        new String[] { newEndTime, t.getRowValue().getId() });
-                ((Entry) t.getTableView().getItems().get(t.getTablePosition().getRow())).setEndTimeProperty(newEndTime);
-                populateEntries();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        });
-
         durationColumn.setCellValueFactory(cellData -> cellData.getValue().getDurationProperty());
 
         datePicker.setConverter(SharedComponents.getDatePickerConverter());
@@ -184,16 +143,41 @@ public class EntriesScreenController {
             }
         });
 
-        // custom row colour adapted from: https://stackoverflow.com/a/56309916
-        entryList.setRowFactory(value -> new TableRow<Entry>() {
+        // custom row colur adapted from: https://stackoverflow.com/a/56309916
+        // deselect rows adapted from: https://stackoverflow.com/a/30194680
+        entryList.setRowFactory(new Callback<TableView<Entry>, TableRow<Entry>>() {
             @Override
-            protected void updateItem(Entry item, boolean empty) {
-                super.updateItem(item, empty);
-                if (item == null || item.getCategoryColour() == null) {
-                    setStyle("");
-                } else {
-                    setStyle("-fx-background-color: " + item.getCategoryColour() + ";");
-                }
+            public TableRow<Entry> call(TableView<Entry> tableView2) {
+                TableRow<Entry> row = new TableRow<Entry>() {
+                    @Override
+                    protected void updateItem(Entry item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (item == null || item.getCategory().getHexString() == null) {
+                            setStyle("");
+                        } else {
+                            setStyle("-fx-background-color: " + item.getCategory().getHexString() + ";");
+                        }
+                    }
+                };
+                row.setOnMouseClicked(event -> {
+                    if (!row.isEmpty() && event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
+                        saveEntryButton.setText("Update Entry");
+                        Entry selectedEntry = row.getItem();
+                        selectedEntryId = selectedEntry.getId();
+
+                        categoryDropdown.setValue(selectedEntry.getCategory());
+                        entryDescriptionTextField.setText(selectedEntry.getDescription());
+                        datePicker.setValue(LocalDate.parse(selectedEntry.getDate()));
+                        startTimeTextField.setText(selectedEntry.getStartTime());
+                        endTimeTextField.setText(selectedEntry.getEndTime());
+                    } else {
+                        entryList.getSelectionModel().clearSelection();
+                        clearInputFields();
+                        saveEntryButton.setText("New Entry");
+                        selectedEntryId = "";
+                    }
+                });
+                return row;
             }
         });
 
@@ -231,14 +215,14 @@ public class EntriesScreenController {
     private ObservableList<Entry> getEntryListData() throws SQLException {
         ArrayList<Entry> entryList = new ArrayList<Entry>();
         ResultSet rs = Database.getResultSet(
-                "SELECT e.id, c.hexstring AS colour, c.categoryname, e.description, e.date, e.starttime, e.endtime "
+                "SELECT e.id AS entryid, c.id AS categoryid, c.hexstring AS colour, c.categoryname, e.description, e.date, e.starttime, e.endtime "
                         + "FROM entries e LEFT JOIN categories c ON e.category = c.id;");
         while (rs.next()) {
             String categoryName = rs.getString("categoryname");
             if (rs.wasNull()) {
                 categoryName = "Uncategorised";
             }
-            Entry entry = new Entry(rs.getString("id"), rs.getString("colour"), categoryName,
+            Entry entry = new Entry(rs.getString("entryid"), rs.getString("categoryid"), rs.getString("colour"), categoryName,
                     rs.getString("description"), rs.getString("date"), rs.getString("starttime"),
                     rs.getString("endtime"));
             entryList.add(entry);
@@ -280,17 +264,20 @@ public class EntriesScreenController {
                 return;
             }
             try {
-                Database.updateFromPreparedStatement(
-                        "INSERT INTO entries (category, description, date, starttime, endtime) VALUES (?,?,?,?,?)",
-                        new String[] { category, description, date.toString(), startTime, endTime });
+                if (selectedEntryId.length() > 0) {
+                    Database.updateFromPreparedStatement(
+                            "UPDATE entries SET category = ?, description = ?, date = ?, starttime = ?, endtime = ? WHERE id = ?",
+                            new String[] { category, description, date.toString(), startTime, endTime, selectedEntryId });
+                } else {
+                    Database.updateFromPreparedStatement(
+                            "INSERT INTO entries (category, description, date, starttime, endtime) VALUES (?,?,?,?,?)",
+                            new String[] { category, description, date.toString(), startTime, endTime });
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             } finally {
                 populateEntries();
-                categoryDropdown.setValue(null);
-                entryDescriptionTextField.setText("");
-                startTimeTextField.setText("");
-                endTimeTextField.setText("");
+                clearInputFields();
             }
         } catch (ParseException e) {
             statusLabel.setVisible(true);
@@ -351,6 +338,13 @@ public class EntriesScreenController {
             return time;
         }
         throw new ParseException("Invalid time format", 0);
+    }
+
+    private void clearInputFields() {
+        categoryDropdown.setValue(null);
+        entryDescriptionTextField.setText("");
+        startTimeTextField.setText("");
+        endTimeTextField.setText("");
     }
 
     // Navigation
