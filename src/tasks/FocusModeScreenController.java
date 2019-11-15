@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import javafx.animation.Animation;
@@ -136,8 +137,8 @@ public class FocusModeScreenController {
         // populate the time
         // adapted from https://stackoverflow.com/questions/42383857/javafx-live-time-and-date
         Timeline clock = new Timeline(new KeyFrame(Duration.ZERO, e -> {
-        LocalTime currentTime = LocalTime.now();
-        timeLabel.setText(currentTime.truncatedTo(ChronoUnit.SECONDS).toString());
+        String currentDateTime = LocalDate.now().toString() + "  " + LocalTime.now().truncatedTo(ChronoUnit.SECONDS).toString();
+        timeLabel.setText(currentDateTime);
         }),
              new KeyFrame(Duration.seconds(1))
         );
