@@ -30,9 +30,9 @@ public class FocusModeScreenController {
     @FXML
     private Label timeLabel;
     @FXML
-    private Label focusTaskLabel;    
+    private Label focusTaskLabel;
     @FXML
-    private Label focusTaskDescriptionLabel;    
+    private Label focusTaskDescriptionLabel;
     @FXML
     private Label chooseTaskLabel;
     @FXML
@@ -40,7 +40,7 @@ public class FocusModeScreenController {
     @FXML
     private Button startFocusingButton;
     @FXML
-    private Button stopFocusingButton;   
+    private Button stopFocusingButton;
 
     Database database;
 
@@ -50,24 +50,24 @@ public class FocusModeScreenController {
 
 
     //Navigation
-    // Side bar 
+    // Side bar
     @FXML
     public Button kanbanScreenButton;
 
     // Top Bar
     @FXML
     public Button focusModeScreenButton;
-    
-    
-    // Music 
+
+
+    // Music
     @FXML
     public ComboBox<String> musicDropdown;
     @FXML
-    public Label chooseMusicLabel; 
+    public Label chooseMusicLabel;
     MediaPlayer mediaPlayer;
-    
+
 //Navigation
-    // Top Bar Handling 
+    // Top Bar Handling
     @FXML
     public void handleEntriesScreenButtonAction(ActionEvent event) throws IOException {
         layoutController.handleEntriesScreenButtonAction(event);
@@ -91,27 +91,27 @@ public class FocusModeScreenController {
             ex.printStackTrace();
         }
     }
-    
+
     @FXML
     public void handleFocusModeScreenButtonAction(ActionEvent event) throws IOException {
         try {
             pageSwitchHelper.switcher(event, "/tasks/FocusModeScreen.fxml");
         } catch (Exception ex) {
             ex.printStackTrace();
-        }    
+        }
     }
 
-    
+
     // when the page loads we want the choice box to populate with all the tasks available
     @FXML
     public void initialize() {
-        //ensure stop focusing items are off 
+        //ensure stop focusing items are off
         stopFocusingButton.setVisible(false);
         timeLabel.setVisible(false);
         focusTaskLabel.setVisible(false);
         focusTaskDescriptionLabel.setVisible(false);
         //selectTaskWarningLabel.setVisible(false);
-        
+
         //we want to populate the combo box with name entries from the database
         try {
             ResultSet rs = Database.getResultSet("SELECT title FROM tasks");
@@ -124,7 +124,7 @@ public class FocusModeScreenController {
             e.printStackTrace();
         }
 
-        
+
         //MUSIC PLAYER
         try {
             musicDropdown.getItems().addAll("Contemporary", "Dance", "Happy", "Jazz");
@@ -132,10 +132,10 @@ public class FocusModeScreenController {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        
-        // populate the time 
+
+        // populate the time
         // adapted from https://stackoverflow.com/questions/42383857/javafx-live-time-and-date
-        Timeline clock = new Timeline(new KeyFrame(Duration.ZERO, e -> {        
+        Timeline clock = new Timeline(new KeyFrame(Duration.ZERO, e -> {
         LocalTime currentTime = LocalTime.now();
         timeLabel.setText("Current Time: " + currentTime.truncatedTo(ChronoUnit.SECONDS));
         }),
@@ -144,22 +144,22 @@ public class FocusModeScreenController {
         clock.setCycleCount(Animation.INDEFINITE);
         clock.play();
     }
-    
-    
+
+
     @FXML
     public void StartFocusing(){
         if (taskDropdown.getValue().equals("Select a task first...")){
             selectTaskWarningLabel.setVisible(true);
             return;
         }
-        
+
         //set other items inactive
         startFocusingButton.setVisible(false);
         chooseTaskLabel.setVisible(false);
         taskDropdown.setVisible(false);
         selectTaskWarningLabel.setVisible(false);
 
-        //turn on stop focusing items 
+        //turn on stop focusing items
         stopFocusingButton.setVisible(true);
         timeLabel.setVisible(true);
         //get whatever task we have & set the label text
@@ -182,7 +182,7 @@ public class FocusModeScreenController {
 
 
     }
-    
+
     @FXML
     public void StopFocusing(){
         //turn off stop focusing button
@@ -193,13 +193,13 @@ public class FocusModeScreenController {
         chooseMusicLabel.setVisible(false);
         focusTaskDescriptionLabel.setVisible(false);
 
-        
-        //turn on other items 
+
+        //turn on other items
         startFocusingButton.setVisible(true);
         chooseTaskLabel.setVisible(true);
         taskDropdown.setVisible(true);
     }
-    
+
     /*
     Music from https://filmmusic.io, downloaded from (https://incompetech.com)
     License: CC BY (http://creativecommons.org/licenses/by/4.0/)
@@ -207,14 +207,14 @@ public class FocusModeScreenController {
     Contemporary music: "On My Way" by Kevin MacLeod
     Happy music: "Wholesome" by Kevin MacLeod
     Dance music: "The Lift" by Kevin MacLeod
-    Jazz music: "Airport Lounge" by Kevin MacLeod    
+    Jazz music: "Airport Lounge" by Kevin MacLeod
     */
-    
+
     @FXML
     public void handleMusicAction(ActionEvent event) {
         // if there is music playing already, stop the music
         if(mediaPlayer != null){
-            // check status - stop playing if something is playing 
+            // check status - stop playing if something is playing
             // adapted from https://stackoverflow.com/questions/18340125/how-to-tell-if-mediaplayer-is-playing
             if (mediaPlayer.getStatus().equals(Status.PLAYING)){
                 mediaPlayer.stop();
