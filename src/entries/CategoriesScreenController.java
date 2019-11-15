@@ -52,6 +52,10 @@ public class CategoriesScreenController {
 
     // Navigation
     // Side bar
+    
+    @FXML
+    public Button categoriesButton;
+    
     @FXML
     public Button homeScreenButton;
 
@@ -66,6 +70,9 @@ public class CategoriesScreenController {
 
     @FXML
     public Button weeklyTrendsScreenButton;
+    
+    @FXML
+    public Button dailyLearningScreenButton;
 
     // Top Bar
     @FXML
@@ -217,6 +224,12 @@ public class CategoriesScreenController {
     }
 
     // Add Data Handling
+    
+    @FXML
+    public void handleCategoriesScreenButtonAction(ActionEvent event) throws IOException {
+        layoutController.handleCategoriesScreenButtonAction(event);
+    }
+    
     @FXML
     public void handleMyLifeScreenButtonAction(ActionEvent event) throws IOException {
         layoutController.handleMyLifeScreenButtonAction(event);
@@ -235,6 +248,11 @@ public class CategoriesScreenController {
     @FXML
     public void handleWeeklyTrendsScreenButtonAction(ActionEvent event) throws IOException {
         layoutController.handleWeeklyTrendsScreenButtonAction(event);
+    }
+    
+    @FXML
+    public void handleDailyLearningScreenButtonAction(ActionEvent event) throws IOException {
+        layoutController.handleDailyLearningScreenButtonAction(event);
     }
 
 }

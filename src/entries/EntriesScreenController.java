@@ -88,6 +88,10 @@ public class EntriesScreenController {
 
     // Navigation
     // Side bar
+    
+    @FXML
+    public Button categoriesButton;
+    
     @FXML
     public Button homeScreenButton;
 
@@ -342,6 +346,12 @@ public class EntriesScreenController {
     }
 
     // Add Data Handling
+    
+    @FXML
+    public void handleCategoriesScreenButtonAction(ActionEvent event) throws IOException {
+        layoutController.handleCategoriesScreenButtonAction(event);
+    }
+    
     @FXML
     public void handleMyLifeScreenButtonAction(ActionEvent event) throws IOException {
         layoutController.handleMyLifeScreenButtonAction(event);

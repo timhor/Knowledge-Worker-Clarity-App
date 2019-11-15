@@ -14,71 +14,77 @@
 <?import javafx.scene.layout.*?>
 
 <AnchorPane id="AnchorPane" prefHeight="768.0" prefWidth="917.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dailyLearning.DailyLearningScreenController">
-   <children>
-      <Group>
-         <children>
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#91caff" height="770.0" smooth="false" stroke="TRANSPARENT" strokeType="INSIDE" width="100.0" />
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#91caff" height="45.0" smooth="false" stroke="TRANSPARENT" strokeType="INSIDE" width="1000.0" />
-            <GridPane alignment="CENTER_LEFT" layoutY="150.0" prefHeight="253.0" prefWidth="110.0">
-               <children>
-                  <Button fx:id="homeScreenButton" alignment="BASELINE_LEFT" graphicTextGap="0.0" mnemonicParsing="false" onAction="#handleEntriesScreenButtonAction" prefHeight="50.0" prefWidth="100.0" text="All Entries" />
-                  <Button fx:id="myLifeScreenButton" alignment="BASELINE_LEFT" graphicTextGap="0.0" mnemonicParsing="false" onAction="#handleMyLifeScreenButtonAction" prefHeight="50.0" prefWidth="100.0" text="My Life" GridPane.rowIndex="1" />
-                  <Button fx:id="myDayScreenButton" alignment="BASELINE_LEFT" graphicTextGap="0.0" mnemonicParsing="false" onAction="#handleMyDayScreenButtonAction" prefHeight="50.0" prefWidth="100.0" text="My Day" GridPane.rowIndex="2" />
-                  <Button fx:id="myWeekScreenButton" alignment="BASELINE_LEFT" graphicTextGap="0.0" mnemonicParsing="false" onAction="#handleMyWeekScreenButtonAction" prefHeight="50.0" prefWidth="100.0" text="My Week" GridPane.rowIndex="3" />
-                  <Button fx:id="weeklyTrendsScreenButton" alignment="BASELINE_LEFT" graphicTextGap="0.0" mnemonicParsing="false" onAction="#handleWeeklyTrendsScreenButtonAction" prefHeight="50.0" prefWidth="100.0" text="Weekly Trends" GridPane.rowIndex="4" />
-               </children>
-               <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-               </rowConstraints>
-            </GridPane>
-            <GridPane alignment="CENTER" layoutY="5.0" prefHeight="34.0" prefWidth="1000.0">
-               <children>
-                  <Button fx:id="entriesScreenButton" alignment="CENTER" contentDisplay="CENTER" graphicTextGap="0.0" mnemonicParsing="false" onAction="#handleEntriesScreenButtonAction" prefHeight="50.0" prefWidth="450.0" text="Entries" />
-                  <Button fx:id="tasksScreenButton" alignment="CENTER" contentDisplay="CENTER" graphicTextGap="0.0" layoutX="616.0" layoutY="19.0" mnemonicParsing="false" onAction="#handleTasksScreenButtonAction" prefHeight="50.0" prefWidth="450.0" text="Tasks" GridPane.columnIndex="1" />
-                  <Button fx:id="aboutScreenButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleAboutScreenButtonAction" prefHeight="50.0" prefWidth="450.0" text="About" GridPane.columnIndex="2" />
-               </children>
-               <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-               </rowConstraints>
-            </GridPane>
-            <TableView fx:id="learningList" editable="true" focusTraversable="false" layoutX="114.0" layoutY="219.0" prefHeight="489.0" prefWidth="869.0">
-              <columns>
-                  <TableColumn fx:id="dateColumn" editable="false" prefWidth="107.95697021484375" text="Date" />
-                <TableColumn fx:id="wentWellColumn" prefWidth="397.92901611328125" text="What Went Well?" />
-                  <TableColumn fx:id="couldImproveColumn" prefWidth="361.99993896484375" text="What Could Be Better?" />
-              </columns>
-            </TableView>
-            <TextField fx:id="wentWellTextField" layoutX="273.0" layoutY="96.0" prefHeight="30.0" prefWidth="260.0" promptText="What Went Well?" />
-            <Button fx:id="saveLearningButton" defaultButton="true" layoutX="824.0" layoutY="96.0" mnemonicParsing="false" onAction="#handleSaveLearningButtonAction" prefHeight="30.0" prefWidth="160.0" text="Save Learning" />
-            <Label layoutX="111.0" layoutY="56.0" text="Enter your Daily Learnings">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-            <Label fx:id="statusLabel" layoutX="350.0" layoutY="80.0" prefHeight="35.0" prefWidth="278.0" />
-            <DatePicker fx:id="datePicker" layoutX="111.0" layoutY="95.0" prefHeight="30.0" prefWidth="154.0" promptText="Date" />
-            <TextField fx:id="couldImproveTextField" layoutX="543.0" layoutY="96.0" prefHeight="30.0" prefWidth="270.0" promptText="What Could Be Better?" />
-            <Label layoutX="113.0" layoutY="154.0" prefHeight="53.0" prefWidth="152.0" text="Choose a previous&#10;answer:">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Label>
-            <ComboBox fx:id="wentWellComboBox" layoutX="277.0" layoutY="160.0" prefHeight="51.0" prefWidth="256.0" />
-            <ComboBox fx:id="couldImproveComboBox" layoutX="554.0" layoutY="163.0" prefHeight="51.0" prefWidth="256.0" />
-            <Button fx:id="generateReportButton" defaultButton="true" layoutX="426.0" layoutY="712.0" mnemonicParsing="false" onAction="#handleGenerateReportButtonAction" prefHeight="30.0" prefWidth="160.0" text="Generate Report" />
-         </children>
-      </Group>
-   </children>
+    <children>
+        <Group>
+            <children>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#91caff" height="770.0" smooth="false" stroke="TRANSPARENT" strokeType="INSIDE" width="100.0" />
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#91caff" height="45.0" smooth="false" stroke="TRANSPARENT" strokeType="INSIDE" width="1000.0" />
+                <GridPane alignment="CENTER_LEFT" layoutY="150.0" prefHeight="253.0" prefWidth="110.0">
+                    <children>
+                        <Button fx:id="homeScreenButton" alignment="BASELINE_LEFT" graphicTextGap="0.0" mnemonicParsing="false" onAction="#handleEntriesScreenButtonAction" prefHeight="50.0" prefWidth="100.0" text="Manage Entries" wrapText="true" GridPane.rowIndex="1" />
+                        <Button fx:id="myLifeScreenButton" alignment="BASELINE_LEFT" graphicTextGap="0.0" mnemonicParsing="false" onAction="#handleMyLifeScreenButtonAction" prefHeight="50.0" prefWidth="100.0" text="My Life" GridPane.rowIndex="2" />
+                        <Button fx:id="myDayScreenButton" alignment="BASELINE_LEFT" graphicTextGap="0.0" mnemonicParsing="false" onAction="#handleMyDayScreenButtonAction" prefHeight="50.0" prefWidth="100.0" text="My Day" GridPane.rowIndex="3" />
+                        <Button fx:id="myWeekScreenButton" alignment="BASELINE_LEFT" graphicTextGap="0.0" mnemonicParsing="false" onAction="#handleMyWeekScreenButtonAction" prefHeight="50.0" prefWidth="100.0" text="My Week" GridPane.rowIndex="4" />
+                        <Button fx:id="weeklyTrendsScreenButton" alignment="BASELINE_LEFT" graphicTextGap="0.0" mnemonicParsing="false" onAction="#handleWeeklyTrendsScreenButtonAction" prefHeight="50.0" prefWidth="100.0" text="Weekly Trends" GridPane.rowIndex="5" />
+                        <Button fx:id="dailyLearningScreenButton" alignment="BASELINE_LEFT" graphicTextGap="0.0" layoutX="10.0" layoutY="163.0" mnemonicParsing="false" onAction="#handleDailyLearningScreenButtonAction" prefHeight="93.0" prefWidth="100.0" text="Daily Learnings" GridPane.rowIndex="5" />
+
+                        <Button fx:id="categoriesButton" mnemonicParsing="false" onAction="#handleCategoriesScreenButtonAction" prefHeight="50.0" prefWidth="100.0" text="Categories" />
+                    </children>
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+
+                    </rowConstraints>
+                </GridPane>
+                <GridPane alignment="CENTER" layoutY="5.0" prefHeight="34.0" prefWidth="1000.0">
+                    <children>
+                        <Button fx:id="entriesScreenButton" alignment="CENTER" contentDisplay="CENTER" graphicTextGap="0.0" mnemonicParsing="false" onAction="#handleEntriesScreenButtonAction" prefHeight="50.0" prefWidth="450.0" text="Entries" />
+                        <Button fx:id="tasksScreenButton" alignment="CENTER" contentDisplay="CENTER" graphicTextGap="0.0" layoutX="616.0" layoutY="19.0" mnemonicParsing="false" onAction="#handleTasksScreenButtonAction" prefHeight="50.0" prefWidth="450.0" text="Tasks" GridPane.columnIndex="1" />
+                        <Button fx:id="aboutScreenButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleAboutScreenButtonAction" prefHeight="50.0" prefWidth="450.0" text="About" GridPane.columnIndex="2" />
+                    </children>
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                </GridPane>
+                <TableView fx:id="learningList" editable="true" focusTraversable="false" layoutX="114.0" layoutY="219.0" prefHeight="489.0" prefWidth="869.0">
+                    <columns>
+                        <TableColumn fx:id="dateColumn" editable="false" prefWidth="107.95697021484375" text="Date" />
+                        <TableColumn fx:id="wentWellColumn" prefWidth="397.92901611328125" text="What Went Well?" />
+                        <TableColumn fx:id="couldImproveColumn" prefWidth="361.99993896484375" text="What Could Be Better?" />
+                    </columns>
+                </TableView>
+                <TextField fx:id="wentWellTextField" layoutX="273.0" layoutY="96.0" prefHeight="30.0" prefWidth="260.0" promptText="What Went Well?" />
+                <Button fx:id="saveLearningButton" defaultButton="true" layoutX="824.0" layoutY="96.0" mnemonicParsing="false" onAction="#handleSaveLearningButtonAction" prefHeight="30.0" prefWidth="160.0" text="Save Learning" />
+                <Label layoutX="111.0" layoutY="56.0" text="Enter your Daily Learnings">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Label>
+                <Label fx:id="statusLabel" layoutX="350.0" layoutY="80.0" prefHeight="35.0" prefWidth="278.0" />
+                <DatePicker fx:id="datePicker" layoutX="111.0" layoutY="95.0" prefHeight="30.0" prefWidth="154.0" promptText="Date" />
+                <TextField fx:id="couldImproveTextField" layoutX="543.0" layoutY="96.0" prefHeight="30.0" prefWidth="270.0" promptText="What Could Be Better?" />
+                <Label layoutX="113.0" layoutY="154.0" prefHeight="53.0" prefWidth="152.0" text="Choose a previous&#10;answer:">
+                    <font>
+                        <Font size="16.0" />
+                    </font>
+                </Label>
+                <ComboBox fx:id="wentWellComboBox" layoutX="277.0" layoutY="160.0" prefHeight="51.0" prefWidth="256.0" />
+                <ComboBox fx:id="couldImproveComboBox" layoutX="554.0" layoutY="163.0" prefHeight="51.0" prefWidth="256.0" />
+                <Button fx:id="generateReportButton" defaultButton="true" layoutX="426.0" layoutY="712.0" mnemonicParsing="false" onAction="#handleGenerateReportButtonAction" prefHeight="30.0" prefWidth="160.0" text="Generate Report" />
+            </children>
+        </Group>
+    </children>
 </AnchorPane>

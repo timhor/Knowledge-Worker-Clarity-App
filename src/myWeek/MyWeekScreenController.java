@@ -26,6 +26,10 @@ public class MyWeekScreenController {
     LayoutScreenController layoutController = new LayoutScreenController();
 
     // Side bar
+    
+    @FXML
+    public Button categoriesButton;
+    
     @FXML
     public Button homeScreenButton;
 
@@ -40,6 +44,9 @@ public class MyWeekScreenController {
 
     @FXML
     public Button weeklyTrendsScreenButton;
+    
+    @FXML
+    public Button dailyLearningScreenButton;
 
     // Top Bar
     @FXML
@@ -65,6 +72,12 @@ public class MyWeekScreenController {
     public Label dateRangeLabel;
 
     // Top Bar Handling
+    
+    @FXML
+    public void handleCategoriesScreenButtonAction(ActionEvent event) throws IOException {
+        layoutController.handleCategoriesScreenButtonAction(event);
+    }
+    
     @FXML
     public void handleEntriesScreenButtonAction(ActionEvent event) throws IOException {
         layoutController.handleEntriesScreenButtonAction(event);
@@ -99,6 +112,11 @@ public class MyWeekScreenController {
     @FXML
     public void handleWeeklyTrendsScreenButtonAction(ActionEvent event) throws IOException {
         layoutController.handleWeeklyTrendsScreenButtonAction(event);
+    }
+    
+    @FXML
+    public void handleDailyLearningScreenButtonAction(ActionEvent event) throws IOException {
+        layoutController.handleDailyLearningScreenButtonAction(event);
     }
 
     @FXML

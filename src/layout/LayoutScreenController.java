@@ -39,8 +39,16 @@ public class LayoutScreenController {
     @FXML
     public Button dailyLearningScreenButton;
 
-
     // Top Bar Handling
+    @FXML
+    public void handleCategoriesScreenButtonAction(ActionEvent event) throws IOException {
+        try {
+            pageSwitchHelper.switcher(event, "/entries/CategoriesScreen.fxml");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
     @FXML
     public void handleEntriesScreenButtonAction(ActionEvent event) throws IOException {
         try {
