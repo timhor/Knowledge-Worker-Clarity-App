@@ -137,7 +137,7 @@ public class FocusModeScreenController {
         // adapted from https://stackoverflow.com/questions/42383857/javafx-live-time-and-date
         Timeline clock = new Timeline(new KeyFrame(Duration.ZERO, e -> {
         LocalTime currentTime = LocalTime.now();
-        timeLabel.setText("Current Time: " + currentTime.truncatedTo(ChronoUnit.SECONDS));
+        timeLabel.setText(currentTime.truncatedTo(ChronoUnit.SECONDS).toString());
         }),
              new KeyFrame(Duration.seconds(1))
         );
@@ -164,7 +164,7 @@ public class FocusModeScreenController {
         timeLabel.setVisible(true);
         //get whatever task we have & set the label text
         String currentFocusTask = taskDropdown.getValue();
-        focusTaskLabel.setText("Time to focus on: " + currentFocusTask);
+        focusTaskLabel.setText(currentFocusTask);
         focusTaskLabel.setVisible(true);
         musicDropdown.setVisible(true);
         chooseMusicLabel.setVisible(true);
