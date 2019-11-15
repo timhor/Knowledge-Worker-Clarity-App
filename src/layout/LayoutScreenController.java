@@ -67,15 +67,6 @@ public class LayoutScreenController {
 
     // Add Data Handling
     @FXML
-    public void handleHomeScreenButtonAction(ActionEvent event) throws IOException {
-        try {
-            pageSwitchHelper.switcher(event, "/layout/EntriesScreen.fxml");
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    @FXML
     public void handleMyLifeScreenButtonAction(ActionEvent event) throws IOException {
         try {
             pageSwitchHelper.switcher(event, "/myLife/MyLifeScreen.fxml");

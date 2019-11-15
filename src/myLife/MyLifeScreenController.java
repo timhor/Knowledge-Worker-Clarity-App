@@ -49,7 +49,7 @@ public class MyLifeScreenController {
     @FXML
     public Button aboutScreenButton;
 
-    // Top Bar Handling 
+    // Top Bar Handling
     @FXML
     public void handleEntriesScreenButtonAction(ActionEvent event) throws IOException {
         layoutController.handleEntriesScreenButtonAction(event);
@@ -65,12 +65,7 @@ public class MyLifeScreenController {
         layoutController.handleAboutScreenButtonAction(event);
     }
 
-    // Add Data Handling  
-    @FXML
-    public void handleHomeScreenButtonAction(ActionEvent event) throws IOException {
-        layoutController.handleHomeScreenButtonAction(event);
-    }
-
+    // Add Data Handling
     @FXML
     public void handleMyLifeScreenButtonAction(ActionEvent event) throws IOException {
         layoutController.handleMyLifeScreenButtonAction(event);
@@ -110,11 +105,11 @@ public class MyLifeScreenController {
             ResultSet timeRs = Database.getResultSet(timeSt);
             long totalTimeSpent = 0;
             while (timeRs.next()) {
-                // calculate the time it takes 
+                // calculate the time it takes
                 String startTime = timeRs.getString("starttime");
                 String endTime = timeRs.getString("endtime");
-                long duration = parseTimeInMs(endTime) - parseTimeInMs(startTime);                
-                float durationInHours = duration / 3600000.0f;  
+                long duration = parseTimeInMs(endTime) - parseTimeInMs(startTime);
+                float durationInHours = duration / 3600000.0f;
 
                 totalTimeSpent += durationInHours;
 
@@ -125,7 +120,7 @@ public class MyLifeScreenController {
                 String key = entry.getKey();
                 Float value = entry.getValue();
                Float valuePercentage = 100*value / totalTimeSpent;
-               DecimalFormat df = new DecimalFormat("0"); 
+               DecimalFormat df = new DecimalFormat("0");
                String valuePercentageString = String.valueOf(df.format(valuePercentage));
                 myPieChart.getData().add(new PieChart.Data(key + "\n " + valuePercentageString + "%" , value / totalTimeSpent));
             }

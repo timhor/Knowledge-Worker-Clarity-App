@@ -86,11 +86,6 @@ public class AboutScreenController {
 
     // Add Data Handling
     @FXML
-    public void handleHomeScreenButtonAction(ActionEvent event) throws IOException {
-        layoutController.handleHomeScreenButtonAction(event);
-    }
-
-    @FXML
     public void handleMyLifeScreenButtonAction(ActionEvent event) throws IOException {
         layoutController.handleMyLifeScreenButtonAction(event);
     }
