@@ -14,17 +14,15 @@
          <children>
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#91caff" height="770.0" smooth="false" stroke="TRANSPARENT" strokeType="INSIDE" width="100.0" />
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#91caff" height="45.0" smooth="false" stroke="TRANSPARENT" strokeType="INSIDE" width="1000.0" />
-            <GridPane alignment="CENTER_LEFT" layoutY="150.0" prefHeight="150.0" prefWidth="110.0">
+            <GridPane alignment="CENTER_LEFT" layoutY="150.0" prefHeight="101.0" prefWidth="110.0">
                <children>
-                  <Button fx:id="kanbanScreenButton" alignment="BASELINE_LEFT" graphicTextGap="0.0" mnemonicParsing="false" onAction="#handleKanbanScreenButtonAction" prefHeight="50.0" prefWidth="100.0" text="Kanban View" wrapText="true" GridPane.rowIndex="1" />
-                  <Button fx:id="focusModeScreenButton" alignment="BASELINE_LEFT" graphicTextGap="0.0" mnemonicParsing="false" onAction="#handleFocusModeScreenButtonAction" prefHeight="50.0" prefWidth="100.0" text="Deep Focus" wrapText="true" GridPane.rowIndex="2" />
-                  <Button fx:id="manageTaskScreenButton" mnemonicParsing="false" onAction="#handleManageTaskScreenButtonAction" prefHeight="50.0" prefWidth="100.0" text="Manage Tasks" wrapText="true" />
+                  <Button fx:id="kanbanScreenButton" alignment="BASELINE_LEFT" graphicTextGap="0.0" mnemonicParsing="false" onAction="#handleKanbanScreenButtonAction" prefHeight="50.0" prefWidth="100.0" text="Kanban View" />
+                  <Button fx:id="focusModeScreenButton" alignment="BASELINE_LEFT" graphicTextGap="0.0" mnemonicParsing="false" onAction="#handleFocusModeScreenButtonAction" prefHeight="50.0" prefWidth="100.0" text="Deep Focus" GridPane.rowIndex="1" />
                </children>
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                </columnConstraints>
                <rowConstraints>
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
@@ -44,45 +42,45 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
             </GridPane>
-            <ComboBox fx:id="taskDropdown" layoutX="537.0" layoutY="208.0" prefHeight="51.0" prefWidth="291.0" />
-            <Label alignment="CENTER" layoutX="322.0" layoutY="126.0" prefHeight="61.0" prefWidth="435.0" text="Deep Focus Mode">
+            <ComboBox fx:id="taskDropdown" layoutX="539.0" layoutY="187.0" prefHeight="40.0" prefWidth="268.0" />
+            <Label alignment="CENTER" layoutX="320.0" layoutY="74.0" prefHeight="61.0" prefWidth="435.0" text="Deep Focus Mode">
                <font>
                   <Font size="30.0" />
                </font>
             </Label>
-            <Label fx:id="chooseTaskLabel" alignment="CENTER" layoutX="112.0" layoutY="241.0" prefHeight="61.0" prefWidth="435.0" text="Choose a task to focus on:">
+            <Label fx:id="chooseTaskLabel" alignment="CENTER" layoutX="239.0" layoutY="178.0" prefHeight="61.0" prefWidth="271.0" text="Choose a task to focus on:">
                <font>
-                  <Font size="30.0" />
+                  <Font size="20.0" />
                </font>
             </Label>
-            <Button fx:id="startFocusingButton" layoutX="575.0" layoutY="297.0" mnemonicParsing="false" onAction="#StartFocusing" prefHeight="73.0" prefWidth="210.0" text="Start Focusing" />
-            <Label fx:id="timeLabel" alignment="CENTER" layoutX="291.0" layoutY="414.0" prefHeight="61.0" prefWidth="435.0" text="Current Time: xxxx">
+            <Label fx:id="timeLabel" alignment="CENTER" layoutX="160.0" layoutY="483.0" prefHeight="118.0" prefWidth="783.0" text="Current Time">
                <font>
-                  <Font size="30.0" />
+                  <Font name="Monaco" size="60.0" />
                </font>
             </Label>
-            <Button fx:id="stopFocusingButton" layoutX="405.0" layoutY="594.0" mnemonicParsing="false" onAction="#StopFocusing" prefHeight="73.0" prefWidth="210.0" text="Stop Focusing" />
-            <Label fx:id="focusTaskLabel" alignment="CENTER" layoutX="293.0" layoutY="456.0" prefHeight="61.0" prefWidth="435.0" text="Focus task chosen:">
+            <Button fx:id="startFocusingButton" defaultButton="true" layoutX="435.0" layoutY="356.0" mnemonicParsing="false" onAction="#StartFocusing" prefHeight="73.0" prefWidth="210.0" text="Start focusing" />
+            <Button fx:id="stopFocusingButton" defaultButton="true" layoutX="435.0" layoutY="356.0" mnemonicParsing="false" onAction="#StopFocusing" prefHeight="73.0" prefWidth="210.0" text="Stop focusing" />
+            <Label fx:id="focusTaskLabel" alignment="CENTER" layoutX="322.0" layoutY="177.0" prefHeight="61.0" prefWidth="435.0" text="Task Title">
                <font>
-                  <Font size="30.0" />
+                  <Font size="38.0" />
                </font>
             </Label>
-            <Label fx:id="selectTaskWarningLabel" alignment="CENTER" layoutX="455.0" layoutY="362.0" prefHeight="61.0" prefWidth="435.0" text="Select a task first!" textFill="RED" visible="false">
+            <Label fx:id="focusTaskDescriptionLabel" alignment="CENTER" layoutX="322.0" layoutY="251.0" prefHeight="61.0" prefWidth="435.0" text="Task Description">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+            <Label fx:id="selectTaskWarningLabel" alignment="CENTER" layoutX="316.0" layoutY="251.0" prefHeight="61.0" prefWidth="435.0" text="Select a task first!" textFill="RED" visible="false">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label fx:id="chooseMusicLabel" alignment="CENTER" layoutX="377.0" layoutY="656.0" prefHeight="28.0" prefWidth="149.0" text="Choose music to focus to:" visible="false">
                <font>
                   <Font size="12.0" />
                </font>
             </Label>
-            <ComboBox fx:id="musicDropdown" layoutX="247.0" layoutY="723.0" onAction="#handleMusicAction" prefHeight="17.0" prefWidth="165.0" promptText="Select a genre" visible="false" />
-            <Label fx:id="chooseMusicLabel" alignment="CENTER" layoutX="100.0" layoutY="723.0" prefHeight="28.0" prefWidth="149.0" text="Choose music to focus to:" visible="false">
-               <font>
-                  <Font size="12.0" />
-               </font>
-            </Label>
-            <Label fx:id="focusTaskDescriptionLabel" alignment="CENTER" layoutX="297.0" layoutY="514.0" prefHeight="61.0" prefWidth="435.0" text="Task Description">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Label>
+            <ComboBox fx:id="musicDropdown" layoutX="533.0" layoutY="651.0" onAction="#handleMusicAction" prefHeight="38.0" prefWidth="165.0" promptText="Select a genre" visible="false" />
          </children>
       </Group>
    </children>

@@ -31,62 +31,67 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
             </GridPane>
-            <Text layoutX="258.0" layoutY="160.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Submission UUID:">
+            <Text layoutX="258.0" layoutY="109.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Submission UUID:">
                <font>
                   <Font size="16.0" />
                </font></Text>
-            <Text layoutX="399.0" layoutY="160.0" strokeType="OUTSIDE" strokeWidth="0.0" text="4E806936-FC25-4913-B255-4A60A26ABF1A">
+            <Text layoutX="399.0" layoutY="109.0" strokeType="OUTSIDE" strokeWidth="0.0" text="4E806936-FC25-4913-B255-4A60A26ABF1A">
                <font>
                   <Font name="Monaco" size="15.0" />
                </font>
             </Text>
-            <Text layoutX="258.0" layoutY="198.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Copyright © 2019. We, the developers of this software application, declare that it is our work towards an assessment item submitted to fulfil the requirements of INFS2605 (UNSW Sydney). We declare that it is our own work, except where acknowledged, and has not been submitted for academic credit elsewhere. We acknowledge that the assessor of this item may, for the purpose of assessing this item: Reproduce this assessment item and provide a copy to another member of the University; and/or, Communicate a copy of this assessment item to a plagiarism checking service (which may then retain a copy of the assessment item on its database for the purpose of future plagiarism checking). We certify that we have read and understood the UNSW University Rules in respect of Student Academic Misconduct." textAlignment="JUSTIFY" wrappingWidth="537.84814453125">
+            <Text layoutX="258.0" layoutY="147.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Copyright © 2019. We, the developers of this software application, declare that it is our work towards an assessment item submitted to fulfil the requirements of INFS2605 (UNSW Sydney). We declare that it is our own work, except where acknowledged, and has not been submitted for academic credit elsewhere. We acknowledge that the assessor of this item may, for the purpose of assessing this item: Reproduce this assessment item and provide a copy to another member of the University; and/or, Communicate a copy of this assessment item to a plagiarism checking service (which may then retain a copy of the assessment item on its database for the purpose of future plagiarism checking). We certify that we have read and understood the UNSW University Rules in respect of Student Academic Misconduct." textAlignment="JUSTIFY" wrappingWidth="537.84814453125">
                <font>
                   <Font size="16.0" />
                </font></Text>
-            <Text layoutX="254.0" layoutY="499.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Third-Party Libraries and Multimedia Items Used:" wrappingWidth="545.20263671875">
+            <Text layoutX="254.0" layoutY="448.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Third-Party Libraries and Multimedia Items Used:" wrappingWidth="545.20263671875">
                <font>
                   <Font size="16.0" />
                </font></Text>
-            <Separator layoutX="254.0" layoutY="454.0" prefHeight="2.0" prefWidth="547.0" />
-            <Text layoutX="254.0" layoutY="537.0" strokeType="OUTSIDE" strokeWidth="0.0" text="- SQLite JDBC Driver 3.27.2.1">
+            <Separator layoutX="254.0" layoutY="403.0" prefHeight="2.0" prefWidth="547.0" />
+            <Text layoutX="254.0" layoutY="486.0" strokeType="OUTSIDE" strokeWidth="0.0" text="- SQLite JDBC Driver 3.27.2.1">
                <font>
                   <Font size="16.0" />
                </font>
             </Text>
-            <Hyperlink fx:id="jdbcLink" layoutX="520.0" layoutY="517.0" text="https://github.com/xerial/sqlite-jdbc">
+            <Hyperlink fx:id="jdbcLink" layoutX="520.0" layoutY="466.0" text="https://github.com/xerial/sqlite-jdbc">
                <font>
                   <Font size="16.0" />
                </font>
             </Hyperlink>
-            <Text layoutX="254.0" layoutY="567.0" strokeType="OUTSIDE" strokeWidth="0.0" text="- Joda-Time 2.10.5">
+            <Text layoutX="254.0" layoutY="516.0" strokeType="OUTSIDE" strokeWidth="0.0" text="- Joda-Time 2.10.5">
                <font>
                   <Font size="16.0" />
                </font>
             </Text>
-            <Hyperlink fx:id="jodaTimeLink" layoutX="520.0" layoutY="547.0" text="https://github.com/JodaOrg/joda-time">
+            <Hyperlink fx:id="jodaTimeLink" layoutX="520.0" layoutY="496.0" text="https://github.com/JodaOrg/joda-time">
                <font>
                   <Font size="16.0" />
                </font>
             </Hyperlink>
-            <Text layoutX="254.0" layoutY="597.0" strokeType="OUTSIDE" strokeWidth="0.0" text="- Royalty Free Music License">
+            <Text layoutX="268.0" layoutY="686.0" lineSpacing="5.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*All music used is royalty-free and provided under Creative Commons Attribution 4.0 International" wrappingWidth="533.671875">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Text>
+            <Hyperlink fx:id="creativeCommonsLink" layoutX="448.0" layoutY="689.0" text="(CC BY 4.0)">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Hyperlink>
+            <Hyperlink fx:id="musicLink" layoutX="520.0" layoutY="526.0" text="https://incompetech.filmmusic.io/">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Hyperlink>
+            <Text layoutX="254.0" layoutY="546.0" strokeType="OUTSIDE" strokeWidth="0.0" text="- Music by Kevin MacLeod*&#10;">
                <font>
                   <Font size="16.0" />
                </font>
             </Text>
-            <Hyperlink fx:id="creativeCommonsLink" layoutX="520.0" layoutY="577.0" text="http://creativecommons.org/licenses/by/4.0/">
+            <Text disable="true" layoutX="268.0" layoutY="578.0" lineSpacing="8.0" strokeType="OUTSIDE" strokeWidth="0.0" text="- Contemporary music: &quot;On My Way&quot;&#10;- Happy music: &quot;Wholesome&quot;&#10;- Dance music: &quot;The Lift&quot; &#10;- Jazz music: &quot;Airport Lounge&quot;" wrappingWidth="278.765625">
                <font>
-                  <Font size="16.0" />
-               </font>
-            </Hyperlink>
-            <Hyperlink fx:id="musicLink" layoutX="520.0" layoutY="607.0" text="https://incompetech.filmmusic.io/">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Hyperlink>
-            <Text layoutX="254.0" layoutY="627.0" strokeType="OUTSIDE" strokeWidth="0.0" text="- Music by Kevin MacLeod&#10;- Contemporary music: &quot;On My Way&quot;&#10;- Happy music: &quot;Wholesome&quot;&#10;- Dance music: &quot;The Lift&quot; &#10;- Jazz music: &quot;Airport Lounge&quot;">
-               <font>
-                  <Font size="16.0" />
+                  <Font size="14.0" />
                </font>
             </Text>
          </children>

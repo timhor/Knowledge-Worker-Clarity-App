@@ -150,7 +150,7 @@ public class TasksScreenController {
 
     private ObservableList<Task> getTasks() throws SQLException {
         ArrayList<Task> tasks = new ArrayList<Task>();
-        ResultSet rs = Database.getResultSet("SELECT * FROM tasks WHERE completed = '0'");
+        ResultSet rs = Database.getResultSet("SELECT * FROM tasks WHERE completed = 0");
         while (rs.next()) {
             Task task = new Task(rs.getString("taskId"), rs.getString("title"), rs.getString("description"),
                     rs.getString("priority"), rs.getString("dueDate"), rs.getString("doDate"));
