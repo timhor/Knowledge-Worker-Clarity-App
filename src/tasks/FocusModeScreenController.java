@@ -115,7 +115,7 @@ public class FocusModeScreenController {
 
         //we want to populate the combo box with name entries from the database
         try {
-            ResultSet rs = Database.getResultSet("SELECT title FROM tasks WHERE completed = '0'");
+            ResultSet rs = Database.getResultSet("SELECT title FROM tasks WHERE completed = 0");
             while (rs.next()){
                 taskDropdown.getItems().addAll(rs.getString("title"));
             }
