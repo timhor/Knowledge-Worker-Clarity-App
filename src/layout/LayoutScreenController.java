@@ -36,6 +36,9 @@ public class LayoutScreenController {
     @FXML
     public Button weeklyTrendsScreenButton;
 
+    @FXML
+    public Button dailyLearningScreenButton;
+
 
     // Top Bar Handling
     @FXML
@@ -106,6 +109,15 @@ public class LayoutScreenController {
     public void handleWeeklyTrendsScreenButtonAction(ActionEvent event) throws IOException {
         try {
             pageSwitchHelper.switcher(event, "/weeklyTrends/WeeklyTrendsScreen.fxml");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void handleDailyLearningScreenButtonAction(ActionEvent event) throws IOException {
+        try {
+            pageSwitchHelper.switcher(event, "/dailyLearning/DailyLearningScreen.fxml");
         } catch (Exception ex) {
             ex.printStackTrace();
         }

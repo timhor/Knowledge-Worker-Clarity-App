@@ -49,7 +49,7 @@ public class MyLifeScreenController {
     @FXML
     public Button aboutScreenButton;
 
-    // Top Bar Handling 
+    // Top Bar Handling
     @FXML
     public void handleEntriesScreenButtonAction(ActionEvent event) throws IOException {
         layoutController.handleEntriesScreenButtonAction(event);
@@ -65,7 +65,7 @@ public class MyLifeScreenController {
         layoutController.handleAboutScreenButtonAction(event);
     }
 
-    // Add Data Handling  
+    // Add Data Handling
     @FXML
     public void handleHomeScreenButtonAction(ActionEvent event) throws IOException {
         layoutController.handleHomeScreenButtonAction(event);
@@ -110,11 +110,11 @@ public class MyLifeScreenController {
             ResultSet timeRs = Database.getResultSet(timeSt);
             long totalTimeSpent = 0;
             while (timeRs.next()) {
-                // calculate the time it takes 
+                // calculate the time it takes
                 String startTime = timeRs.getString("starttime");
                 String endTime = timeRs.getString("endtime");
-                long duration = parseTimeInMs(endTime) - parseTimeInMs(startTime);                
-                float durationInHours = duration / 3600000.0f;  
+                long duration = parseTimeInMs(endTime) - parseTimeInMs(startTime);
+                float durationInHours = duration / 3600000.0f;
 
                 totalTimeSpent += durationInHours;
 
@@ -124,8 +124,8 @@ public class MyLifeScreenController {
             for (Map.Entry<String, Float> entry : data.entrySet()) {
                 String key = entry.getKey();
                 Float value = entry.getValue();
-               Float valuePercentage = 100*value / totalTimeSpent;
-               DecimalFormat df = new DecimalFormat("0"); 
+               Float valuePercentage = 100 * value / totalTimeSpent;
+               DecimalFormat df = new DecimalFormat("0");
                String valuePercentageString = String.valueOf(df.format(valuePercentage));
                 myPieChart.getData().add(new PieChart.Data(key + "\n " + valuePercentageString + "%" , value / totalTimeSpent));
             }
@@ -145,10 +145,8 @@ public class MyLifeScreenController {
                     for (int i = 0; i < colourCodes.size(); i++){
                         if (i != 0){
                             n = myPieChart.lookup(".data" + i + ".chart-pie");
-                            //System.out.println(".data" + i + ".chart-pie");
                         }
                         n.setStyle("-fx-pie-color: " + colourCodes.get(i) + ";");
-                        //System.out.println("-fx-pie-color: " + colourCodes.get(i) + ";");
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -157,7 +155,7 @@ public class MyLifeScreenController {
                 e.printStackTrace();
             } finally {
                 myPieChart.setLegendVisible(false);
-                myPieChart.setTitle("Breakdown of my time spent");
+                myPieChart.setTitle("Breakdown of time spent");
             }
 
         } catch (SQLException e) {
