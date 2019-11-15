@@ -1,6 +1,6 @@
 /* TODO
 
-- limit the date after choosing the first date - only 1x a day 
+- limit the date after choosing the first date - only 1x a day
 - save learning button does not check for what's in the combobox
 - data validation - if they choose from the combobox AND enter in the textlabel, should show a status label.
 - move items from generate report handler into its own page, design that ui, etc
@@ -51,22 +51,22 @@ public class DailyLearningScreenController {
 
     @FXML
     private TextField wentWellTextField;
-    
+
     @FXML
     private TextField couldImproveTextField;
 
     @FXML
     private Button saveLearningButton;
-    
+
     @FXML
     private ComboBox<String> wentWellComboBox;
-    
+
     @FXML
     private ComboBox<String> couldImproveComboBox;
 
     @FXML
     private TableView<Learning> learningList;
-    
+
     @FXML
     private TableColumn<Learning, String> dateColumn;
 
@@ -75,7 +75,7 @@ public class DailyLearningScreenController {
 
     @FXML
     private TableColumn<Learning, String> couldImproveColumn;
-    
+
     @FXML
     private Button generateReportButton;
 
@@ -146,10 +146,10 @@ public class DailyLearningScreenController {
         datePicker.setConverter(SharedComponents.getDatePickerConverter());
 
         populateEntries();
-        
+
         populateComboBox();
     }
-    
+
     private void populateEntries() {
         try {
             learningList.setItems(getLearningListData());
@@ -157,7 +157,7 @@ public class DailyLearningScreenController {
             ex.printStackTrace();
         }
     }
-    
+
     private void populateComboBox() throws SQLException{
         ObservableList<String>  wentWellList = FXCollections.observableArrayList();
         ObservableList<String>  couldImproveList = FXCollections.observableArrayList();
@@ -180,7 +180,7 @@ public class DailyLearningScreenController {
         ResultSet rs = Database.getResultSet(
                 "SELECT id, date, wentWell, couldImprove from daily_learning;");
         while (rs.next()) {
-            Learning learning = new Learning(rs.getString("id"), rs.getString("date"), 
+            Learning learning = new Learning(rs.getString("id"), rs.getString("date"),
                     rs.getString("wentWell"), rs.getString("couldImprove"));
             learningList.add(learning);
         }
@@ -226,18 +226,18 @@ public class DailyLearningScreenController {
             couldImproveTextField.setText("");
         }
     }
-    
+
     @FXML
     public void handleGenerateReportButtonAction(ActionEvent event) throws IOException, SQLException{
         // should load a new page and then do this but for the sake of time...
         calculateFrequency();
     }
-    
+
     public void calculateFrequency() throws SQLException{
-        // we want to only look at the last 30 days 
+        // we want to only look at the last 30 days
         // get the dates for the last seven days
         org.joda.time.LocalDate monthEarlier = new DateTime().minusMonths(1).toLocalDate();
-        
+
         // get the unique entries
         ArrayList<String>  wentWellList = new ArrayList<>();
         ArrayList<String>  couldImproveList = new ArrayList<>();
@@ -251,10 +251,10 @@ public class DailyLearningScreenController {
         while (ciRs.next()){
             couldImproveList.add(ciRs.getString("couldImprove"));
         }
-        
+
         // for each entry, count how many times it occurs
-        Map<String,Integer> wentWellFrequencyMap =  new HashMap<String,Integer>(); 
-        Map<String,Integer> couldImproveFrequencyMap =  new HashMap<String,Integer>(); 
+        Map<String,Integer> wentWellFrequencyMap =  new HashMap<String,Integer>();
+        Map<String,Integer> couldImproveFrequencyMap =  new HashMap<String,Integer>();
         for (String wentWell : wentWellList) {
             ResultSet rs = Database.getResultSet("SELECT COUNT(wentWell) FROM daily_learning WHERE wentWell = '" + wentWell + "' AND DATE BETWEEN '" + monthEarlier + "' AND '" + LocalDate.now() + "'");
             while (rs.next()){
@@ -270,8 +270,8 @@ public class DailyLearningScreenController {
         System.out.println(entriesSortedByValues(wentWellFrequencyMap));
         System.out.println(entriesSortedByValues(couldImproveFrequencyMap));
     }
-    
-    // sorting the map in descending order so we can display it 
+
+    // sorting the map in descending order so we can display it
     // adapted from https://stackoverflow.com/questions/11647889/sorting-the-mapkey-value-in-descending-order-based-on-the-value
     static <K,V extends Comparable<? super V>> List<Entry<K, V>> entriesSortedByValues(Map<K,V> map) {
 
@@ -306,11 +306,6 @@ public class DailyLearningScreenController {
 
     // Add Data Handling
     @FXML
-    public void handleHomeScreenButtonAction(ActionEvent event) throws IOException {
-        layoutController.handleHomeScreenButtonAction(event);
-    }
-
-    @FXML
     public void handleMyLifeScreenButtonAction(ActionEvent event) throws IOException {
         layoutController.handleMyLifeScreenButtonAction(event);
     }
@@ -330,5 +325,5 @@ public class DailyLearningScreenController {
         layoutController.handleWeeklyTrendsScreenButtonAction(event);
     }
 
-    
+
 }
