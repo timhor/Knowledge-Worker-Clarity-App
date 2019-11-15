@@ -178,7 +178,8 @@ public class Database {
         Statement stmt = conn.createStatement();
 
         String createQuery = "CREATE TABLE IF NOT EXISTS daily_learning" +
-            "(date TEXT NOT NULL," +
+                "(id INTEGER PRIMARY KEY," +
+            "date TEXT NOT NULL," +
             "wentWell TEXT NOT NULL," +
             "couldImprove TEXT NOT NULL)";
         stmt.execute(createQuery);

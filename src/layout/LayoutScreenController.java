@@ -90,7 +90,7 @@ public class LayoutScreenController {
     @FXML
     public void handleHomeScreenButtonAction(ActionEvent event) throws IOException {
         try {
-            pageSwitchHelper.switcher(event, "/layout/EntriesScreen.fxml");
+            pageSwitchHelper.switcher(event, "/entries/EntriesScreen.fxml");
         } catch (Exception ex) {
             ex.printStackTrace();
         }

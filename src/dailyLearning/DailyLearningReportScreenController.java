@@ -138,7 +138,6 @@ couldImproveDescColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         }
     }
     
-//
     private ObservableList<LearningAgg> getWentWellData() throws SQLException {
         ArrayList<LearningAgg> aggList = new ArrayList<LearningAgg>();
                 // we want to only look at the last 30 days 
@@ -168,8 +167,6 @@ couldImproveDescColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         }
         return FXCollections.observableList(aggList);
     }
-    
-        
  
     // Navigation
     // Top Bar Handling
@@ -219,5 +216,11 @@ couldImproveDescColumn.setCellFactory(TextFieldTableCell.forTableColumn());
     void handleEnterDailyLearningsButtonAction(ActionEvent event) throws IOException {
         layoutController.handleEnterDailyLearningsButtonAction(event);
     }
+    
+        @FXML
+    public void handleDailyLearningScreenButtonAction(ActionEvent event) throws IOException {
+        layoutController.handleDailyLearningScreenButtonAction(event);
+    }
+    
     
 }

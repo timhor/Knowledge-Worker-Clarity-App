@@ -15,21 +15,32 @@ import layout.LayoutScreenController;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -38,6 +49,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.paint.Color;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import org.joda.time.DateTime;
 
 public class DailyLearningScreenController {
@@ -78,6 +91,12 @@ public class DailyLearningScreenController {
     
     @FXML
     private Button generateReportButton;
+    
+    @FXML
+    private Label ErrorLabel;
+    
+    @FXML
+    private Label warningLabel;
 
     // Navigation
     // Side bar
@@ -108,11 +127,15 @@ public class DailyLearningScreenController {
 
     @FXML
     private Label statusLabel;
+    
+    
+    @FXML
+    public Button Delete;
 
     // table cell editing adapted from:
     // https://docs.oracle.com/javase/8/javafx/user-interface-tutorial/table-view.htm#CJAGAAEE
     @FXML
-    public void initialize() throws SQLException {
+    public void initialize() throws SQLException, IOException {
         wentWellColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         wentWellColumn.setCellValueFactory(cellData -> cellData.getValue().getWentWellProperty());
         wentWellColumn.setOnEditCommit((CellEditEvent<Learning, String> t) -> {
@@ -141,8 +164,35 @@ public class DailyLearningScreenController {
                 e.printStackTrace();
             }
         });
+        
+
 
         dateColumn.setCellValueFactory(cellData -> cellData.getValue().getDateProperty());
+        datePicker.setDayCellFactory(picker -> new DateCell() {
+            public void updateItem(LocalDate date, boolean empty) {
+                //https://stackoverflow.com/questions/48238855/how-to-disable-past-dates-in-datepicker-of-javafx-scene-builder
+                super.updateItem(date, empty);
+                LocalDate today = LocalDate.now();
+
+                ResultSet rs = null;
+//                try {
+//                    rs = Database.getResultSet(
+//                            "SELECT date from daily_learning where date  = '" + date.format(DateTimeFormatter.ofPattern("yyyy-mm-dd")) + "';"
+//                    );
+//                            
+//                } catch (SQLException ex) {}
+//                System.out.println(rs);
+//                boolean hasResults = false;
+//                if (rs != null) {
+//                    try {
+//                        hasResults = rs.next() != false;
+//                    } catch (SQLException ex) {}
+//                }
+                setDisable(empty || date.compareTo(today) > 0);
+            }
+        });
+
+
         datePicker.setConverter(SharedComponents.getDatePickerConverter());
 
         populateEntries();
@@ -178,12 +228,14 @@ public class DailyLearningScreenController {
     private ObservableList<Learning> getLearningListData() throws SQLException {
         ArrayList<Learning> learningList = new ArrayList<Learning>();
         ResultSet rs = Database.getResultSet(
-                "SELECT id, date, wentWell, couldImprove from daily_learning;");
+                "SELECT id, date, wentWell, couldImprove from daily_learning ORDER BY date asc;");
         while (rs.next()) {
             Learning learning = new Learning(rs.getString("id"), rs.getString("date"), 
                     rs.getString("wentWell"), rs.getString("couldImprove"));
             learningList.add(learning);
         }
+        
+        detectMissingDates();
         return FXCollections.observableList(learningList);
     }
 
@@ -244,8 +296,7 @@ public class DailyLearningScreenController {
             wentWellComboBox.setValue(null);
         }
     }
-    
-    
+
     @FXML
     public void handleGenerateReportButtonAction(ActionEvent event) throws IOException {
         layoutController.handleGenerateReportButtonAction(event);
@@ -305,19 +356,54 @@ public class DailyLearningScreenController {
         return sortedEntries;
     }
     
-//            private void handleDeleteButtonAction(ActionEvent event) {
-//        Learning learningToDelete = learningList.getSelectionModel().getSelectedItem();
-//        if (learningToDelete != null) {
-//            try {
-//                Database.updateFromPreparedStatement("DELETE FROM daily_learning WHERE id = ?",
-//                        new String[] { learningToDelete.getId() });
-//                populateEntries();
-//            } catch (SQLException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//    }
-
+            private void detectMissingDates() throws SQLException {
+        org.joda.time.LocalDate monthEarlier = new DateTime().minusMonths(1).toLocalDate();
+        ResultSet rs = Database.getResultSet(
+                "SELECT id, date, wentWell, couldImprove from daily_learning WHERE (date BETWEEN '" + monthEarlier + "' AND '" + LocalDate.now() + "')ORDER BY date asc;");
+        Date prev = null;
+        Date next = null;
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        while (rs.next()) {
+            Learning learning = new Learning(rs.getString("id"), rs.getString("date"), 
+                    rs.getString("wentWell"), rs.getString("couldImprove"));
+            try {
+                if (null != prev) {
+                    next = df.parse(rs.getString("date"));
+                    Period period = Period.between(
+                            new java.sql.Date(prev.getTime()).toLocalDate(), 
+                            new java.sql.Date(next.getTime()).toLocalDate()
+                    );
+                    if (period.getDays() > 1 ||period.getDays() <1 ) {
+                        warningLabel.setVisible(true);
+                        ErrorLabel.setVisible(true);
+            ErrorLabel.setTextFill(Color.RED);
+            warningLabel.setTextFill(Color.RED);
+            ErrorLabel.setText("Please fill out missing daily learnings between: " + df.format(prev) + " & " + df.format(next));
+            warningLabel.setText("Some Daily Learnings are missing from memory.");
+//            return;
+                    }
+                }
+                prev = df.parse(rs.getString("date"));
+            } catch (ParseException ex) {
+                Logger.getLogger(DailyLearningScreenController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+    }
+            @FXML
+            public void handleDeleteButtonAction(ActionEvent event) {
+        Learning learningToDelete = learningList.getSelectionModel().getSelectedItem();
+        if (learningToDelete != null) {
+            try {
+                Database.updateFromPreparedStatement("DELETE FROM daily_learning WHERE id = ?",
+                        new String[] { learningToDelete.getId() });
+                populateEntries();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+            
     // Navigation
     // Top Bar Handling
     @FXML
@@ -359,7 +445,9 @@ public class DailyLearningScreenController {
     @FXML
     public void handleWeeklyTrendsScreenButtonAction(ActionEvent event) throws IOException {
         layoutController.handleWeeklyTrendsScreenButtonAction(event);
-    }
-
+    }  
     
+        public void handleDailyLearningScreenButtonAction(ActionEvent event) throws IOException {
+        layoutController.handleDailyLearningScreenButtonAction(event);
+    }
 }
