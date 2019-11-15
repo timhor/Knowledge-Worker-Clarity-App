@@ -128,8 +128,8 @@ public class FocusModeScreenController {
 
         //MUSIC PLAYER
         try {
-            musicDropdown.getItems().addAll("Contemporary", "Dance", "Happy", "Jazz");
-            musicDropdown.setValue("Choose a genre");
+            musicDropdown.getItems().addAll("(None)", "Contemporary", "Dance", "Happy", "Jazz");
+            musicDropdown.setValue("(None)");
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -223,8 +223,12 @@ public class FocusModeScreenController {
         }
         // get whatever the user has chosen to play
         String songTitle = musicDropdown.getValue();
-        Media sound = new Media(new File("music//" + songTitle + ".mp3").toURI().toString());
-        mediaPlayer = new MediaPlayer(sound);
-        mediaPlayer.play();
+        if (songTitle.equals("(None)")) {
+            mediaPlayer.stop();
+        } else {
+            Media sound = new Media(new File("music//" + songTitle + ".mp3").toURI().toString());
+            mediaPlayer = new MediaPlayer(sound);
+            mediaPlayer.play();
+        }
     }
 }
