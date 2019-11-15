@@ -265,8 +265,14 @@ public class KanbanScreenController {
     private void handleSwitchModeButtonAction(ActionEvent event) {
         isDoDate = !isDoDate;
         if (isDoDate) {
+            todayLabel.setText("Do Today");
+            tomorrowLabel.setText("Do Tomorrow");
+            nextSevenDaysLabel.setText("Do in Next 7 Days");
             switchModeButton.setText("Switch to Due Date mode");
         } else {
+            todayLabel.setText("Due Today");
+            tomorrowLabel.setText("Due Tomorrow");
+            nextSevenDaysLabel.setText("Due in Next 7 Days");
             switchModeButton.setText("Switch to Do Date mode");
         }
         populateTasks();

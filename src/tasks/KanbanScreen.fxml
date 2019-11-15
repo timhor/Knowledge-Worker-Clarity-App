@@ -102,7 +102,7 @@
                      <content>
                         <VBox prefHeight="673.0" prefWidth="223.0">
                            <children>
-                                        <Label fx:id="nextSevenDaysLabel" alignment="CENTER" prefHeight="30.0" prefWidth="223.0" text="Next 7 Days">
+                                        <Label fx:id="nextSevenDaysLabel" alignment="CENTER" prefHeight="30.0" prefWidth="223.0" text="Do in Next 7 Days">
                                             <font>
                                                 <Font name="Lucida Grande" size="14.0" />
                                             </font>
