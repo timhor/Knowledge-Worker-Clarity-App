@@ -21,6 +21,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DataFormat;
+import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
@@ -166,8 +167,8 @@ public class KanbanScreenController {
     // - https://examples.javacodegeeks.com/desktop-java/javafx/event-javafx/javafx-drag-drop-example/
     // - https://docs.oracle.com/javafx/2/drag_drop/jfxpub-drag_drop.htm
 
-    @FXML
     @SuppressWarnings("unchecked")
+    @FXML
     private void handleDragDetected(MouseEvent event) {
         ListView<Task> listView = (ListView<Task>) event.getSource();
         Task selection = listView.getSelectionModel().getSelectedItem();
@@ -180,6 +181,58 @@ public class KanbanScreenController {
         content.putString(selection.getTaskID());
         dragboard.setContent(content);
         event.consume();
+    }
+
+    @SuppressWarnings("unchecked")
+    @FXML
+    private void handleDragOver(DragEvent event) {
+        ListView<Task> listView = (ListView<Task>) event.getSource();
+        Dragboard dragboard = event.getDragboard();
+        if (event.getGestureSource() != listView && dragboard.hasString()) {
+            event.acceptTransferModes(TransferMode.MOVE);
+        }
+        event.consume();
+    }
+
+    @SuppressWarnings("unchecked")
+    @FXML
+    private void handleDragDropped(DragEvent event) {
+        ListView<Task> listView = (ListView<Task>) event.getSource();
+        boolean dragCompleted = false;
+        Dragboard dragboard = event.getDragboard();
+        if (dragboard.hasString()) {
+            String draggedTaskId = dragboard.getString();
+            try {
+                Task draggedTask = getSelectedTask(draggedTaskId);
+                listView.getItems().add(draggedTask);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                dragCompleted = true;
+            }
+        }
+        // transfer not successful
+        event.setDropCompleted(dragCompleted);
+        event.consume();
+    }
+
+    @SuppressWarnings("unchecked")
+    @FXML
+    private void handleDragDone(DragEvent event) {
+        ListView<Task> listView = (ListView<Task>) event.getSource();
+        int selectedIndex = listView.getSelectionModel().getSelectedIndex();
+        listView.getSelectionModel().clearSelection();
+        listView.getItems().remove(selectedIndex);
+        event.consume();
+    }
+
+    private Task getSelectedTask(String id) throws SQLException {
+        ResultSet rs = Database.getResultSetFromPreparedStatement(
+                "SELECT * FROM tasks WHERE taskId = ?",
+                new String[] { id });
+        Task task = new Task(rs.getString("taskId"), rs.getString("title"), rs.getString("description"),
+                rs.getString("priority"), rs.getString("dueDate"), rs.getString("doDate"));
+        return task;
     }
 
     @FXML
