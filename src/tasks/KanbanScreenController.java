@@ -122,8 +122,12 @@ public class KanbanScreenController {
         // });
     }
 
+    private Mode getMode() {
+        return isDoDate ? Mode.DO_DATE : Mode.DUE_DATE;
+    }
+
     private void populateTasks() {
-        Mode mode = isDoDate ? Mode.DO_DATE : Mode.DUE_DATE;
+        Mode mode = getMode();
         try {
             completedListView.setItems(getTasks(TimePeriod.COMPLETED, mode));
             todayListView.setItems(getTasks(TimePeriod.TODAY, mode));
@@ -139,16 +143,16 @@ public class KanbanScreenController {
         String column = mode == Mode.DO_DATE ? "doDate" : "dueDate";
         switch (timePeriod) {
             case COMPLETED:
-                query = "SELECT * FROM tasks WHERE completed > 0";
+                query = "SELECT * FROM tasks WHERE completed = 1";
                 break;
             case TODAY:
-                query = "SELECT * FROM tasks WHERE " + column + " = date('now', 'localtime')";
+                query = "SELECT * FROM tasks WHERE " + column + " = date('now', 'localtime') AND completed = 0";
                 break;
             case TOMORROW:
-                query = "SELECT * FROM tasks WHERE " + column + " = date('now', 'localtime', '+1 day')";
+                query = "SELECT * FROM tasks WHERE " + column + " = date('now', 'localtime', '+1 day') AND completed = 0";
                 break;
             case NEXT_SEVEN_DAYS:
-                query = "SELECT * FROM tasks WHERE " + column + " BETWEEN date('now', 'localtime', '+2 day') AND date('now', 'localtime', '+7 day')";
+                query = "SELECT * FROM tasks WHERE (" + column + " BETWEEN date('now', 'localtime', '+2 day') AND date('now', 'localtime', '+7 day')) AND completed = 0";
                 break;
             default:
                 query = "SELECT * FROM tasks";
@@ -186,9 +190,10 @@ public class KanbanScreenController {
     @SuppressWarnings("unchecked")
     @FXML
     private void handleDragOver(DragEvent event) {
-        ListView<Task> listView = (ListView<Task>) event.getSource();
+        ListView<Task> source = (ListView<Task>) event.getGestureSource();
+        ListView<Task> target = (ListView<Task>) event.getGestureTarget();
         Dragboard dragboard = event.getDragboard();
-        if (event.getGestureSource() != listView && dragboard.hasString()) {
+        if (source != target && dragboard.hasString()) {
             event.acceptTransferModes(TransferMode.MOVE);
         }
         event.consume();
@@ -197,14 +202,39 @@ public class KanbanScreenController {
     @SuppressWarnings("unchecked")
     @FXML
     private void handleDragDropped(DragEvent event) {
-        ListView<Task> listView = (ListView<Task>) event.getSource();
+        ListView<Task> source = (ListView<Task>) event.getGestureSource();
+        ListView<Task> target = (ListView<Task>) event.getGestureTarget();
         boolean dragCompleted = false;
         Dragboard dragboard = event.getDragboard();
         if (dragboard.hasString()) {
             String draggedTaskId = dragboard.getString();
             try {
                 Task draggedTask = getSelectedTask(draggedTaskId);
-                listView.getItems().add(draggedTask);
+                String targetColumn = target.getId();
+                String column = getMode() == Mode.DO_DATE ? "doDate" : "dueDate";
+                switch (targetColumn) {
+                    case "completedListView":
+                        Database.updateFromPreparedStatement(
+                                "UPDATE tasks SET completed = 1 WHERE taskId = ?",
+                                new String[] { draggedTaskId });
+                        break;
+                    case "todayListView":
+                        Database.updateFromPreparedStatement(
+                                "UPDATE tasks SET " + column + " = date('now', 'localtime'), completed = 0 WHERE taskId = ?",
+                                new String[] { draggedTaskId });
+                        break;
+                    case "tomorrowListView":
+                        Database.updateFromPreparedStatement(
+                                "UPDATE tasks SET " + column + " = date('now', 'localtime', '+1 day'), completed = 0 WHERE taskId = ?",
+                                new String[] { draggedTaskId });
+                        break;
+                    case "nextSevenDaysListView":
+                        Database.updateFromPreparedStatement(
+                                "UPDATE tasks SET " + column + " = date('now', 'localtime', '+7 day'), completed = 0 WHERE taskId = ?",
+                                new String[] { draggedTaskId });
+                        break;
+                }
+                source.getItems().add(draggedTask);
             } catch (SQLException e) {
                 e.printStackTrace();
             } finally {
@@ -216,13 +246,9 @@ public class KanbanScreenController {
         event.consume();
     }
 
-    @SuppressWarnings("unchecked")
     @FXML
     private void handleDragDone(DragEvent event) {
-        ListView<Task> listView = (ListView<Task>) event.getSource();
-        int selectedIndex = listView.getSelectionModel().getSelectedIndex();
-        listView.getSelectionModel().clearSelection();
-        listView.getItems().remove(selectedIndex);
+        populateTasks();
         event.consume();
     }
 
