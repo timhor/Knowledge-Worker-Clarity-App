@@ -83,6 +83,7 @@
                </font>
             </Label>
             <ComboBox fx:id="musicDropdown" layoutX="533.0" layoutY="651.0" onAction="#handleMusicAction" prefHeight="38.0" prefWidth="165.0" promptText="Select a genre" visible="false" />
+            <Label layoutX="251.0" layoutY="142.0" text="Note: Completed tasks will not appear here. To unmark as completed, use the Kanban View." />
          </children>
       </Group>
    </children>
