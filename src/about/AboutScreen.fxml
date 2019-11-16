@@ -49,22 +49,22 @@
                   <Font size="16.0" />
                </font></Text>
             <Separator layoutX="254.0" layoutY="403.0" prefHeight="2.0" prefWidth="547.0" />
-            <Text layoutX="254.0" layoutY="486.0" strokeType="OUTSIDE" strokeWidth="0.0" text="- SQLite JDBC Driver 3.27.2.1">
+            <Text layoutX="254.0" layoutY="486.0" strokeType="OUTSIDE" strokeWidth="0.0" text="- SQLite JDBC Driver 3.27.2.1 by Taro L. Saito">
                <font>
                   <Font size="16.0" />
                </font>
             </Text>
-            <Hyperlink fx:id="jdbcLink" layoutX="520.0" layoutY="466.0" text="https://github.com/xerial/sqlite-jdbc">
+            <Hyperlink fx:id="jdbcLink" layoutX="612.0" layoutY="466.0" text="https://github.com/xerial/sqlite-jdbc">
                <font>
                   <Font size="16.0" />
                </font>
             </Hyperlink>
-            <Text layoutX="254.0" layoutY="516.0" strokeType="OUTSIDE" strokeWidth="0.0" text="- Joda-Time 2.10.5">
+            <Text layoutX="254.0" layoutY="516.0" strokeType="OUTSIDE" strokeWidth="0.0" text="- Joda-Time 2.10.5 by The Joda project">
                <font>
                   <Font size="16.0" />
                </font>
             </Text>
-            <Hyperlink fx:id="jodaTimeLink" layoutX="520.0" layoutY="496.0" text="https://github.com/JodaOrg/joda-time">
+            <Hyperlink fx:id="jodaTimeLink" layoutX="612.0" layoutY="496.0" text="https://github.com/JodaOrg/joda-time">
                <font>
                   <Font size="16.0" />
                </font>
@@ -79,7 +79,7 @@
                   <Font size="14.0" />
                </font>
             </Hyperlink>
-            <Hyperlink fx:id="musicLink" layoutX="520.0" layoutY="526.0" text="https://incompetech.filmmusic.io/">
+            <Hyperlink fx:id="musicLink" layoutX="612.0" layoutY="526.0" text="https://incompetech.filmmusic.io/">
                <font>
                   <Font size="16.0" />
                </font>
