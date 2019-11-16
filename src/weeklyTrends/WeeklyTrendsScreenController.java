@@ -21,16 +21,19 @@ import javafx.scene.control.Button;
 import layout.LayoutScreenController;
 import org.joda.time.*;
 
-import javafx.scene.chart.LineChart; 
-import javafx.scene.chart.NumberAxis; 
-import javafx.scene.chart.XYChart; 
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.input.MouseButton;
 
 public class WeeklyTrendsScreenController {
 
     LayoutScreenController layoutController = new LayoutScreenController();
 
-    // Side bar 
+    // Side bar
+    @FXML
+    public Button categoriesButton;
+    
     @FXML
     public Button homeScreenButton;
 
@@ -42,9 +45,12 @@ public class WeeklyTrendsScreenController {
 
     @FXML
     public Button myWeekScreenButton;
-    
+
     @FXML
     public Button weeklyTrendsScreenButton;
+    
+    @FXML
+    public Button dailyLearningScreenButton;
 
     // Top Bar
     @FXML
@@ -52,22 +58,28 @@ public class WeeklyTrendsScreenController {
 
     @FXML
     public Button tasksScreenButton;
-    
+
     @FXML
     public Button aboutScreenButton;
-    
+
     // Chart items
     @FXML
     public LineChart<Number, Float> weeklyTrendsLineChart;
-    
+
     @FXML
     public CategoryAxis weeklyTrendsCategoryAxis;
-    
+
     @FXML
     public NumberAxis weeklyTrendsNumberAxis;
-    
 
-    // Top Bar Handling 
+
+    // Top Bar Handling
+    
+    @FXML
+    public void handleCategoriesScreenButtonAction(ActionEvent event) throws IOException {
+        layoutController.handleCategoriesScreenButtonAction(event);
+    }
+    
     @FXML
     public void handleEntriesScreenButtonAction(ActionEvent event) throws IOException {
         layoutController.handleEntriesScreenButtonAction(event);
@@ -83,12 +95,7 @@ public class WeeklyTrendsScreenController {
         layoutController.handleAboutScreenButtonAction(event);
     }
 
-    // Add Data Handling  
-    @FXML
-    public void handleHomeScreenButtonAction(ActionEvent event) throws IOException {
-        layoutController.handleHomeScreenButtonAction(event);
-    }
-    
+    // Add Data Handling
     @FXML
     public void handleMyLifeScreenButtonAction(ActionEvent event) throws IOException {
         layoutController.handleMyLifeScreenButtonAction(event);
@@ -108,12 +115,17 @@ public class WeeklyTrendsScreenController {
     public void handleWeeklyTrendsScreenButtonAction(ActionEvent event) throws IOException {
         layoutController.handleWeeklyTrendsScreenButtonAction(event);
     }
-            
+    
+    @FXML
+    public void handleDailyLearningScreenButtonAction(ActionEvent event) throws IOException {
+        layoutController.handleDailyLearningScreenButtonAction(event);
+    }
+
     @FXML
     public void initialize() {
 
-        // ** LINE GRAPH ** 
-        // Adapted from https://www.tutorialspoint.com/javafx/line_chart.htm 
+        // ** LINE GRAPH **
+        // Adapted from https://www.tutorialspoint.com/javafx/line_chart.htm
 
         //Get all the categories we have in the database
         List categoryNames = new ArrayList();
@@ -124,14 +136,14 @@ public class WeeklyTrendsScreenController {
                 categoryNames.add(rs.getString("categoryname"));
             }
         } catch (SQLException e){
-            e.printStackTrace();            
-        }    
+            e.printStackTrace();
+        }
 
         //Defining the y axis
-        weeklyTrendsNumberAxis.setLabel("Total time spent (%)"); 
-        
+        weeklyTrendsNumberAxis.setLabel("Total time spent (%)");
+
         //Defining the x axis (categories)
-        // We want the last 12 weeks of data - adapted from https://stackoverflow.com/questions/31467524/how-to-get-all-week-dates-for-given-date-java       
+        // We want the last 12 weeks of data - adapted from https://stackoverflow.com/questions/31467524/how-to-get-all-week-dates-for-given-date-java
         //Find start of each week from that start Date, which will become our x axis
         LocalDate endDate = LocalDate.now();
         LocalDate startDate = endDate.minusMonths(2);
@@ -145,16 +157,16 @@ public class WeeklyTrendsScreenController {
         while (startDate.isBefore(endDate)) {
             weeksAxis.add(startDate.toString());
             startDate = startDate.plusWeeks(1);
-        }  
+        }
         weeklyTrendsCategoryAxis.setCategories(FXCollections.<String>observableArrayList(weeksAxis));
-        weeklyTrendsCategoryAxis.setLabel("Week of");        
-        
-        // Data entry 
-        // Data to add to before we put them into the plot 
+        weeklyTrendsCategoryAxis.setLabel("Week of");
+
+        // Data entry
+        // Data to add to before we put them into the plot
         HashMap<String, ArrayList<Float>> dataHashmap = new HashMap<>();
-        
+
         for (int j = 0; j < categoryNames.size(); j++){
-            // create an array list, which will store all the hours 
+            // create an array list, which will store all the hours
             ArrayList<Float> categoryArrayList = new ArrayList<>();
             for (int i = 0; i < weeksAxis.size(); i++){
                 long categorySumInMs = 0;
@@ -176,33 +188,33 @@ public class WeeklyTrendsScreenController {
                     }
                 } catch (SQLException e){
                     e.printStackTrace();
-                }         
-                // convert into hours 
+                }
+                // convert into hours
                 float timeSpent = 0;
                 timeSpent = TimeUnit.MILLISECONDS.toHours(categorySumInMs);
                 categoryArrayList.add(timeSpent);
-            }           
+            }
             // add it to the hashmap
             String category = (String) categoryNames.get(j);
             dataHashmap.put(category, categoryArrayList);
         }
-        
+
         // we want to convert hours into percentages
         // for each week, find out how much work was logged
         ArrayList<Float> totalHoursInWeekArray = new ArrayList<>();
         for (int i = 0; i < weeksAxis.size(); i++){
-            // add up per category, per each key 
+            // add up per category, per each key
             float totalHoursInWeek = 0;
             for (Map.Entry<String, ArrayList<Float>> entry : dataHashmap.entrySet()) {
                 //String key = entry.getKey();
                 ArrayList<Float> value = entry.getValue();
                 totalHoursInWeek += value.get(i);
-            }            
+            }
             totalHoursInWeekArray.add(i, totalHoursInWeek);
 
         }
-                
-        for (int i = 0; i < weeksAxis.size(); i++){    
+
+        for (int i = 0; i < weeksAxis.size(); i++){
             ArrayList<Float> percentageArrayListForThisWeek = new ArrayList<>();
             //now convert each of the current existing values into the percentage
             //accessing array lists in a hashmap adapted from https://stackoverflow.com/questions/10562834/how-to-iterate-hashmap-with-containing-arraylist
@@ -212,9 +224,9 @@ public class WeeklyTrendsScreenController {
                 if (Float.isNaN(percentage)){
                     percentage = 0;
                 }
-                percentageArrayListForThisWeek.add(percentage);   
-                
-                //Now update the values to reflect %, not hours 
+                percentageArrayListForThisWeek.add(percentage);
+
+                //Now update the values to reflect %, not hours
                 entry.getValue().set(i, percentageArrayListForThisWeek.get(percentageArrayListForThisWeek.size() - 1));
             }
         }
@@ -222,7 +234,7 @@ public class WeeklyTrendsScreenController {
         // now create series for each category and add to them
         dataHashmap.keySet().stream().forEach((key) -> {
             //iterate over keys
-            XYChart.Series<Number, Float> series = new XYChart.Series(); 
+            XYChart.Series<Number, Float> series = new XYChart.Series();
             series.setName(key);
             // iterate over the array list, and add the date to it from weeksAxis
             for (int i = 0; i < weeksAxis.size(); i++){
@@ -230,7 +242,7 @@ public class WeeklyTrendsScreenController {
             }
             weeklyTrendsLineChart.getData().add(series);
         });
-        
+
         // toggle ability on series
         // adapted from https://stackoverflow.com/questions/44956955/javafx-use-chart-legend-to-toggle-show-hide-series-possible
         for (Node n : weeklyTrendsLineChart.getChildrenUnmodifiable()) {

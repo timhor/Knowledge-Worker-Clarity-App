@@ -18,11 +18,15 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import layout.LayoutScreenController;
+
 public class MyDayScreenController {
 
     LayoutScreenController layoutController = new LayoutScreenController();
 
-    // Side bar 
+    // Side bar
+    @FXML
+    public Button categoriesButton;
+
     @FXML
     public Button homeScreenButton;
 
@@ -34,9 +38,12 @@ public class MyDayScreenController {
 
     @FXML
     public Button myWeekScreenButton;
-    
+
     @FXML
     public Button weeklyTrendsScreenButton;
+
+    @FXML
+    public Button dailyLearningScreenButton;
 
     // Top Bar
     @FXML
@@ -44,22 +51,26 @@ public class MyDayScreenController {
 
     @FXML
     public Button tasksScreenButton;
-    
+
     @FXML
     public Button aboutScreenButton;
-    
-   
+
     // Chart items
     @FXML
     public BarChart myDayBarChart;
-    
+
     @FXML
     public CategoryAxis myDayCategoryAxis;
-    
+
     @FXML
     public NumberAxis myDayNumberAxis;
 
-    // Top Bar Handling 
+    // Top Bar Handling
+    @FXML
+    public void handleCategoriesScreenButtonAction(ActionEvent event) throws IOException {
+        layoutController.handleCategoriesScreenButtonAction(event);
+    }
+
     @FXML
     public void handleEntriesScreenButtonAction(ActionEvent event) throws IOException {
         layoutController.handleEntriesScreenButtonAction(event);
@@ -75,12 +86,7 @@ public class MyDayScreenController {
         layoutController.handleAboutScreenButtonAction(event);
     }
 
-    // Add Data Handling  
-    @FXML
-    public void handleHomeScreenButtonAction(ActionEvent event) throws IOException {
-        layoutController.handleHomeScreenButtonAction(event);
-    }
-    
+    // Add Data Handling
     @FXML
     public void handleMyLifeScreenButtonAction(ActionEvent event) throws IOException {
         layoutController.handleMyLifeScreenButtonAction(event);
@@ -100,48 +106,51 @@ public class MyDayScreenController {
     public void handleWeeklyTrendsScreenButtonAction(ActionEvent event) throws IOException {
         layoutController.handleWeeklyTrendsScreenButtonAction(event);
     }
-    
-    
-      
+
+    @FXML
+    public void handleDailyLearningScreenButtonAction(ActionEvent event) throws IOException {
+        layoutController.handleDailyLearningScreenButtonAction(event);
+    }
+
     @FXML
     public void initialize() throws SQLException {
- 
+
         // get all the categories available
         //Get all the categories we have in the database
         ArrayList<String> categoryNames = new ArrayList<>();
         try {
 
             ResultSet rs = Database.getResultSet("SELECT DISTINCT categoryname FROM categories");
-            while (rs.next()){
+            while (rs.next()) {
                 categoryNames.add(rs.getString("categoryname"));
             }
-        } catch (SQLException e){
-            e.printStackTrace();            
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
         //Defining the x axis
         myDayNumberAxis.setLabel("Hours spent (hrs)");
-        
+
         //Defining the y axis
         //myDayCategoryAxis.setCategories(FXCollections.<String>observableArrayList(categoryNames));
         myDayCategoryAxis.setLabel("Category");
 
         //We want to find out how much time we've spent on each category
-        HashMap<String,Float> categoryTimeMap = new HashMap<String, Float>();
-                
+        HashMap<String, Float> categoryTimeMap = new HashMap<String, Float>();
+
         // get the categories first
         String categorySt = "SELECT DISTINCT c.categoryname FROM entries e LEFT JOIN categories c ON e.category = c.id WHERE e.date = '" + LocalDate.now() + "'";
         ResultSet rs = Database.getResultSet(categorySt);
-        while (rs.next()){
+        while (rs.next()) {
             // sum all the entries in this category
             categoryTimeMap.put(rs.getString("categoryname"), 0.0f);
         }
-        
+
         // then go through every single entry, and add to it
         String timeSt = "SELECT c.categoryname, e.starttime, e.endtime FROM entries e LEFT JOIN categories c ON e.category = c.id WHERE e.date = '" + LocalDate.now() + "'";
         ResultSet timeRs = Database.getResultSet(timeSt);
-        while (timeRs.next()){
-            // calculate the time it takes 
+        while (timeRs.next()) {
+            // calculate the time it takes
             String startTime = timeRs.getString("starttime");
             String endTime = timeRs.getString("endtime");
             long duration = parseTimeInMs(endTime) - parseTimeInMs(startTime);
@@ -149,11 +158,11 @@ public class MyDayScreenController {
             float durationInHours = duration / 3600000.0f;
             // append to the hashmap
             categoryTimeMap.put(timeRs.getString("categoryname"), categoryTimeMap.get(timeRs.getString("categoryname")) + durationInHours);
-        }        
-        HashMap<String,Float> sortedDailyHashMap = nLargest(categoryTimeMap, 5);
- 
+        }
+        HashMap<String, Float> sortedDailyHashMap = nLargest(categoryTimeMap, 5);
+
         // BAR CHART
-        // adapted from https://o7planning.org/en/11107/javafx-barchart-and-stackedbarchart-tutorial 
+        // adapted from https://o7planning.org/en/11107/javafx-barchart-and-stackedbarchart-tutorial
         XYChart.Series<String, Float> series = new XYChart.Series<String, Float>();
         for (Map.Entry<String, Float> entry : sortedDailyHashMap.entrySet()) {
             String key = entry.getKey();
@@ -161,22 +170,22 @@ public class MyDayScreenController {
             series.getData().add(new XYChart.Data(key, value));
         }
         myDayBarChart.getData().add(series);
-        
+
         // Change colours
-        // Get hexkeys of the categories 
+        // Get hexkeys of the categories
         ArrayList<String> colourCodes = new ArrayList<>();
         for (Map.Entry<String, Float> entry : sortedDailyHashMap.entrySet()) {
             String key = entry.getKey();
             String colourSt = "SELECT DISTINCT c.hexString FROM entries e LEFT JOIN categories c ON e.category = c.id WHERE c.categoryname = '" + key + "'";
             ResultSet colourRs = Database.getResultSet(colourSt);
-            while (colourRs.next()){
+            while (colourRs.next()) {
                 String categoryColour = colourRs.getString("hexString");
                 colourCodes.add(categoryColour);
             }
         }
-        
+
         //colour coding each bar depending on category hexString
-        //adapted from https://stackoverflow.com/questions/43396419/how-to-change-the-colors-of-specific-bars-using-javafx-barchart 
+        //adapted from https://stackoverflow.com/questions/43396419/how-to-change-the-colors-of-specific-bars-using-javafx-barchart
         try {
             Node n = myDayBarChart.lookup(".data0.chart-bar");
             n.setStyle("-fx-bar-fill: " + colourCodes.get(0));
@@ -185,17 +194,17 @@ public class MyDayScreenController {
             n = myDayBarChart.lookup(".data2.chart-bar");
             n.setStyle("-fx-bar-fill: " + colourCodes.get(2));
             n = myDayBarChart.lookup(".data3.chart-bar");
-            n.setStyle("-fx-bar-fill: " + colourCodes.get(3));    
+            n.setStyle("-fx-bar-fill: " + colourCodes.get(3));
             n = myDayBarChart.lookup(".data4.chart-bar");
             n.setStyle("-fx-bar-fill: " + colourCodes.get(4));
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         } finally {
             myDayBarChart.setLegendVisible(false);
-            myDayBarChart.setTitle("Time spent on today's top 5 categories");            
+            myDayBarChart.setTitle("Time spent on today's top 5 categories");
         }
     }
-    
+
     // Method for finding the top n values in a hashmap
     // Adapted from https://stackoverflow.com/questions/23805861/finding-the-n-largest-values-in-a-hashmap
     static HashMap<String, Float> nLargest(HashMap<String, Float> map, int n) { //map and n largest values to search for
@@ -223,5 +232,5 @@ public class MyDayScreenController {
         }
         return result;
     }
-    
+
 }

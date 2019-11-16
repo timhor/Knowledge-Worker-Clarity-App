@@ -13,7 +13,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="768.0" prefWidth="917.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dailyLearning.DailyLearningScreenController">
+<AnchorPane id="AnchorPane" prefHeight="768.0" prefWidth="917.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="entries.CategoriesScreenController">
     <children>
         <Group>
             <children>
@@ -59,31 +59,22 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                 </GridPane>
-                <TableView fx:id="learningList" editable="true" focusTraversable="false" layoutX="114.0" layoutY="219.0" prefHeight="489.0" prefWidth="869.0">
+                <TableView fx:id="categoryList" editable="true" focusTraversable="false" layoutX="110.0" layoutY="174.0" prefHeight="541.0" prefWidth="877.0">
                     <columns>
-                        <TableColumn fx:id="dateColumn" editable="false" prefWidth="107.95697021484375" text="Date" />
-                        <TableColumn fx:id="wentWellColumn" prefWidth="397.92901611328125" text="What Went Well?" />
-                        <TableColumn fx:id="couldImproveColumn" prefWidth="361.99993896484375" text="What Could Be Better?" />
+                        <TableColumn fx:id="categoryColumn" prefWidth="431.0" text="Category" />
+                        <TableColumn fx:id="colourColumn" prefWidth="445.0" text="Colour" />
                     </columns>
                 </TableView>
-                <TextField fx:id="wentWellTextField" layoutX="273.0" layoutY="96.0" prefHeight="30.0" prefWidth="260.0" promptText="What Went Well?" />
-                <Button fx:id="saveLearningButton" defaultButton="true" layoutX="824.0" layoutY="96.0" mnemonicParsing="false" onAction="#handleSaveLearningButtonAction" prefHeight="30.0" prefWidth="160.0" text="Save Learning" />
-                <Label layoutX="111.0" layoutY="56.0" text="Enter your Daily Learnings">
+                <Label layoutX="111.0" layoutY="85.0" text="Manage Categories">
                     <font>
                         <Font size="18.0" />
                     </font>
                 </Label>
-                <Label fx:id="statusLabel" layoutX="350.0" layoutY="80.0" prefHeight="35.0" prefWidth="278.0" />
-                <DatePicker fx:id="datePicker" layoutX="111.0" layoutY="95.0" prefHeight="30.0" prefWidth="154.0" promptText="Date" />
-                <TextField fx:id="couldImproveTextField" layoutX="543.0" layoutY="96.0" prefHeight="30.0" prefWidth="270.0" promptText="What Could Be Better?" />
-                <Label layoutX="113.0" layoutY="154.0" prefHeight="53.0" prefWidth="152.0" text="Choose a previous&#10;answer:">
-                    <font>
-                        <Font size="16.0" />
-                    </font>
-                </Label>
-                <ComboBox fx:id="wentWellComboBox" layoutX="277.0" layoutY="160.0" prefHeight="51.0" prefWidth="256.0" />
-                <ComboBox fx:id="couldImproveComboBox" layoutX="554.0" layoutY="163.0" prefHeight="51.0" prefWidth="256.0" />
-                <Button fx:id="generateReportButton" defaultButton="true" layoutX="426.0" layoutY="712.0" mnemonicParsing="false" onAction="#handleGenerateReportButtonAction" prefHeight="30.0" prefWidth="160.0" text="Generate Report" />
+                <TextField fx:id="categoryNameTextField" layoutX="112.0" layoutY="120.0" prefHeight="33.0" prefWidth="209.0" promptText="Category Name" />
+                <ColorPicker fx:id="categoryColourPicker" layoutX="341.0" layoutY="120.0" prefHeight="33.0" prefWidth="149.0" />
+                <Button fx:id="saveCategoryButton" defaultButton="true" layoutX="511.0" layoutY="120.0" mnemonicParsing="false" onAction="#handleSaveCategoryButtonAction" prefHeight="34.0" prefWidth="138.0" text="Save Category" />
+                <Label fx:id="statusLabel" layoutX="110.0" layoutY="727.0" prefHeight="29.0" prefWidth="528.0" visible="false" />
+                <Button layoutX="811.0" layoutY="728.0" mnemonicParsing="false" onAction="#handleDeleteButtonAction" text="Delete Selected Category" />
             </children>
         </Group>
     </children>

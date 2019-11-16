@@ -25,6 +25,9 @@ public class MyLifeScreenController {
     LayoutScreenController layoutController = new LayoutScreenController();
 
     @FXML
+    public Button categoriesButton;
+    
+    @FXML
     public Button homeScreenButton;
 
     @FXML
@@ -38,6 +41,9 @@ public class MyLifeScreenController {
 
     @FXML
     public Button weeklyTrendsScreenButton;
+    
+    @FXML
+    public Button dailyLearningScreenButton;
 
     // Top Bar
     @FXML
@@ -67,10 +73,10 @@ public class MyLifeScreenController {
 
     // Add Data Handling
     @FXML
-    public void handleHomeScreenButtonAction(ActionEvent event) throws IOException {
-        layoutController.handleHomeScreenButtonAction(event);
+    public void handleCategoriesScreenButtonAction(ActionEvent event) throws IOException {
+        layoutController.handleCategoriesScreenButtonAction(event);
     }
-
+    
     @FXML
     public void handleMyLifeScreenButtonAction(ActionEvent event) throws IOException {
         layoutController.handleMyLifeScreenButtonAction(event);
@@ -89,6 +95,11 @@ public class MyLifeScreenController {
     @FXML
     public void handleWeeklyTrendsScreenButtonAction(ActionEvent event) throws IOException {
         layoutController.handleWeeklyTrendsScreenButtonAction(event);
+    }
+    
+    @FXML
+    public void handleDailyLearningScreenButtonAction(ActionEvent event) throws IOException {
+        layoutController.handleDailyLearningScreenButtonAction(event);
     }
 
     @FXML
