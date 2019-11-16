@@ -75,7 +75,7 @@
                 <Button fx:id="saveCategoryButton" defaultButton="true" layoutX="511.0" layoutY="120.0" mnemonicParsing="false" onAction="#handleSaveCategoryButtonAction" prefHeight="34.0" prefWidth="138.0" text="Save Category" />
                 <Label fx:id="statusLabel" layoutX="110.0" layoutY="727.0" prefHeight="29.0" prefWidth="528.0" visible="false" />
                 <Button layoutX="811.0" layoutY="728.0" mnemonicParsing="false" onAction="#handleDeleteButtonAction" text="Delete Selected Category" />
-            <Label layoutX="341.0" layoutY="75.0" prefHeight="44.0" prefWidth="451.0" text="(Double click a table row to select, single click anywhereto deselect)" />
+            <Label layoutX="341.0" layoutY="75.0" prefHeight="44.0" prefWidth="451.0" text="(Double click a table row to select, single click anywhere to deselect)" />
             </children>
         </Group>
     </children>

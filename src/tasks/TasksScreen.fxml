@@ -60,7 +60,7 @@
             <Slider fx:id="prioritySlider" layoutX="184.0" layoutY="167.0" majorTickUnit="10.0" minorTickCount="0" prefHeight="38.0" prefWidth="461.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
             <Button fx:id="saveTaskButton" defaultButton="true" layoutX="687.0" layoutY="169.0" mnemonicParsing="false" onAction="#handleSaveTaskButtonAction" prefHeight="33.0" prefWidth="282.0" text="Save New Task" />
             <Label layoutX="113.0" layoutY="169.0" text="Priority:" />
-            <Label layoutX="283.0" layoutY="66.0" prefHeight="44.0" prefWidth="451.0" text="(Double click a table row to select, single click anywhereto deselect)" />
+            <Label layoutX="283.0" layoutY="66.0" prefHeight="44.0" prefWidth="451.0" text="(Double click a table row to select, single click anywhere to deselect)" />
             <Label layoutX="113.0" layoutY="237.0" text="Note: Completed tasks will not appear here. To unmark as completed, use the Kanban View." />
          </children>
       </Group>
