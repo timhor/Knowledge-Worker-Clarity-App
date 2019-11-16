@@ -162,6 +162,11 @@ public class DailyLearningReportScreenController {
 
     // Add Data Handling
     @FXML
+    public void handleCategoriesScreenButtonAction(ActionEvent event) throws IOException {
+        layoutController.handleCategoriesScreenButtonAction(event);
+    }
+
+    @FXML
     public void handleMyLifeScreenButtonAction(ActionEvent event) throws IOException {
         layoutController.handleMyLifeScreenButtonAction(event);
     }

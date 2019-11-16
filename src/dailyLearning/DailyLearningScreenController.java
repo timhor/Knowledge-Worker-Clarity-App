@@ -384,12 +384,6 @@ public class DailyLearningScreenController {
 
     // Navigation
     // Top Bar Handling
-
-    @FXML
-    public void handleCategoriesScreenButtonAction(ActionEvent event) throws IOException {
-        layoutController.handleCategoriesScreenButtonAction(event);
-    }
-
     @FXML
     public void handleEntriesScreenButtonAction(ActionEvent event) throws IOException {
         layoutController.handleEntriesScreenButtonAction(event);
@@ -406,6 +400,11 @@ public class DailyLearningScreenController {
     }
 
     // Add Data Handling
+    @FXML
+    public void handleCategoriesScreenButtonAction(ActionEvent event) throws IOException {
+        layoutController.handleCategoriesScreenButtonAction(event);
+    }
+
     @FXML
     public void handleMyLifeScreenButtonAction(ActionEvent event) throws IOException {
         layoutController.handleMyLifeScreenButtonAction(event);
