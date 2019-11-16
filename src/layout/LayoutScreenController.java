@@ -22,9 +22,6 @@ public class LayoutScreenController {
 
     // Side bar
     @FXML
-    public Button homeScreenButton;
-
-    @FXML
     public Button myLifeScreenButton;
 
     @FXML
@@ -53,6 +50,24 @@ public class LayoutScreenController {
     public void handleEntriesScreenButtonAction(ActionEvent event) throws IOException {
         try {
             pageSwitchHelper.switcher(event, "/entries/EntriesScreen.fxml");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+        @FXML
+    public void handleEnterDailyLearningsButtonAction(ActionEvent event) throws IOException {
+        try {
+            pageSwitchHelper.switcher(event, "/dailyLearning/DailyLearningScreen.fxml");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+        @FXML
+        public void handleGenerateReportButtonAction(ActionEvent event) throws IOException {
+        try {
+            pageSwitchHelper.switcher(event, "/dailyLearning/DailyLearningReportScreen.fxml");
         } catch (Exception ex) {
             ex.printStackTrace();
         }

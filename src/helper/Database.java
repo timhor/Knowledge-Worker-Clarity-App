@@ -105,7 +105,6 @@ public class Database {
         stmt.close();
     }
 
-    //editted
     public static void createTasksTable() throws SQLException {
         openConnection();
         Statement stmt = conn.createStatement();
@@ -174,4 +173,38 @@ public class Database {
         stmt.close();
     }
 
+
+    //daily learning
+    public static void createDailyLearningTable() throws SQLException {
+        openConnection();
+        Statement stmt = conn.createStatement();
+
+        String createQuery = "CREATE TABLE IF NOT EXISTS daily_learning" +
+            "(id INTEGER PRIMARY KEY," +
+            "date TEXT NOT NULL," +
+            "wentWell TEXT NOT NULL," +
+            "couldImprove TEXT NOT NULL)";
+        stmt.execute(createQuery);
+
+        String checkExistingQuery = "SELECT COUNT(*) FROM entries";
+        ResultSet rs = getResultSet(checkExistingQuery);
+        int rowCount = rs.getInt(1);
+
+        if (rowCount == 0) {
+            ArrayList<String> insertStatements = new ArrayList<String>();
+
+            insertStatements.add("INSERT INTO daily_learning (date, wentWell, couldImprove)" +
+                "VALUES ('2019-11-05', 'mathematics', 'geography')");
+            insertStatements.add("INSERT INTO daily_learning (date, wentWell, couldImprove)" +
+                "VALUES ('2019-11-07', 'mathematics', 'geography')");
+            insertStatements.add("INSERT INTO daily_learning (date, wentWell, couldImprove)" +
+                "VALUES ('2019-11-07', 'mathematics', 'geography')");
+
+            for (String statement : insertStatements) {
+                stmt.execute(statement);
+            }
+        }
+
+        stmt.close();
+    }
 }
