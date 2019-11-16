@@ -1,10 +1,4 @@
-/* TODO
-
-- limit the date after choosing the first date - only 1x a day 
-- save learning button does not check for what's in the combobox
-- data validation - if they choose from the combobox AND enter in the textlabel, should show a status label.
-- move items from generate report handler into its own page, design that ui, etc
- */
+// THIS FILE ADAPTED FROM INFS2605 19T3 WEEK 5 TUTORIAL
 package dailyLearning;
 
 import helper.Database;
@@ -86,20 +80,18 @@ public class DailyLearningReportScreenController {
     @FXML
     private TableColumn<LearningAgg, String> couldImproveCountColumn;
 
-//// all the stuff below is from the DailyLearningScreen
-    //this is probably needed
+    // table cell editing adapted from:
+    // https://docs.oracle.com/javase/8/javafx/user-interface-tutorial/table-view.htm#CJAGAAEE
     @FXML
     public void initialize() throws SQLException {
         wentWellDescColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         wentWellDescColumn.setCellValueFactory(cellData -> cellData.getValue().getDescProperty());
         wentWellCountColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        //forced it to be a string - should be integer
         wentWellCountColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getCountProperty().getValue().toString()));
 
         couldImproveDescColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         couldImproveDescColumn.setCellValueFactory(cellData -> cellData.getValue().getDescProperty());
         couldImproveCountColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        //forced it to be a string - should be integer
         couldImproveCountColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getCountProperty().getValue().toString()));
 
         populateWentWell();
@@ -195,7 +187,6 @@ public class DailyLearningReportScreenController {
         layoutController.handleWeeklyTrendsScreenButtonAction(event);
     }
 
-    //new for the this controller
     @FXML
     void handleEnterDailyLearningsButtonAction(ActionEvent event) throws IOException {
         layoutController.handleEnterDailyLearningsButtonAction(event);

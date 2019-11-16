@@ -1,10 +1,4 @@
-/* TODO
-
-- limit the date after choosing the first date - only 1x a day 
-- save learning button does not check for what's in the combobox
-- data validation - if they choose from the combobox AND enter in the textlabel, should show a status label.
-- move items from generate report handler into its own page, design that ui, etc
- */
+// THIS FILE ADAPTED FROM INFS2605 19T3 WEEK 5 TUTORIAL
 package dailyLearning;
 
 import helper.Database;
@@ -161,6 +155,7 @@ public class DailyLearningScreenController {
         dateColumn.setCellValueFactory(cellData -> cellData.getValue().getDateProperty());
         datePicker.setDayCellFactory(picker -> new DateCell() {
             public void updateItem(LocalDate date, boolean empty) {
+                //disabling of dates in datePicker adapted from:
                 //https://stackoverflow.com/questions/48238855/how-to-disable-past-dates-in-datepicker-of-javafx-scene-builder
                 super.updateItem(date, empty);
                 LocalDate today = LocalDate.now();
@@ -251,7 +246,6 @@ public class DailyLearningScreenController {
         } else if (couldImproveComboBox.getValue() == null && couldImproveTextField.getText().trim().length() > 0) {
             couldImproveString = couldImproveTextField.getText();
         } else {
-//        if (wentWellString.length() == 0) {
             statusLabel.setVisible(true);
             statusLabel.setTextFill(Color.RED);
             statusLabel.setText("Could Improve field entered incorrectly: cannot be left blank or filled in twice");
@@ -305,7 +299,6 @@ public class DailyLearningScreenController {
             couldImproveList.add(ciRs.getString("couldImprove"));
         }
 
-        // for each entry, count how many times it occurs
         Map<String, Integer> wentWellFrequencyMap = new HashMap<String, Integer>();
         Map<String, Integer> couldImproveFrequencyMap = new HashMap<String, Integer>();
         for (String wentWell : wentWellList) {
@@ -348,8 +341,7 @@ public class DailyLearningScreenController {
         Date next = null;
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         StringBuilder msg = new StringBuilder();
-        
-    
+
         while (rs.next()) {
             Learning learning = new Learning(rs.getString("id"), rs.getString("date"),
                     rs.getString("wentWell"), rs.getString("couldImprove"));
@@ -365,8 +357,12 @@ public class DailyLearningScreenController {
                         ErrorLabel.setVisible(true);
                         ErrorLabel.setTextFill(Color.RED);
                         warningLabel.setTextFill(Color.RED);
-                        msg.append("Please fill out missing daily learnings between: " + df.format(prev).toString() + " & " + df.format(next).toString()); 
-                        msg.append(".\n");  
+                        //adding multiple lines in javaFX label adapted from: 
+                        //https://stackoverflow.com/questions/36568058/how-to-add-multiple-lines-in-label-javafx
+                        //conversion from SimpleDateFormat adapted from: 
+                        //https://www.mkyong.com/java/java-how-to-get-current-date-time-date-and-calender/?fbclid=IwAR3qATXpl8DyQzW5ZV1yNFNyBzpxwpbGcODIGBTLn1Dn2UqzCgB7fvWCjGk
+                        msg.append("Please fill out missing daily learnings between: " + df.format(prev).toString() + " & " + df.format(next).toString());
+                        msg.append(".\n");
                         ErrorLabel.setText(msg.toString());
                         warningLabel.setText("Some Daily Learnings are missing from memory.");
                     }

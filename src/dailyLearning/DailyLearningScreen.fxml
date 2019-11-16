@@ -69,7 +69,7 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <Label fx:id="statusLabel" layoutX="379.0" layoutY="51.0" prefHeight="35.0" prefWidth="594.0" />
+            <Label fx:id="statusLabel" layoutX="389.0" layoutY="51.0" prefHeight="35.0" prefWidth="594.0" />
             <DatePicker fx:id="datePicker" layoutX="111.0" layoutY="95.0" prefHeight="30.0" prefWidth="154.0" promptText="Date" />
             <TextField fx:id="couldImproveTextField" layoutX="543.0" layoutY="96.0" prefHeight="30.0" prefWidth="270.0" promptText="What Could Be Better?" />
             <Label layoutX="113.0" layoutY="154.0" prefHeight="53.0" prefWidth="152.0" text="Choose a previous&#10;answer:">

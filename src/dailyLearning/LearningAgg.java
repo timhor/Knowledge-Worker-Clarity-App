@@ -1,9 +1,6 @@
 // THIS FILE ADAPTED FROM INFS2605 19T3 WEEK 5 TUTORIAL
 package dailyLearning;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
