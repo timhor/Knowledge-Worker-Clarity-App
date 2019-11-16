@@ -17,11 +17,15 @@ import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import layout.LayoutScreenController;
 
 public class MyDayScreenController {
 
     LayoutScreenController layoutController = new LayoutScreenController();
+
+    @FXML
+    private Label noEntriesPromptLabel;
 
     // Side bar
     @FXML
@@ -184,24 +188,29 @@ public class MyDayScreenController {
             }
         }
 
-        //colour coding each bar depending on category hexString
-        //adapted from https://stackoverflow.com/questions/43396419/how-to-change-the-colors-of-specific-bars-using-javafx-barchart
-        try {
-            Node n = myDayBarChart.lookup(".data0.chart-bar");
-            n.setStyle("-fx-bar-fill: " + colourCodes.get(0));
-            n = myDayBarChart.lookup(".data1.chart-bar");
-            n.setStyle("-fx-bar-fill: " + colourCodes.get(1));
-            n = myDayBarChart.lookup(".data2.chart-bar");
-            n.setStyle("-fx-bar-fill: " + colourCodes.get(2));
-            n = myDayBarChart.lookup(".data3.chart-bar");
-            n.setStyle("-fx-bar-fill: " + colourCodes.get(3));
-            n = myDayBarChart.lookup(".data4.chart-bar");
-            n.setStyle("-fx-bar-fill: " + colourCodes.get(4));
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            myDayBarChart.setLegendVisible(false);
-            myDayBarChart.setTitle("Time spent on today's top 5 categories");
+        if (colourCodes.size() > 0) {
+            noEntriesPromptLabel.setVisible(false);
+            //colour coding each bar depending on category hexString
+            //adapted from https://stackoverflow.com/questions/43396419/how-to-change-the-colors-of-specific-bars-using-javafx-barchart
+            try {
+                Node n = myDayBarChart.lookup(".data0.chart-bar");
+                n.setStyle("-fx-bar-fill: " + colourCodes.get(0));
+                n = myDayBarChart.lookup(".data1.chart-bar");
+                n.setStyle("-fx-bar-fill: " + colourCodes.get(1));
+                n = myDayBarChart.lookup(".data2.chart-bar");
+                n.setStyle("-fx-bar-fill: " + colourCodes.get(2));
+                n = myDayBarChart.lookup(".data3.chart-bar");
+                n.setStyle("-fx-bar-fill: " + colourCodes.get(3));
+                n = myDayBarChart.lookup(".data4.chart-bar");
+                n.setStyle("-fx-bar-fill: " + colourCodes.get(4));
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                myDayBarChart.setLegendVisible(false);
+                myDayBarChart.setTitle("Time spent on today's top 5 categories");
+            }
+        } else {
+            noEntriesPromptLabel.setVisible(true);
         }
     }
 
