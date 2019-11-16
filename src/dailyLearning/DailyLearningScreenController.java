@@ -1,10 +1,3 @@
-/* TODO
-
-- limit the date after choosing the first date - only 1x a day
-- save learning button does not check for what's in the combobox
-- data validation - if they choose from the combobox AND enter in the textlabel, should show a status label.
-- move items from generate report handler into its own page, design that ui, etc
- */
 package dailyLearning;
 
 import helper.Database;
@@ -135,7 +128,7 @@ public class DailyLearningScreenController {
                         new String[]{newWentWell, t.getRowValue().getId()});
                 ((Learning) t.getTableView().getItems().get(t.getTablePosition().getRow()))
                         .setWentWellProperty(newWentWell);
-                populateEntries();
+                populateLearnings();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -149,45 +142,30 @@ public class DailyLearningScreenController {
                         new String[]{newCouldImprove, t.getRowValue().getId()});
                 ((Learning) t.getTableView().getItems().get(t.getTablePosition().getRow()))
                         .setCouldImproveProperty(newCouldImprove);
-                populateEntries();
+                populateLearnings();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         });
 
         dateColumn.setCellValueFactory(cellData -> cellData.getValue().getDateProperty());
+
+        // adapted from: https://stackoverflow.com/questions/48238855/how-to-disable-past-dates-in-datepicker-of-javafx-scene-builder
         datePicker.setDayCellFactory(picker -> new DateCell() {
             public void updateItem(LocalDate date, boolean empty) {
-                //https://stackoverflow.com/questions/48238855/how-to-disable-past-dates-in-datepicker-of-javafx-scene-builder
                 super.updateItem(date, empty);
                 LocalDate today = LocalDate.now();
-
-                ResultSet rs = null;
-//                try {
-//                    rs = Database.getResultSet(
-//                            "SELECT date from daily_learning where date  = '" + date.format(DateTimeFormatter.ofPattern("yyyy-mm-dd")) + "';"
-//                    );
-//
-//                } catch (SQLException ex) {}
-//                System.out.println(rs);
-//                boolean hasResults = false;
-//                if (rs != null) {
-//                    try {
-//                        hasResults = rs.next() != false;
-//                    } catch (SQLException ex) {}
-//                }
                 setDisable(empty || date.compareTo(today) > 0);
             }
         });
 
         datePicker.setConverter(SharedComponents.getDatePickerConverter());
 
-        populateEntries();
-
+        populateLearnings();
         populateComboBox();
     }
 
-    private void populateEntries() {
+    private void populateLearnings() {
         try {
             learningList.setItems(getLearningListData());
         } catch (Exception ex) {
@@ -249,7 +227,6 @@ public class DailyLearningScreenController {
         } else if (couldImproveComboBox.getValue() == null && couldImproveTextField.getText().trim().length() > 0) {
             couldImproveString = couldImproveTextField.getText();
         } else {
-//        if (wentWellString.length() == 0) {
             statusLabel.setVisible(true);
             statusLabel.setTextFill(Color.RED);
             statusLabel.setText("Could Improve field entered incorrectly: cannot be left blank or filled in twice");
@@ -271,7 +248,8 @@ public class DailyLearningScreenController {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            populateEntries();
+            populateLearnings();
+            datePicker.setValue(null);
             wentWellTextField.setText("");
             couldImproveTextField.setText("");
             couldImproveComboBox.setValue(null);
@@ -380,7 +358,7 @@ public class DailyLearningScreenController {
             try {
                 Database.updateFromPreparedStatement("DELETE FROM daily_learning WHERE id = ?",
                         new String[]{learningToDelete.getId()});
-                populateEntries();
+                populateLearnings();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -433,4 +411,5 @@ public class DailyLearningScreenController {
     public void handleDailyLearningScreenButtonAction(ActionEvent event) throws IOException {
         layoutController.handleDailyLearningScreenButtonAction(event);
     }
+
 }
