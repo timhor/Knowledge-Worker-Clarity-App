@@ -26,10 +26,10 @@ public class MyWeekScreenController {
     LayoutScreenController layoutController = new LayoutScreenController();
 
     // Side bar
-    
+
     @FXML
     public Button categoriesButton;
-    
+
     @FXML
     public Button homeScreenButton;
 
@@ -44,7 +44,7 @@ public class MyWeekScreenController {
 
     @FXML
     public Button weeklyTrendsScreenButton;
-    
+
     @FXML
     public Button dailyLearningScreenButton;
 
@@ -72,12 +72,12 @@ public class MyWeekScreenController {
     public Label dateRangeLabel;
 
     // Top Bar Handling
-    
+
     @FXML
     public void handleCategoriesScreenButtonAction(ActionEvent event) throws IOException {
         layoutController.handleCategoriesScreenButtonAction(event);
     }
-    
+
     @FXML
     public void handleEntriesScreenButtonAction(ActionEvent event) throws IOException {
         layoutController.handleEntriesScreenButtonAction(event);
@@ -113,7 +113,7 @@ public class MyWeekScreenController {
     public void handleWeeklyTrendsScreenButtonAction(ActionEvent event) throws IOException {
         layoutController.handleWeeklyTrendsScreenButtonAction(event);
     }
-    
+
     @FXML
     public void handleDailyLearningScreenButtonAction(ActionEvent event) throws IOException {
         layoutController.handleDailyLearningScreenButtonAction(event);
@@ -204,16 +204,10 @@ public class MyWeekScreenController {
         //colour coding each bar depending on category hexString
         //adapted from https://stackoverflow.com/questions/43396419/how-to-change-the-colors-of-specific-bars-using-javafx-barchart
         try {
-            Node n = myWeekBarChart.lookup(".data0.chart-bar");
-            n.setStyle("-fx-bar-fill: " + colourCodes.get(0));
-            n = myWeekBarChart.lookup(".data1.chart-bar");
-            n.setStyle("-fx-bar-fill: " + colourCodes.get(1));
-            n = myWeekBarChart.lookup(".data2.chart-bar");
-            n.setStyle("-fx-bar-fill: " + colourCodes.get(2));
-            n = myWeekBarChart.lookup(".data3.chart-bar");
-            n.setStyle("-fx-bar-fill: " + colourCodes.get(3));
-            n = myWeekBarChart.lookup(".data4.chart-bar");
-            n.setStyle("-fx-bar-fill: " + colourCodes.get(4));
+            for (int i = 0; i < colourCodes.size(); i++) {
+                Node n = myWeekBarChart.lookup(".data" + i + ".chart-bar");
+                n.setStyle("-fx-bar-fill: " + colourCodes.get(i));
+            }
         } catch (Exception e){
             e.printStackTrace();
         } finally {
