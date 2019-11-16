@@ -65,27 +65,27 @@
                   <TableColumn fx:id="couldImproveColumn" prefWidth="361.99993896484375" text="What Could Be Better?" />
               </columns>
             </TableView>
-            <TextField fx:id="wentWellTextField" layoutX="273.0" layoutY="96.0" prefHeight="30.0" prefWidth="260.0" promptText="What went well?" />
-            <Button fx:id="saveLearningButton" defaultButton="true" layoutX="824.0" layoutY="96.0" mnemonicParsing="false" onAction="#handleSaveLearningButtonAction" prefHeight="92.0" prefWidth="160.0" text="Save Learning" />
             <Label layoutX="111.0" layoutY="56.0" text="Enter Your Learnings For Today">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <Label fx:id="statusLabel" alignment="CENTER_RIGHT" layoutX="449.0" layoutY="50.0" prefHeight="35.0" prefWidth="534.0" />
             <DatePicker fx:id="datePicker" layoutX="111.0" layoutY="96.0" prefHeight="91.0" prefWidth="153.0" promptText="Date" />
-            <TextField fx:id="couldImproveTextField" layoutX="543.0" layoutY="96.0" prefHeight="30.0" prefWidth="270.0" promptText="What could be better?" />
+            <TextField fx:id="wentWellTextField" layoutX="273.0" layoutY="96.0" prefHeight="30.0" prefWidth="260.0" promptText="What went well?" />
+            <ComboBox fx:id="wentWellComboBox" layoutX="275.0" layoutY="155.0" prefHeight="32.0" prefWidth="256.0" promptText="What went well?" />
+            <Separator layoutX="275.0" layoutY="139.0" prefHeight="2.0" prefWidth="171.0" />
             <Label layoutX="459.0" layoutY="127.0" prefHeight="25.0" prefWidth="149.0" text="OR choose from previous" wrapText="true">
                <font>
                   <Font size="12.0" />
                </font>
             </Label>
-            <ComboBox fx:id="wentWellComboBox" layoutX="275.0" layoutY="155.0" prefHeight="32.0" prefWidth="256.0" promptText="What went well?" />
+            <Separator layoutX="615.0" layoutY="139.0" prefHeight="5.0" prefWidth="198.0" />
+            <TextField fx:id="couldImproveTextField" layoutX="543.0" layoutY="96.0" prefHeight="30.0" prefWidth="270.0" promptText="What could be better?" />
             <ComboBox fx:id="couldImproveComboBox" layoutX="548.0" layoutY="155.0" prefHeight="32.0" prefWidth="265.0" promptText="What could be better?" />
+            <Button fx:id="saveLearningButton" defaultButton="true" layoutX="824.0" layoutY="96.0" mnemonicParsing="false" onAction="#handleSaveLearningButtonAction" prefHeight="92.0" prefWidth="160.0" text="Save Learning" />
+            <Label fx:id="statusLabel" alignment="CENTER_RIGHT" layoutX="449.0" layoutY="50.0" prefHeight="35.0" prefWidth="534.0" />
             <Button fx:id="generateReportButton" layoutX="708.0" layoutY="682.0" mnemonicParsing="false" onAction="#handleGenerateReportButtonAction" prefHeight="64.0" prefWidth="275.0" text="Generate Report" />
             <Button fx:id="deleteButton" layoutX="895.0" layoutY="616.0" mnemonicParsing="false" onAction="#handleDeleteButtonAction" text="Delete Row" />
-            <Separator layoutX="275.0" layoutY="139.0" prefHeight="2.0" prefWidth="171.0" />
-            <Separator layoutX="615.0" layoutY="139.0" prefHeight="5.0" prefWidth="198.0" />
             <Label fx:id="warningLabel" alignment="TOP_LEFT" layoutX="111.0" layoutY="616.0" prefHeight="130.0" prefWidth="565.0" />
          </children>
       </Group>
