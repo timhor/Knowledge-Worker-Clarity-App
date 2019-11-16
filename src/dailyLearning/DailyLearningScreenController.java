@@ -1,6 +1,6 @@
 /* TODO
 
-- limit the date after choosing the first date - only 1x a day 
+- limit the date after choosing the first date - only 1x a day
 - save learning button does not check for what's in the combobox
 - data validation - if they choose from the combobox AND enter in the textlabel, should show a status label.
 - move items from generate report handler into its own page, design that ui, etc
@@ -165,6 +165,9 @@ public class DailyLearningScreenController {
         }
     }
 
+    private void populateComboBox() throws SQLException{
+        ObservableList<String>  wentWellList = FXCollections.observableArrayList();
+        ObservableList<String>  couldImproveList = FXCollections.observableArrayList();
     private void populateComboBox() throws SQLException {
         ObservableList<String> wentWellList = FXCollections.observableArrayList();
         ObservableList<String> couldImproveList = FXCollections.observableArrayList();
@@ -240,6 +243,8 @@ public class DailyLearningScreenController {
         calculateFrequency();
     }
 
+    public void calculateFrequency() throws SQLException{
+        // we want to only look at the last 30 days
     public void calculateFrequency() throws SQLException {
         // we want to only look at the last 30 days 
         // get the dates for the last seven days
@@ -260,6 +265,8 @@ public class DailyLearningScreenController {
         }
 
         // for each entry, count how many times it occurs
+        Map<String,Integer> wentWellFrequencyMap =  new HashMap<String,Integer>();
+        Map<String,Integer> couldImproveFrequencyMap =  new HashMap<String,Integer>();
         Map<String, Integer> wentWellFrequencyMap = new HashMap<String, Integer>();
         Map<String, Integer> couldImproveFrequencyMap = new HashMap<String, Integer>();
         for (String wentWell : wentWellList) {
@@ -278,6 +285,7 @@ public class DailyLearningScreenController {
         System.out.println(entriesSortedByValues(couldImproveFrequencyMap));
     }
 
+    // sorting the map in descending order so we can display it
     // sorting the map in descending order so we can display it 
     // adapted from https://stackoverflow.com/questions/11647889/sorting-the-mapkey-value-in-descending-order-based-on-the-value
     static <K, V extends Comparable<? super V>> List<Entry<K, V>> entriesSortedByValues(Map<K, V> map) {
