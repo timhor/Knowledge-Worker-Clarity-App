@@ -89,6 +89,12 @@ public class DailyLearningScreenController {
     @FXML
     private Label warningLabel;
 
+    @FXML
+    private Label statusLabel;
+
+    @FXML
+    private Button deleteButton;
+
     // Navigation
     // Side bar
     @FXML
@@ -115,12 +121,6 @@ public class DailyLearningScreenController {
 
     @FXML
     public Button aboutScreenButton;
-
-    @FXML
-    private Label statusLabel;
-
-    @FXML
-    public Button Delete;
 
     // table cell editing adapted from:
     // https://docs.oracle.com/javase/8/javafx/user-interface-tutorial/table-view.htm#CJAGAAEE
@@ -229,6 +229,7 @@ public class DailyLearningScreenController {
     @FXML
     public void handleSaveLearningButtonAction(ActionEvent event) {
         statusLabel.setVisible(false);
+        warningLabel.setVisible(false);
         String wentWellString;
 
         if (wentWellTextField.getText().trim().length() == 0 && wentWellComboBox.getValue() != null) {
@@ -344,6 +345,9 @@ public class DailyLearningScreenController {
         Date prev = null;
         Date next = null;
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        StringBuilder msg = new StringBuilder("Some Daily Learnings are missing. Please fill out daily learnings between:\n");
+
+
         while (rs.next()) {
             Learning learning = new Learning(rs.getString("id"), rs.getString("date"),
                     rs.getString("wentWell"), rs.getString("couldImprove"));
@@ -355,9 +359,10 @@ public class DailyLearningScreenController {
                             new java.sql.Date(next.getTime()).toLocalDate()
                     );
                     if (period.getDays() > 1 || period.getDays() < 1) {
+                        msg.append("- " + df.format(prev) + " and " + df.format(next) + ".\n");
                         warningLabel.setVisible(true);
                         warningLabel.setTextFill(Color.ORANGERED);
-                        warningLabel.setText("Some Daily Learnings are missing. Please fill out daily learnings between " + df.format(prev) + " and " + df.format(next) + ".");
+                        warningLabel.setText(msg.toString());
                     }
                 }
                 prev = df.parse(rs.getString("date"));
