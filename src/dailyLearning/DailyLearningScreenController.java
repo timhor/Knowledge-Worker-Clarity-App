@@ -214,7 +214,6 @@ public class DailyLearningScreenController {
     @FXML
     public void handleSaveLearningButtonAction(ActionEvent event) {
         statusLabel.setVisible(false);
-        warningLabel.setVisible(false);
         String wentWellString;
 
         if (wentWellTextField.getText().trim().length() == 0 && wentWellComboBox.getValue() != null) {
@@ -249,6 +248,7 @@ public class DailyLearningScreenController {
         }
 
         try {
+            warningLabel.setVisible(false);
             ResultSet rs = Database.getResultSetFromPreparedStatement("SELECT count(*) from daily_learning WHERE date = ?", new String[] { date.toString() });
             boolean itemExists = rs.getInt(1) > 0;
             if (!itemExists) {
