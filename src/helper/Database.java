@@ -172,15 +172,15 @@ public class Database {
 
         stmt.close();
     }
-    
-    
+
+
     //daily learning
     public static void createDailyLearningTable() throws SQLException {
         openConnection();
         Statement stmt = conn.createStatement();
 
         String createQuery = "CREATE TABLE IF NOT EXISTS daily_learning" +
-                "(id INTEGER PRIMARY KEY," +
+            "(id INTEGER PRIMARY KEY," +
             "date TEXT NOT NULL," +
             "wentWell TEXT NOT NULL," +
             "couldImprove TEXT NOT NULL)";

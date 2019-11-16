@@ -224,7 +224,7 @@ public class DailyLearningScreenController {
         } else {
             statusLabel.setVisible(true);
             statusLabel.setTextFill(Color.RED);
-            statusLabel.setText("Went Well field entered incorrectly: cannot be left blank or filled in twice");
+            statusLabel.setText("'Went well' field cannot be left blank or filled in if a previous value has been selected");
             return;
         }
 
@@ -236,7 +236,7 @@ public class DailyLearningScreenController {
         } else {
             statusLabel.setVisible(true);
             statusLabel.setTextFill(Color.RED);
-            statusLabel.setText("Could Improve field entered incorrectly: cannot be left blank or filled in twice");
+            statusLabel.setText("'Could improve' cannot be left blank or filled in if a previous value has been selected");
             return;
         }
 
