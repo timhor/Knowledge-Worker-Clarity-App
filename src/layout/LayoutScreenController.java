@@ -22,9 +22,6 @@ public class LayoutScreenController {
 
     // Side bar
     @FXML
-    public Button homeScreenButton;
-
-    @FXML
     public Button myLifeScreenButton;
 
     @FXML

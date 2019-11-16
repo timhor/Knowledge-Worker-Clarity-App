@@ -115,7 +115,7 @@ public class DailyLearningReportScreenController {
 
     private ObservableList<LearningAgg> getWentWellData() throws SQLException {
         ArrayList<LearningAgg> aggList = new ArrayList<LearningAgg>();
-        // we want to only look at the last 30 days 
+        // we want to only look at the last 30 days
         // get the dates for the last seven days
         org.joda.time.LocalDate monthEarlier = new DateTime().minusMonths(1).toLocalDate();
         ResultSet rs = Database.getResultSet(
@@ -130,7 +130,7 @@ public class DailyLearningReportScreenController {
 
     private ObservableList<LearningAgg> getCouldImproveData() throws SQLException {
         ArrayList<LearningAgg> aggList = new ArrayList<LearningAgg>();
-        // we want to only look at the last 30 days 
+        // we want to only look at the last 30 days
         // get the dates for the last seven days
         org.joda.time.LocalDate monthEarlier = new DateTime().minusMonths(1).toLocalDate();
         ResultSet rs = Database.getResultSet(
@@ -161,11 +161,6 @@ public class DailyLearningReportScreenController {
     }
 
     // Add Data Handling
-    @FXML
-    public void handleHomeScreenButtonAction(ActionEvent event) throws IOException {
-        layoutController.handleHomeScreenButtonAction(event);
-    }
-
     @FXML
     public void handleMyLifeScreenButtonAction(ActionEvent event) throws IOException {
         layoutController.handleMyLifeScreenButtonAction(event);
