@@ -91,49 +91,49 @@ public class Database {
             ArrayList<String> insertStatements = new ArrayList<String>();
 
             insertStatements.add("INSERT INTO entries (category, description, date, starttime, endtime) " +
-                "VALUES (7,'First entry','2019-11-05','11:30','12:45')");
+                "VALUES (7,'First entry','2019-11-18','11:30','12:45')");
             insertStatements.add("INSERT INTO entries (category, description, date, starttime, endtime) " +
-                "VALUES (7,'Second entry','2019-11-07','13:23','15:12')");
+                "VALUES (7,'Second entry','2019-11-23','13:23','15:12')");
             insertStatements.add("INSERT INTO entries (category, description, date, starttime, endtime) " +
-                "VALUES (7,'Third entry','2019-11-07','18:38','20:53')");
+                "VALUES (7,'Third entry','2019-11-23','18:38','20:53')");
             insertStatements.add("INSERT INTO entries (category, description, date, starttime, endtime) " +
-                "VALUES (7,'4th entry','2019-11-06','10:10','13:13')");
+                "VALUES (7,'4th entry','2019-11-22','10:10','13:13')");
             insertStatements.add("INSERT INTO entries (category, description, date, starttime, endtime) " +
-                "VALUES (1,'study for test 1 ','2019-11-07','12:00','15:00')");
+                "VALUES (1,'study for test 1 ','2019-11-19','12:00','15:00')");
             insertStatements.add("INSERT INTO entries (category, description, date, starttime, endtime) " +
-                "VALUES (1,'study for test 2','2019-11-04','13:00','16:30')");
+                "VALUES (1,'study for test 2','2019-11-20','13:00','16:30')");
             insertStatements.add("INSERT INTO entries (category, description, date, starttime, endtime) " +
-                "VALUES (1,'study for test 3','2019-11-10','19:00','20:30')");
+                "VALUES (1,'study for test 3','2019-11-21','19:00','20:30')");
             insertStatements.add("INSERT INTO entries (category, description, date, starttime, endtime) " +
-                "VALUES (2,'work shift 1','2019-11-06','10:00','15:00')");
+                "VALUES (2,'work shift 1','2019-11-23','10:00','15:00')");
             insertStatements.add("INSERT INTO entries (category, description, date, starttime, endtime) " +
-                "VALUES (2,'work shift 2','2019-11-09','09:10','16:30')");
+                "VALUES (2,'work shift 2','2019-11-24','09:10','16:30')");
             insertStatements.add("INSERT INTO entries (category, description, date, starttime, endtime) " +
-                "VALUES (2,'work shift 3','2019-11-10','12:00','19:00')");
+                "VALUES (2,'work shift 3','2019-11-22','12:00','19:00')");
             insertStatements.add("INSERT INTO entries (category, description, date, starttime, endtime) " +
-                "VALUES (3,'meditation','2019-10-26','10:00','11:00')");
+                "VALUES (3,'meditation','2019-10-23','10:00','11:00')");
             insertStatements.add("INSERT INTO entries (category, description, date, starttime, endtime) " +
-                "VALUES (6,'hanging with friends','2019-11-01','13:00','20:30')");
+                "VALUES (6,'hanging with friends','2019-11-24','13:00','20:30')");
             insertStatements.add("INSERT INTO entries (category, description, date, starttime, endtime) " +
-                "VALUES (3,'out to see a movie','2019-11-03','14:00','17:00')");
+                "VALUES (3,'out to see a movie','2019-11-18','14:00','17:00')");
             insertStatements.add("INSERT INTO entries (category, description, date, starttime, endtime) " +
-                "VALUES (4,'Travel to work','2019-11-11','07:30','09:00')");
+                "VALUES (4,'Travel to work','2019-11-16','07:30','09:00')");
             insertStatements.add("INSERT INTO entries (category, description, date, starttime, endtime) " +
-                "VALUES (2,'Morning work shift','2019-11-11','09:00','12:00')");
+                "VALUES (2,'Morning work shift','2019-11-17','09:00','12:00')");
             insertStatements.add("INSERT INTO entries (category, description, date, starttime, endtime) " +
-                "VALUES (5,'Jog to the beach','2019-11-11','12:00','13:00')");
+                "VALUES (5,'Jog to the beach','2019-11-19','12:00','13:00')");
             insertStatements.add("INSERT INTO entries (category, description, date, starttime, endtime) " +
-                "VALUES (3,'Lunch with Anne','2019-11-11','13:00','14:00')");
+                "VALUES (3,'Lunch with Anne','2019-11-19','13:00','14:00')");
             insertStatements.add("INSERT INTO entries (category, description, date, starttime, endtime) " +
-                "VALUES (3,'Shopping at Westfield','2019-11-11','14:00','16:00')");
+                "VALUES (3,'Shopping at Westfield','2019-11-20','14:00','16:00')");
             insertStatements.add("INSERT INTO entries (category, description, date, starttime, endtime) " +
-                "VALUES (4,'Heading home','2019-11-11','16:00','17:00')");
+                "VALUES (4,'Heading home','2019-11-20','16:00','17:00')");
             insertStatements.add("INSERT INTO entries (category, description, date, starttime, endtime) " +
-                "VALUES (1,'Java Assignment','2019-11-11','17:00','20:30')");
+                "VALUES (1,'Java Assignment','2019-11-21','17:00','20:30')");
             insertStatements.add("INSERT INTO entries (category, description, date, starttime, endtime) " +
-                "VALUES (3,'Meditate','2019-11-11','20:30','21:45')");
+                "VALUES (3,'Meditate','2019-11-22','20:30','21:45')");
             insertStatements.add("INSERT INTO entries (category, description, date, starttime, endtime) " +
-                "VALUES (1,'Review Bobs PR','2019-11-11','21:45','22:30')");
+                "VALUES (1,'Review Bobs PR','2019-11-23','21:45','22:30')");
 
             for (String statement : insertStatements) {
                 stmt.execute(statement);
@@ -166,7 +166,7 @@ public class Database {
             insertStatements.add("INSERT INTO tasks (title, description, priority, dueDate, doDate, completed) " +
                 "VALUES ('INFS2605 Project','Java assignment','90','2019-11-16','2019-11-14',0)");
             insertStatements.add("INSERT INTO tasks (title, description, priority, dueDate, doDate, completed) " +
-                "VALUES ('INFS3873 Assignment 1','Linear regression','80','2019-11-08','2019-11-05',0)");
+                "VALUES ('INFS3873 Assignment 1','Linear regression','80','2019-11-18','2019-11-15',0)");
             insertStatements.add("INSERT INTO tasks (title, description, priority, dueDate, doDate, completed) " +
                 "VALUES ('INFS3873 Assignment 2','Logistic regression','80','2019-11-17','2019-11-15',0)");
             insertStatements.add("INSERT INTO tasks (title, description, priority, dueDate, doDate, completed) " +
@@ -257,7 +257,7 @@ public class Database {
             insertStatements.add("INSERT INTO daily_learning (date, wentWell, couldImprove) " +
                 "VALUES ('2019-11-16','Went to the Gym','Watched 3 hours of Netflix')");
             insertStatements.add("INSERT INTO daily_learning (date, wentWell, couldImprove) " +
-                "VALUES ('2019-11-07','Went to lectures','Didn''t socialise with anyone')");
+                "VALUES ('2019-11-17','Went to lectures','Didn''t socialise with anyone')");
             insertStatements.add("INSERT INTO daily_learning (date, wentWell, couldImprove) " +
                 "VALUES ('2019-11-12','Maths','Geography')");
             insertStatements.add("INSERT INTO daily_learning (date, wentWell, couldImprove) " +
@@ -269,9 +269,9 @@ public class Database {
             insertStatements.add("INSERT INTO daily_learning (date, wentWell, couldImprove) " +
                 "VALUES ('2019-11-14','Went to the Gym','Didn''t shower')");
             insertStatements.add("INSERT INTO daily_learning (date, wentWell, couldImprove) " +
-                "VALUES ('2019-11-01','Went to the Gym','Didn''t shower')");
+                "VALUES ('2019-11-11','Went to the Gym','Didn''t shower')");
             insertStatements.add("INSERT INTO daily_learning (date, wentWell, couldImprove) " +
-                "VALUES ('2019-11-05','Maths','Watched 3 hours of Netflix')");
+                "VALUES ('2019-11-15','Maths','Watched 3 hours of Netflix')");
 
             for (String statement : insertStatements) {
                 stmt.execute(statement);
