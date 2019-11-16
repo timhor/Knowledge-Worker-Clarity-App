@@ -150,7 +150,7 @@ public class DailyLearningScreenController {
 
         dateColumn.setCellValueFactory(cellData -> cellData.getValue().getDateProperty());
 
-        // adapted from: https://stackoverflow.com/questions/48238855/how-to-disable-past-dates-in-datepicker-of-javafx-scene-builder
+        // disabling of dates in datePicker adapted from: https://stackoverflow.com/questions/48238855/how-to-disable-past-dates-in-datepicker-of-javafx-scene-builder
         datePicker.setDayCellFactory(picker -> new DateCell() {
             public void updateItem(LocalDate date, boolean empty) {
                 super.updateItem(date, empty);
@@ -281,7 +281,6 @@ public class DailyLearningScreenController {
             couldImproveList.add(ciRs.getString("couldImprove"));
         }
 
-        // for each entry, count how many times it occurs
         Map<String, Integer> wentWellFrequencyMap = new HashMap<String, Integer>();
         Map<String, Integer> couldImproveFrequencyMap = new HashMap<String, Integer>();
         for (String wentWell : wentWellList) {
@@ -325,7 +324,6 @@ public class DailyLearningScreenController {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         StringBuilder msg = new StringBuilder("Some Daily Learnings are missing. Please fill out daily learnings between:\n");
 
-
         while (rs.next()) {
             Learning learning = new Learning(rs.getString("id"), rs.getString("date"),
                     rs.getString("wentWell"), rs.getString("couldImprove"));
@@ -337,6 +335,10 @@ public class DailyLearningScreenController {
                             new java.sql.Date(next.getTime()).toLocalDate()
                     );
                     if (period.getDays() > 1 || period.getDays() < 1) {
+                        // adding multiple lines in javaFX label adapted from:
+                        // https://stackoverflow.com/questions/36568058/how-to-add-multiple-lines-in-label-javafx
+                        // conversion from SimpleDateFormat adapted from:
+                        // https://www.mkyong.com/java/java-how-to-get-current-date-time-date-and-calender/?fbclid=IwAR3qATXpl8DyQzW5ZV1yNFNyBzpxwpbGcODIGBTLn1Dn2UqzCgB7fvWCjGk
                         msg.append("- " + df.format(prev) + " and " + df.format(next) + ".\n");
                         warningLabel.setVisible(true);
                         warningLabel.setTextFill(Color.ORANGERED);
