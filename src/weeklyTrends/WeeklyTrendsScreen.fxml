@@ -21,7 +21,7 @@
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#91caff" height="45.0" smooth="false" stroke="TRANSPARENT" strokeType="INSIDE" width="1000.0" />
             <GridPane alignment="CENTER_LEFT" layoutY="150.0" prefHeight="253.0" prefWidth="110.0">
                <children>
-                  <Button fx:id="homeScreenButton" alignment="BASELINE_LEFT" graphicTextGap="0.0" mnemonicParsing="false" onAction="#handleEntriesScreenButtonAction" prefHeight="50.0" prefWidth="100.0" text="Manage Entries" wrapText="true" GridPane.rowIndex="1" />
+                  <Button fx:id="homeScreenButton" alignment="BASELINE_LEFT" graphicTextGap="0.0" mnemonicParsing="false" onAction="#handleEntriesScreenButtonAction" prefHeight="50.0" prefWidth="100.0" text="Entries" wrapText="true" GridPane.rowIndex="1" />
                         <Button fx:id="myLifeScreenButton" alignment="BASELINE_LEFT" graphicTextGap="0.0" mnemonicParsing="false" onAction="#handleMyLifeScreenButtonAction" prefHeight="50.0" prefWidth="100.0" text="My Life" GridPane.rowIndex="2" />
                         <Button fx:id="myDayScreenButton" alignment="BASELINE_LEFT" graphicTextGap="0.0" mnemonicParsing="false" onAction="#handleMyDayScreenButtonAction" prefHeight="50.0" prefWidth="100.0" text="My Day" GridPane.rowIndex="3" />
                         <Button fx:id="myWeekScreenButton" alignment="BASELINE_LEFT" graphicTextGap="0.0" mnemonicParsing="false" onAction="#handleMyWeekScreenButtonAction" prefHeight="50.0" prefWidth="100.0" text="My Week" GridPane.rowIndex="4" />
