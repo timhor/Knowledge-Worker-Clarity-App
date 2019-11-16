@@ -81,10 +81,10 @@ public class DailyLearningScreenController {
 
     // Navigation
     // Side bar
-    
+
     @FXML
     public Button categoriesButton;
-    
+
     @FXML
     public Button homeScreenButton;
 
@@ -165,9 +165,6 @@ public class DailyLearningScreenController {
         }
     }
 
-    private void populateComboBox() throws SQLException{
-        ObservableList<String>  wentWellList = FXCollections.observableArrayList();
-        ObservableList<String>  couldImproveList = FXCollections.observableArrayList();
     private void populateComboBox() throws SQLException {
         ObservableList<String> wentWellList = FXCollections.observableArrayList();
         ObservableList<String> couldImproveList = FXCollections.observableArrayList();
@@ -243,10 +240,8 @@ public class DailyLearningScreenController {
         calculateFrequency();
     }
 
-    public void calculateFrequency() throws SQLException{
-        // we want to only look at the last 30 days
     public void calculateFrequency() throws SQLException {
-        // we want to only look at the last 30 days 
+        // we want to only look at the last 30 days
         // get the dates for the last seven days
         org.joda.time.LocalDate monthEarlier = new DateTime().minusMonths(1).toLocalDate();
 
@@ -267,8 +262,6 @@ public class DailyLearningScreenController {
         // for each entry, count how many times it occurs
         Map<String,Integer> wentWellFrequencyMap =  new HashMap<String,Integer>();
         Map<String,Integer> couldImproveFrequencyMap =  new HashMap<String,Integer>();
-        Map<String, Integer> wentWellFrequencyMap = new HashMap<String, Integer>();
-        Map<String, Integer> couldImproveFrequencyMap = new HashMap<String, Integer>();
         for (String wentWell : wentWellList) {
             ResultSet rs = Database.getResultSet("SELECT COUNT(wentWell) FROM daily_learning WHERE wentWell = '" + wentWell + "' AND DATE BETWEEN '" + monthEarlier + "' AND '" + LocalDate.now() + "'");
             while (rs.next()) {
@@ -286,7 +279,7 @@ public class DailyLearningScreenController {
     }
 
     // sorting the map in descending order so we can display it
-    // sorting the map in descending order so we can display it 
+    // sorting the map in descending order so we can display it
     // adapted from https://stackoverflow.com/questions/11647889/sorting-the-mapkey-value-in-descending-order-based-on-the-value
     static <K, V extends Comparable<? super V>> List<Entry<K, V>> entriesSortedByValues(Map<K, V> map) {
 
@@ -304,12 +297,12 @@ public class DailyLearningScreenController {
 
     // Navigation
     // Top Bar Handling
-    
+
     @FXML
     public void handleCategoriesScreenButtonAction(ActionEvent event) throws IOException {
         layoutController.handleCategoriesScreenButtonAction(event);
     }
-    
+
     @FXML
     public void handleEntriesScreenButtonAction(ActionEvent event) throws IOException {
         layoutController.handleEntriesScreenButtonAction(event);
