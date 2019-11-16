@@ -164,27 +164,27 @@ public class Database {
             ArrayList<String> insertStatements = new ArrayList<String>();
 
             insertStatements.add("INSERT INTO tasks (title, description, priority, dueDate, doDate, completed) " +
-                "VALUES ('INFS2605 Project','Java assignment','90','2019-11-16','2019-11-14',0)");
+                "VALUES ('INFS2605 Project','Java assignment','90','2019-11-18','2019-11-18',0)");
             insertStatements.add("INSERT INTO tasks (title, description, priority, dueDate, doDate, completed) " +
-                "VALUES ('INFS3873 Assignment 1','Linear regression','80','2019-11-18','2019-11-15',0)");
+                "VALUES ('INFS3873 Assignment 1','Linear regression','80','2019-11-18','2019-11-18',1)");
             insertStatements.add("INSERT INTO tasks (title, description, priority, dueDate, doDate, completed) " +
-                "VALUES ('INFS3873 Assignment 2','Logistic regression','80','2019-11-17','2019-11-15',0)");
+                "VALUES ('INFS3873 Assignment 2','Logistic regression','80','2019-11-19','2019-11-19',0)");
             insertStatements.add("INSERT INTO tasks (title, description, priority, dueDate, doDate, completed) " +
-                "VALUES ('INFS3873 Group Project','Capital Bike Share','60','2019-11-18','2019-11-18',0)");
+                "VALUES ('INFS3873 Group Project','Capital Bike Share','60','2019-11-19','2019-11-19',0)");
             insertStatements.add("INSERT INTO tasks (title, description, priority, dueDate, doDate, completed) " +
-                "VALUES ('INFS3604 Group Assignment','Business process management','50','2019-11-27','2019-11-20',0)");
+                "VALUES ('INFS3604 Group Assignment','Business process management','50','2019-11-20','2019-11-18',0)");
             insertStatements.add("INSERT INTO tasks (title, description, priority, dueDate, doDate, completed) " +
-                "VALUES ('INFS2605 Labs','Intermediate Java','20','2019-11-16','2019-11-16',1)");
+                "VALUES ('INFS2605 Labs','Intermediate Java','20','2019-11-20','2019-11-16',1)");
             insertStatements.add("INSERT INTO tasks (title, description, priority, dueDate, doDate, completed) " +
-                "VALUES ('Prepare for tutoring','Read over notes and create worksheets','30','2019-11-19','2019-11-16',0)");
+                "VALUES ('Prepare for tutoring','Read over notes and create worksheets','30','2019-11-23','2019-11-19',0)");
             insertStatements.add("INSERT INTO tasks (title, description, priority, dueDate, doDate, completed) " +
-                "VALUES ('Gym','Chest and triceps','40','2019-11-19','2019-11-19',0)");
+                "VALUES ('Gym','Chest and triceps','40','2019-11-24','2019-11-23',0)");
             insertStatements.add("INSERT INTO tasks (title, description, priority, dueDate, doDate, completed) " +
-                "VALUES ('Gym','Back and biceps','40','2019-11-20','2019-11-20',0)");
+                "VALUES ('Gym','Back and biceps','40','2019-11-23','2019-11-22',0)");
             insertStatements.add("INSERT INTO tasks (title, description, priority, dueDate, doDate, completed) " +
-                "VALUES ('Gym','Legs and shoulders','40','2019-11-21','2019-11-21',0)");
+                "VALUES ('Gym','Legs and shoulders','40','2019-11-24','2019-11-22',0)");
             insertStatements.add("INSERT INTO tasks (title, description, priority, dueDate, doDate, completed) " +
-                "VALUES ('Gym','Everything else','30','2019-11-22','2019-11-22',0)");
+                "VALUES ('Gym','Everything else','30','2019-11-20','2019-11-18',0)");
 
             for (String statement : insertStatements) {
                 stmt.execute(statement);
