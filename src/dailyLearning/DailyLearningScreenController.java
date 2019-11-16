@@ -1,6 +1,6 @@
 /* TODO
 
-- limit the date after choosing the first date - only 1x a day 
+- limit the date after choosing the first date - only 1x a day
 - save learning button does not check for what's in the combobox
 - data validation - if they choose from the combobox AND enter in the textlabel, should show a status label.
 - move items from generate report handler into its own page, design that ui, etc
@@ -87,9 +87,6 @@ public class DailyLearningScreenController {
     private Button generateReportButton;
 
     @FXML
-    private Label ErrorLabel;
-
-    @FXML
     private Label warningLabel;
 
     // Navigation
@@ -170,7 +167,7 @@ public class DailyLearningScreenController {
 //                    rs = Database.getResultSet(
 //                            "SELECT date from daily_learning where date  = '" + date.format(DateTimeFormatter.ofPattern("yyyy-mm-dd")) + "';"
 //                    );
-//                            
+//
 //                } catch (SQLException ex) {}
 //                System.out.println(rs);
 //                boolean hasResults = false;
@@ -287,7 +284,7 @@ public class DailyLearningScreenController {
     }
 
     public void calculateFrequency() throws SQLException {
-        // we want to only look at the last 30 days 
+        // we want to only look at the last 30 days
         // get the dates for the last seven days
         org.joda.time.LocalDate monthEarlier = new DateTime().minusMonths(1).toLocalDate();
 
@@ -324,7 +321,7 @@ public class DailyLearningScreenController {
         System.out.println(entriesSortedByValues(couldImproveFrequencyMap));
     }
 
-    // sorting the map in descending order so we can display it 
+    // sorting the map in descending order so we can display it
     // adapted from https://stackoverflow.com/questions/11647889/sorting-the-mapkey-value-in-descending-order-based-on-the-value
     static <K, V extends Comparable<? super V>> List<Entry<K, V>> entriesSortedByValues(Map<K, V> map) {
 
@@ -359,12 +356,8 @@ public class DailyLearningScreenController {
                     );
                     if (period.getDays() > 1 || period.getDays() < 1) {
                         warningLabel.setVisible(true);
-                        ErrorLabel.setVisible(true);
-                        ErrorLabel.setTextFill(Color.RED);
-                        warningLabel.setTextFill(Color.RED);
-                        ErrorLabel.setText("Please fill out missing daily learnings between: " + df.format(prev) + " & " + df.format(next));
-                        warningLabel.setText("Some Daily Learnings are missing from memory.");
-//            return;
+                        warningLabel.setTextFill(Color.ORANGERED);
+                        warningLabel.setText("Some Daily Learnings are missing. Please fill out daily learnings between " + df.format(prev) + " and " + df.format(next) + ".");
                     }
                 }
                 prev = df.parse(rs.getString("date"));

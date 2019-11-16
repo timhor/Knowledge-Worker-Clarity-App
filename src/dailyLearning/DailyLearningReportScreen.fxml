@@ -55,10 +55,10 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
             </GridPane>
-            <TableView fx:id="wentWellList" editable="true" focusTraversable="false" layoutX="135.0" layoutY="86.0" prefHeight="592.0" prefWidth="369.0">
+            <TableView fx:id="wentWellList" editable="true" focusTraversable="false" layoutX="111.0" layoutY="86.0" prefHeight="592.0" prefWidth="412.0">
               <columns>
                   <TableColumn fx:id="wentWellCountColumn" prefWidth="75.0" text="Count" />
-                <TableColumn fx:id="wentWellDescColumn" prefWidth="292.99998474121094" text="What Went Well?" />
+                <TableColumn fx:id="wentWellDescColumn" prefWidth="353.0" text="What Went Well?" />
               </columns>
             </TableView>
             <Label layoutX="111.0" layoutY="56.0" text="Daily Learnings for the Past Month">
@@ -67,11 +67,11 @@
                </font>
             </Label>
             <Label fx:id="statusLabel" layoutX="379.0" layoutY="51.0" prefHeight="35.0" prefWidth="278.0" />
-            <Button fx:id="EnterDailyLearningsButton" defaultButton="true" layoutX="426.0" layoutY="712.0" mnemonicParsing="false" onAction="#handleEnterDailyLearningsButtonAction" prefHeight="30.0" prefWidth="160.0" text="Enter Daily Learnings" />
-            <TableView fx:id="couldImproveList" editable="true" focusTraversable="false" layoutX="565.0" layoutY="88.0" prefHeight="587.0" prefWidth="367.0">
+            <Button fx:id="EnterDailyLearningsButton" defaultButton="true" layoutX="426.0" layoutY="698.0" mnemonicParsing="false" onAction="#handleEnterDailyLearningsButtonAction" prefHeight="50.0" prefWidth="241.0" text="Enter Daily Learnings" />
+            <TableView fx:id="couldImproveList" editable="true" focusTraversable="false" layoutX="553.0" layoutY="86.0" prefHeight="592.0" prefWidth="430.0">
                <columns>
-                  <TableColumn fx:id="couldImproveCountColumn" prefWidth="75.0" text="Count" />
-                  <TableColumn fx:id="couldImproveDescColumn" prefWidth="291.00006103515625" text="What Could Be Better?" />
+                  <TableColumn fx:id="couldImproveCountColumn" prefWidth="87.0" text="Count" />
+                  <TableColumn fx:id="couldImproveDescColumn" prefWidth="323.0" text="What Could Be Better?" />
                </columns>
             </TableView>
          </children>
