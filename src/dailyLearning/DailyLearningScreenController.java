@@ -242,18 +242,27 @@ public class DailyLearningScreenController {
         }
 
         try {
-            Database.updateFromPreparedStatement(
-                    "INSERT INTO daily_learning (date, wentWell, couldImprove) VALUES (?,?,?)",
-                    new String[]{date.toString(), wentWellString, couldImproveString});
+            ResultSet rs = Database.getResultSetFromPreparedStatement("SELECT count(*) from daily_learning WHERE date = ?", new String[] { date.toString() });
+            boolean itemExists = rs.getInt(1) > 0;
+            if (!itemExists) {
+                Database.updateFromPreparedStatement(
+                        "INSERT INTO daily_learning (date, wentWell, couldImprove) VALUES (?,?,?)",
+                        new String[]{date.toString(), wentWellString, couldImproveString});
+                datePicker.setValue(null);
+                wentWellTextField.setText("");
+                couldImproveTextField.setText("");
+                couldImproveComboBox.setValue(null);
+                wentWellComboBox.setValue(null);
+            } else {
+                statusLabel.setVisible(true);
+                statusLabel.setTextFill(Color.RED);
+                statusLabel.setText("Only one record is allowed per day");
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
+            // needs to be here instead of inside try block to ensure warningLabel remains visible
             populateLearnings();
-            datePicker.setValue(null);
-            wentWellTextField.setText("");
-            couldImproveTextField.setText("");
-            couldImproveComboBox.setValue(null);
-            wentWellComboBox.setValue(null);
         }
     }
 
@@ -325,8 +334,6 @@ public class DailyLearningScreenController {
         StringBuilder msg = new StringBuilder("Some Daily Learnings are missing. Please fill out daily learnings between:\n");
 
         while (rs.next()) {
-            Learning learning = new Learning(rs.getString("id"), rs.getString("date"),
-                    rs.getString("wentWell"), rs.getString("couldImprove"));
             try {
                 if (null != prev) {
                     next = df.parse(rs.getString("date"));
