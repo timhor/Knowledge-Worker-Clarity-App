@@ -60,6 +60,7 @@
             <Slider fx:id="prioritySlider" layoutX="184.0" layoutY="167.0" majorTickUnit="10.0" minorTickCount="0" prefHeight="38.0" prefWidth="461.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
             <Button fx:id="saveTaskButton" defaultButton="true" layoutX="687.0" layoutY="169.0" mnemonicParsing="false" onAction="#handleSaveTaskButtonAction" prefHeight="33.0" prefWidth="282.0" text="Save New Task" />
             <Label layoutX="113.0" layoutY="169.0" text="Priority:" />
+            <Label layoutX="283.0" layoutY="66.0" prefHeight="44.0" prefWidth="451.0" text="(Double click a table row to select, single click anywhereto deselect)" />
          </children>
       </Group>
       <TableView fx:id="taskList" editable="true" focusTraversable="false" layoutX="110.0" layoutY="236.0" prefHeight="470.0" prefWidth="877.0">

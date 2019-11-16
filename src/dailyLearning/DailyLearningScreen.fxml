@@ -87,6 +87,7 @@
             <Button fx:id="generateReportButton" layoutX="708.0" layoutY="682.0" mnemonicParsing="false" onAction="#handleGenerateReportButtonAction" prefHeight="64.0" prefWidth="275.0" text="Generate Report" />
             <Button fx:id="deleteButton" layoutX="895.0" layoutY="616.0" mnemonicParsing="false" onAction="#handleDeleteButtonAction" text="Delete Row" />
             <Label fx:id="warningLabel" alignment="TOP_LEFT" layoutX="111.0" layoutY="616.0" prefHeight="130.0" prefWidth="565.0" />
+            <Label layoutX="394.0" layoutY="46.0" prefHeight="44.0" prefWidth="207.0" text="(Double click a table row to edit)" />
          </children>
       </Group>
    </children>

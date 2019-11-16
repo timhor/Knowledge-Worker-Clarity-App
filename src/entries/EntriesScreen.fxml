@@ -81,6 +81,7 @@
                 </Label>
                 <Label fx:id="statusLabel" layoutX="110.0" layoutY="727.0" prefHeight="29.0" prefWidth="528.0" visible="false" />
                 <Button layoutX="833.0" layoutY="728.0" mnemonicParsing="false" onAction="#handleDeleteButtonAction" text="Delete Selected Entry" />
+            <Label layoutX="275.0" layoutY="75.0" prefHeight="44.0" prefWidth="451.0" text="(Double click a table row to select, single click anywhereto deselect)" />
             </children>
         </Group>
     </children>
