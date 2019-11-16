@@ -90,6 +90,10 @@ public class DailyLearningScreenController {
 
     // Navigation
     // Side bar
+
+    @FXML
+    public Button categoriesButton;
+
     @FXML
     public Button homeScreenButton;
 
@@ -104,6 +108,9 @@ public class DailyLearningScreenController {
 
     @FXML
     public Button weeklyTrendsScreenButton;
+
+    @FXML
+    public Button dailyLearningScreenButton;
 
     // Top Bar
     @FXML
@@ -290,8 +297,9 @@ public class DailyLearningScreenController {
             couldImproveList.add(ciRs.getString("couldImprove"));
         }
 
-        Map<String, Integer> wentWellFrequencyMap = new HashMap<String, Integer>();
-        Map<String, Integer> couldImproveFrequencyMap = new HashMap<String, Integer>();
+        // for each entry, count how many times it occurs
+        Map<String,Integer> wentWellFrequencyMap =  new HashMap<String,Integer>();
+        Map<String,Integer> couldImproveFrequencyMap =  new HashMap<String,Integer>();
         for (String wentWell : wentWellList) {
             ResultSet rs = Database.getResultSet("SELECT COUNT(wentWell) FROM daily_learning WHERE wentWell = '" + wentWell + "' AND DATE BETWEEN '" + monthEarlier + "' AND '" + LocalDate.now() + "'");
             while (rs.next()) {
@@ -376,6 +384,12 @@ public class DailyLearningScreenController {
 
     // Navigation
     // Top Bar Handling
+
+    @FXML
+    public void handleCategoriesScreenButtonAction(ActionEvent event) throws IOException {
+        layoutController.handleCategoriesScreenButtonAction(event);
+    }
+
     @FXML
     public void handleEntriesScreenButtonAction(ActionEvent event) throws IOException {
         layoutController.handleEntriesScreenButtonAction(event);
@@ -392,11 +406,6 @@ public class DailyLearningScreenController {
     }
 
     // Add Data Handling
-    @FXML
-    public void handleHomeScreenButtonAction(ActionEvent event) throws IOException {
-        layoutController.handleHomeScreenButtonAction(event);
-    }
-
     @FXML
     public void handleMyLifeScreenButtonAction(ActionEvent event) throws IOException {
         layoutController.handleMyLifeScreenButtonAction(event);
@@ -417,6 +426,7 @@ public class DailyLearningScreenController {
         layoutController.handleWeeklyTrendsScreenButtonAction(event);
     }
 
+    @FXML
     public void handleDailyLearningScreenButtonAction(ActionEvent event) throws IOException {
         layoutController.handleDailyLearningScreenButtonAction(event);
     }

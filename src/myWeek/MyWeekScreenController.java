@@ -25,7 +25,11 @@ public class MyWeekScreenController {
 
     LayoutScreenController layoutController = new LayoutScreenController();
 
-    // Side bar 
+    // Side bar
+    
+    @FXML
+    public Button categoriesButton;
+    
     @FXML
     public Button homeScreenButton;
 
@@ -37,9 +41,12 @@ public class MyWeekScreenController {
 
     @FXML
     public Button myWeekScreenButton;
-    
+
     @FXML
     public Button weeklyTrendsScreenButton;
+    
+    @FXML
+    public Button dailyLearningScreenButton;
 
     // Top Bar
     @FXML
@@ -47,24 +54,30 @@ public class MyWeekScreenController {
 
     @FXML
     public Button tasksScreenButton;
-    
+
     @FXML
     public Button aboutScreenButton;
-    
+
     // Chart items
     @FXML
     public BarChart myWeekBarChart;
-    
+
     @FXML
     public CategoryAxis myWeekCategoryAxis;
-    
+
     @FXML
     public NumberAxis myWeekNumberAxis;
-    
+
     @FXML
     public Label dateRangeLabel;
 
-    // Top Bar Handling 
+    // Top Bar Handling
+    
+    @FXML
+    public void handleCategoriesScreenButtonAction(ActionEvent event) throws IOException {
+        layoutController.handleCategoriesScreenButtonAction(event);
+    }
+    
     @FXML
     public void handleEntriesScreenButtonAction(ActionEvent event) throws IOException {
         layoutController.handleEntriesScreenButtonAction(event);
@@ -80,12 +93,7 @@ public class MyWeekScreenController {
         layoutController.handleAboutScreenButtonAction(event);
     }
 
-    // Add Data Handling  
-    @FXML
-    public void handleHomeScreenButtonAction(ActionEvent event) throws IOException {
-        layoutController.handleHomeScreenButtonAction(event);
-    }
-    
+    // Add Data Handling
     @FXML
     public void handleMyLifeScreenButtonAction(ActionEvent event) throws IOException {
         layoutController.handleMyLifeScreenButtonAction(event);
@@ -105,15 +113,20 @@ public class MyWeekScreenController {
     public void handleWeeklyTrendsScreenButtonAction(ActionEvent event) throws IOException {
         layoutController.handleWeeklyTrendsScreenButtonAction(event);
     }
+    
+    @FXML
+    public void handleDailyLearningScreenButtonAction(ActionEvent event) throws IOException {
+        layoutController.handleDailyLearningScreenButtonAction(event);
+    }
 
     @FXML
     private void handleBackButtonAction(ActionEvent event) throws IOException {
         layoutController.handleWeeklyTrendsScreenButtonAction(event);
     }
-      
+
     @FXML
     public void initialize() throws SQLException {
- 
+
         // get all the categories available
         //Get all the categories we have in the database
         ArrayList<String> categoryNames = new ArrayList<>();
@@ -124,21 +137,21 @@ public class MyWeekScreenController {
                 categoryNames.add(rs.getString("categoryname"));
             }
         } catch (SQLException e){
-            e.printStackTrace();            
+            e.printStackTrace();
         }
 
         //Defining the x axis
         myWeekNumberAxis.setLabel("Hours spent (hrs)");
-        
+
         //Defining the y axis
         myWeekCategoryAxis.setLabel("Category");
 
         //We want to find out how much time we've spent on each category
         HashMap<String,Float> categoryTimeMap = new HashMap<String, Float>();
-                
+
         // get the dates for the last seven days
         org.joda.time.LocalDate weekEarlier = new DateTime().minusDays(7).toLocalDate();
-        
+
         String dateRange = "Date Range: " + weekEarlier + " to " + LocalDate.now();
         dateRangeLabel.setText(dateRange);
 
@@ -149,12 +162,12 @@ public class MyWeekScreenController {
             // sum all the entries in this category
             categoryTimeMap.put(rs.getString("categoryname"), 0.0f);
         }
-        
+
         // then go through every single entry from the last week, and add to it
         String timeSt = "SELECT c.categoryname, e.starttime, e.endtime FROM entries e LEFT JOIN categories c ON e.category = c.id WHERE e.date BETWEEN '" + weekEarlier + "' AND '" + LocalDate.now() + "'";
         ResultSet timeRs = Database.getResultSet(timeSt);
         while (timeRs.next()){
-            // calculate the time it takes 
+            // calculate the time it takes
             String startTime = timeRs.getString("starttime");
             String endTime = timeRs.getString("endtime");
             long duration = parseTimeInMs(endTime) - parseTimeInMs(startTime);
@@ -162,11 +175,11 @@ public class MyWeekScreenController {
             float durationInHours = duration / 3600000.0f;
             // append to the hashmap
             categoryTimeMap.put(timeRs.getString("categoryname"), categoryTimeMap.get(timeRs.getString("categoryname")) + durationInHours);
-        }        
+        }
         HashMap<String,Float> sortedWeeklyHashMap = nLargest(categoryTimeMap, 5);
-         
+
         // BAR CHART
-        // adapted from https://o7planning.org/en/11107/javafx-barchart-and-stackedbarchart-tutorial 
+        // adapted from https://o7planning.org/en/11107/javafx-barchart-and-stackedbarchart-tutorial
         XYChart.Series<String, Float> series = new XYChart.Series<String, Float>();
         for (Map.Entry<String, Float> entry : sortedWeeklyHashMap.entrySet()) {
             String key = entry.getKey();
@@ -174,9 +187,9 @@ public class MyWeekScreenController {
             series.getData().add(new XYChart.Data(key, value));
         }
         myWeekBarChart.getData().add(series);
-        
+
         // Change colours
-        // Get hexkeys of the categories 
+        // Get hexkeys of the categories
         ArrayList<String> colourCodes = new ArrayList<>();
         for (Map.Entry<String, Float> entry : sortedWeeklyHashMap.entrySet()) {
             String key = entry.getKey();
@@ -187,7 +200,7 @@ public class MyWeekScreenController {
                 colourCodes.add(categoryColour);
             }
         }
-        
+
         //colour coding each bar depending on category hexString
         //adapted from https://stackoverflow.com/questions/43396419/how-to-change-the-colors-of-specific-bars-using-javafx-barchart
         try {
@@ -198,7 +211,7 @@ public class MyWeekScreenController {
             n = myWeekBarChart.lookup(".data2.chart-bar");
             n.setStyle("-fx-bar-fill: " + colourCodes.get(2));
             n = myWeekBarChart.lookup(".data3.chart-bar");
-            n.setStyle("-fx-bar-fill: " + colourCodes.get(3));    
+            n.setStyle("-fx-bar-fill: " + colourCodes.get(3));
             n = myWeekBarChart.lookup(".data4.chart-bar");
             n.setStyle("-fx-bar-fill: " + colourCodes.get(4));
         } catch (Exception e){
@@ -208,7 +221,7 @@ public class MyWeekScreenController {
             myWeekBarChart.setTitle("Time spent on this week's top 5 categories");
         }
     }
-    
+
     // Method for finding the top n values in a hashmap
     // Adapted from https://stackoverflow.com/questions/23805861/finding-the-n-largest-values-in-a-hashmap
     static HashMap<String, Float> nLargest(HashMap<String, Float> map, int n) { //map and n largest values to search for
@@ -236,5 +249,5 @@ public class MyWeekScreenController {
         }
         return result;
     }
-    
+
 }

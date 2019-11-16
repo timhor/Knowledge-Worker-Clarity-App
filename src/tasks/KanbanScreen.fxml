@@ -11,21 +11,23 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="768.0" prefWidth="917.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tasks.TasksScreenController">
+<AnchorPane id="AnchorPane" prefHeight="768.0" prefWidth="917.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tasks.KanbanScreenController">
     <children>
         <Group>
             <children>
                 <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#91caff" height="770.0" smooth="false" stroke="TRANSPARENT" strokeType="INSIDE" width="100.0" />
                 <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#91caff" height="45.0" smooth="false" stroke="TRANSPARENT" strokeType="INSIDE" width="1000.0" />
-                <GridPane alignment="CENTER_LEFT" layoutY="150.0" prefHeight="101.0" prefWidth="110.0">
+                <GridPane alignment="CENTER_LEFT" layoutY="150.0" prefHeight="150.0" prefWidth="110.0">
                     <children>
-                        <Button fx:id="kanbanScreenButton" alignment="BASELINE_LEFT" graphicTextGap="0.0" mnemonicParsing="false" onAction="#handleKanbanScreenButtonAction" prefHeight="50.0" prefWidth="100.0" text="Kanban View" />
-                        <Button fx:id="focusModeScreenButton" alignment="BASELINE_LEFT" graphicTextGap="0.0" mnemonicParsing="false" onAction="#handleFocusModeScreenButtonAction" prefHeight="50.0" prefWidth="100.0" text="Deep Focus" GridPane.rowIndex="1" />
+                        <Button fx:id="kanbanScreenButton" alignment="CENTER_LEFT" graphicTextGap="0.0" mnemonicParsing="false" onAction="#handleKanbanScreenButtonAction" prefHeight="50.0" prefWidth="100.0" text="Kanban View" wrapText="true" GridPane.rowIndex="1" />
+                        <Button fx:id="focusModeScreenButton" alignment="CENTER_LEFT" graphicTextGap="0.0" mnemonicParsing="false" onAction="#handleFocusModeScreenButtonAction" prefHeight="50.0" prefWidth="100.0" text="Deep Focus" wrapText="true" GridPane.rowIndex="2" />
+                        <Button fx:id="manageTaskScreenButton" mnemonicParsing="false" onAction="#handleManageTaskScreenButtonAction" prefHeight="50.0" prefWidth="100.0" text="Manage Tasks" wrapText="true" />
                     </children>
                     <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                     </columnConstraints>
                     <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
@@ -56,10 +58,10 @@
                                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                             </padding>
                                             <font>
-                                                <Font name="Lucida Grande Bold" size="14.0" />
+                                                <Font name="Lucida Grande" size="14.0" />
                                             </font>
                                         </Label>
-                                        <ListView prefHeight="685.0" prefWidth="223.0" />
+                                        <ListView fx:id="completedListView" onDragDetected="#handleDragDetected" onDragDone="#handleDragDone" onDragDropped="#handleDragDropped" onDragOver="#handleDragOver" prefHeight="685.0" prefWidth="223.0" />
                                     </children>
                                 </VBox>
                             </content>
@@ -68,15 +70,15 @@
                      <content>
                         <VBox prefHeight="673.0" prefWidth="223.0">
                            <children>
-                                        <Label alignment="CENTER" prefHeight="30.0" prefWidth="223.0" text="Do Today">
+                                        <Label fx:id="todayLabel" alignment="CENTER" prefHeight="30.0" prefWidth="223.0" text="Do Today">
                                             <font>
-                                                <Font name="Lucida Grande Bold" size="14.0" />
+                                                <Font name="Lucida Grande" size="14.0" />
                                             </font>
                                             <padding>
                                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                             </padding>
                                         </Label>
-                                        <ListView prefHeight="685.0" prefWidth="223.0" />
+                                        <ListView fx:id="todayListView" onDragDetected="#handleDragDetected" onDragDone="#handleDragDone" onDragDropped="#handleDragDropped" onDragOver="#handleDragOver" prefHeight="685.0" prefWidth="223.0" />
                            </children>
                         </VBox>
                      </content>
@@ -85,15 +87,15 @@
                      <content>
                         <VBox prefHeight="673.0" prefWidth="223.0">
                            <children>
-                                        <Label alignment="CENTER" prefHeight="30.0" prefWidth="223.0" text="Do Tomorrow">
+                                        <Label fx:id="tomorrowLabel" alignment="CENTER" prefHeight="30.0" prefWidth="223.0" text="Do Tomorrow">
                                             <font>
-                                                <Font name="Lucida Grande Bold" size="14.0" />
+                                                <Font name="Lucida Grande" size="14.0" />
                                             </font>
                                             <padding>
                                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                             </padding>
                                         </Label>
-                              <ListView prefHeight="685.0" prefWidth="223.0" />
+                              <ListView fx:id="tomorrowListView" onDragDetected="#handleDragDetected" onDragDone="#handleDragDone" onDragDropped="#handleDragDropped" onDragOver="#handleDragOver" prefHeight="685.0" prefWidth="223.0" />
                            </children>
                         </VBox>
                      </content>
@@ -102,22 +104,28 @@
                      <content>
                         <VBox prefHeight="673.0" prefWidth="223.0">
                            <children>
-                                        <Label alignment="CENTER" prefHeight="30.0" prefWidth="223.0" text="Next 7 Days">
+                                        <Label fx:id="nextSevenDaysLabel" alignment="CENTER" prefHeight="30.0" prefWidth="223.0" text="Do in Next 7 Days">
                                             <font>
-                                                <Font name="Lucida Grande Bold" size="14.0" />
+                                                <Font name="Lucida Grande" size="14.0" />
                                             </font>
                                             <padding>
                                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                             </padding>
                                         </Label>
-                              <ListView prefHeight="685.0" prefWidth="223.0" />
+                              <ListView fx:id="nextSevenDaysListView" onDragDetected="#handleDragDetected" onDragDone="#handleDragDone" onDragDropped="#handleDragDropped" onDragOver="#handleDragOver" prefHeight="685.0" prefWidth="223.0" />
                            </children>
                         </VBox>
                      </content>
                   </ScrollPane>
                     </children>
                 </HBox>
-            <Button layoutX="814.0" layoutY="731.0" mnemonicParsing="false" text="Switch to Due Date mode" />
+            <Button fx:id="switchModeButton" layoutX="814.0" layoutY="731.0" minWidth="174.0" mnemonicParsing="false" onAction="#handleSwitchModeButtonAction" text="Switch to Due Date mode" />
+            <Label layoutX="122.0" layoutY="736.0" text="Details:">
+               <font>
+                  <Font name="Lucida Grande Bold" size="13.0" />
+               </font>
+            </Label>
+            <Label fx:id="taskDetailsLabel" layoutX="183.0" layoutY="736.0" prefHeight="17.0" prefWidth="591.0" text="(mouse over a task)" />
             </children>
         </Group>
     </children>

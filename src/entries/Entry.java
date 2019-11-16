@@ -1,5 +1,3 @@
-// THIS FILE ADAPTED FROM INFS2605 19T3 WEEK 5 TUTORIAL
-
 package entries;
 
 import java.text.ParseException;
@@ -11,24 +9,21 @@ import javafx.beans.property.StringProperty;
 
 public class Entry {
 
-    // StringProperty is needed for TableView
     private String id;
-    private String categoryColour;
-    private StringProperty categoryName;
-    private StringProperty description;
-    private StringProperty date;
-    private StringProperty startTime;
-    private StringProperty endTime;
+    private Category category;
+    private String description;
+    private String date;
+    private String startTime;
+    private String endTime;
     private long duration;
 
-    public Entry(String id, String categoryColour, String categoryName, String description, String date, String startTime, String endTime) {
-        this.id = id;
-        this.categoryColour = categoryColour;
-        this.categoryName = new SimpleStringProperty(categoryName);
-        this.description = new SimpleStringProperty(description);
-        this.date = new SimpleStringProperty(date);
-        this.startTime = new SimpleStringProperty(startTime);
-        this.endTime = new SimpleStringProperty(endTime);
+    public Entry(String entryId, String categoryId, String categoryColour, String categoryName, String description, String date, String startTime, String endTime) {
+        this.id = entryId;
+        this.category = new Category(categoryId, categoryName, categoryColour);
+        this.description = description;
+        this.date = date;
+        this.startTime = startTime;
+        this.endTime = endTime;
         this.duration = (parseTimeInMs(endTime) - parseTimeInMs(startTime)) / 1000;
     }
 
@@ -37,40 +32,44 @@ public class Entry {
         return this.id;
     }
 
-    public String getCategoryColour() {
-        return this.categoryColour;
+    public Category getCategory() {
+        return this.category;
     }
 
     public StringProperty getCategoryNameProperty() {
-        return categoryName;
+        return new SimpleStringProperty(this.category.getCategoryName());
     }
 
-    public StringProperty getDescriptionProperty() {
+    public String getDescription() {
         return description;
     }
 
-    public void setDescriptionProperty(String description) {
-        this.description.set(description);
+    public StringProperty getDescriptionProperty() {
+        return new SimpleStringProperty(description);
     }
 
-    public StringProperty getDateProperty() {
+    public String getDate() {
         return date;
     }
 
-    public StringProperty getStartTimeProperty() {
+    public StringProperty getDateProperty() {
+        return new SimpleStringProperty(date);
+    }
+
+    public String getStartTime() {
         return startTime;
     }
 
-    public void setStartTimeProperty(String startTime) {
-        this.startTime.set(startTime);
+    public StringProperty getStartTimeProperty() {
+        return new SimpleStringProperty(startTime);
     }
 
-    public StringProperty getEndTimeProperty() {
+    public String getEndTime() {
         return endTime;
     }
 
-    public void setEndTimeProperty(String endTime) {
-        this.endTime.set(endTime);
+    public StringProperty getEndTimeProperty() {
+        return new SimpleStringProperty(endTime);
     }
 
     public StringProperty getDurationProperty() {

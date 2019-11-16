@@ -39,8 +39,16 @@ public class LayoutScreenController {
     @FXML
     public Button dailyLearningScreenButton;
 
-
     // Top Bar Handling
+    @FXML
+    public void handleCategoriesScreenButtonAction(ActionEvent event) throws IOException {
+        try {
+            pageSwitchHelper.switcher(event, "/entries/CategoriesScreen.fxml");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
     @FXML
     public void handleEntriesScreenButtonAction(ActionEvent event) throws IOException {
         try {
@@ -50,15 +58,6 @@ public class LayoutScreenController {
         }
     }
 
-    @FXML
-    public void handleTasksScreenButtonAction(ActionEvent event) throws IOException {
-        try {
-            pageSwitchHelper.switcher(event, "/tasks/TasksScreen.fxml");
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-    
         @FXML
     public void handleEnterDailyLearningsButtonAction(ActionEvent event) throws IOException {
         try {
@@ -76,7 +75,16 @@ public class LayoutScreenController {
             ex.printStackTrace();
         }
     }
-        
+
+    @FXML
+    public void handleTasksScreenButtonAction(ActionEvent event) throws IOException {
+        try {
+            pageSwitchHelper.switcher(event, "/tasks/TasksScreen.fxml");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
     @FXML
     public void handleAboutScreenButtonAction(ActionEvent event) throws IOException {
         try {
@@ -87,15 +95,6 @@ public class LayoutScreenController {
     }
 
     // Add Data Handling
-    @FXML
-    public void handleHomeScreenButtonAction(ActionEvent event) throws IOException {
-        try {
-            pageSwitchHelper.switcher(event, "/entries/EntriesScreen.fxml");
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-
     @FXML
     public void handleMyLifeScreenButtonAction(ActionEvent event) throws IOException {
         try {
@@ -132,8 +131,6 @@ public class LayoutScreenController {
         }
     }
 
-    
-    //unnecessary
     @FXML
     public void handleDailyLearningScreenButtonAction(ActionEvent event) throws IOException {
         try {

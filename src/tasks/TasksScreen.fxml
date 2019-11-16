@@ -17,15 +17,17 @@
          <children>
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#91caff" height="770.0" smooth="false" stroke="TRANSPARENT" strokeType="INSIDE" width="100.0" />
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#91caff" height="45.0" smooth="false" stroke="TRANSPARENT" strokeType="INSIDE" width="1000.0" />
-            <GridPane alignment="CENTER_LEFT" layoutY="150.0" prefHeight="101.0" prefWidth="110.0">
+            <GridPane alignment="CENTER_LEFT" layoutY="150.0" prefHeight="150.0" prefWidth="110.0">
                <children>
-                  <Button fx:id="kanbanScreenButton" alignment="BASELINE_LEFT" graphicTextGap="0.0" mnemonicParsing="false" onAction="#handleKanbanScreenButtonAction" prefHeight="50.0" prefWidth="100.0" text="Kanban View" />
-                  <Button fx:id="focusModeScreenButton" alignment="BASELINE_LEFT" graphicTextGap="0.0" mnemonicParsing="false" onAction="#handleFocusModeScreenButtonAction" prefHeight="50.0" prefWidth="100.0" text="Deep Focus" GridPane.rowIndex="1" />
+                  <Button fx:id="kanbanScreenButton" alignment="CENTER_LEFT" graphicTextGap="0.0" mnemonicParsing="false" onAction="#handleKanbanScreenButtonAction" prefHeight="50.0" prefWidth="100.0" text="Kanban View" wrapText="true" GridPane.rowIndex="1" />
+                  <Button fx:id="focusModeScreenButton" alignment="CENTER_LEFT" graphicTextGap="0.0" mnemonicParsing="false" onAction="#handleFocusModeScreenButtonAction" prefHeight="50.0" prefWidth="100.0" text="Deep Focus" wrapText="true" GridPane.rowIndex="2" />
+                  <Button fx:id="manageTaskScreenButton" mnemonicParsing="false" onAction="#handleManageTaskScreenButtonAction" prefHeight="50.0" prefWidth="100.0" text="Manage Tasks" wrapText="true" />
                </children>
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                </columnConstraints>
                <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
@@ -45,7 +47,7 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
             </GridPane>
-            <Label layoutX="113.0" layoutY="76.0" text="Create Task">
+            <Label layoutX="113.0" layoutY="76.0" text="Manage Tasks">
                <font>
                   <Font size="18.0" />
                </font>
@@ -54,20 +56,21 @@
             <TextField fx:id="taskDescriptionTextField" layoutX="283.0" layoutY="113.0" prefHeight="31.0" prefWidth="368.0" promptText="Task Description" />
             <DatePicker fx:id="doDatePicker" layoutX="664.0" layoutY="113.0" prefHeight="31.0" prefWidth="144.0" promptText="Do Date " />
             <DatePicker fx:id="dueDatePicker" layoutX="825.0" layoutY="113.0" prefHeight="31.0" prefWidth="144.0" promptText="Due Date" />
-            <GridPane layoutX="449.0" layoutY="46.0" prefHeight="30.0" prefWidth="152.0">
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-              </rowConstraints>
-            </GridPane>
             <Label fx:id="statusLabel" layoutX="110.0" layoutY="725.0" prefHeight="19.0" prefWidth="360.0" />
             <Slider fx:id="prioritySlider" layoutX="184.0" layoutY="167.0" majorTickUnit="10.0" minorTickCount="0" prefHeight="38.0" prefWidth="461.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
-            <Button fx:id="saveTaskButton" defaultButton="true" layoutX="687.0" layoutY="169.0" mnemonicParsing="false" onAction="#handleSaveTaskButtonAction" prefHeight="33.0" prefWidth="282.0" text="Save Task" />
+            <Button fx:id="saveTaskButton" defaultButton="true" layoutX="687.0" layoutY="169.0" mnemonicParsing="false" onAction="#handleSaveTaskButtonAction" prefHeight="33.0" prefWidth="282.0" text="Save New Task" />
             <Label layoutX="113.0" layoutY="169.0" text="Priority:" />
          </children>
       </Group>
+      <TableView fx:id="taskList" editable="true" focusTraversable="false" layoutX="110.0" layoutY="236.0" prefHeight="470.0" prefWidth="877.0">
+         <columns>
+            <TableColumn fx:id="titleColumn" prefWidth="218.40557861328125" text="Title" />
+            <TableColumn fx:id="descriptionColumn" prefWidth="328.59442138671875" text="Description" />
+            <TableColumn fx:id="priorityColumn" prefWidth="79.40631103515625" text="Priority" />
+            <TableColumn fx:id="doDateColumn" prefWidth="122.9007568359375" text="Do Date" />
+            <TableColumn fx:id="dueDateColumn" prefWidth="128.676513671875" text="Due Date" />
+         </columns>
+      </TableView>
+      <Button layoutX="833.0" layoutY="724.0" mnemonicParsing="false" onAction="#handleDeleteButtonAction" text="Delete Selected Task" />
    </children>
 </AnchorPane>
