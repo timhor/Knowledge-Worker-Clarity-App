@@ -58,7 +58,7 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
             </GridPane>
-            <TableView fx:id="learningList" editable="true" focusTraversable="false" layoutX="114.0" layoutY="219.0" prefHeight="384.0" prefWidth="869.0">
+            <TableView fx:id="learningList" editable="true" focusTraversable="false" layoutX="114.0" layoutY="240.0" prefHeight="362.0" prefWidth="870.0">
               <columns>
                   <TableColumn fx:id="dateColumn" editable="false" prefWidth="107.95697021484375" text="Date" />
                 <TableColumn fx:id="wentWellColumn" prefWidth="397.92901611328125" text="What Went Well?" />
@@ -87,7 +87,7 @@
             <Button fx:id="generateReportButton" layoutX="708.0" layoutY="682.0" mnemonicParsing="false" onAction="#handleGenerateReportButtonAction" prefHeight="64.0" prefWidth="275.0" text="Generate Report" />
             <Button fx:id="deleteButton" layoutX="895.0" layoutY="616.0" mnemonicParsing="false" onAction="#handleDeleteButtonAction" text="Delete Row" />
             <Label fx:id="warningLabel" alignment="TOP_LEFT" layoutX="111.0" layoutY="616.0" prefHeight="130.0" prefWidth="565.0" />
-            <Label layoutX="394.0" layoutY="46.0" prefHeight="44.0" prefWidth="207.0" text="(Double click a table row to edit)" />
+            <Label layoutX="430.0" layoutY="196.0" prefHeight="44.0" prefWidth="207.0" text="(Double click a table row to edit)" />
          </children>
       </Group>
    </children>
