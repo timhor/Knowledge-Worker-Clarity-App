@@ -52,10 +52,10 @@ public class CategoriesScreenController {
 
     // Navigation
     // Side bar
-    
+
     @FXML
     public Button categoriesButton;
-    
+
     @FXML
     public Button homeScreenButton;
 
@@ -70,7 +70,7 @@ public class CategoriesScreenController {
 
     @FXML
     public Button weeklyTrendsScreenButton;
-    
+
     @FXML
     public Button dailyLearningScreenButton;
 
@@ -204,6 +204,8 @@ public class CategoriesScreenController {
     private void clearInputFields() {
         categoryNameTextField.setText("");
         categoryColourPicker.setValue(Color.web("#FFF"));
+        saveCategoryButton.setText("New Entry");
+        selectedCategoryId = "";
     }
 
     // Navigation
@@ -224,12 +226,12 @@ public class CategoriesScreenController {
     }
 
     // Add Data Handling
-    
+
     @FXML
     public void handleCategoriesScreenButtonAction(ActionEvent event) throws IOException {
         layoutController.handleCategoriesScreenButtonAction(event);
     }
-    
+
     @FXML
     public void handleMyLifeScreenButtonAction(ActionEvent event) throws IOException {
         layoutController.handleMyLifeScreenButtonAction(event);
@@ -249,7 +251,7 @@ public class CategoriesScreenController {
     public void handleWeeklyTrendsScreenButtonAction(ActionEvent event) throws IOException {
         layoutController.handleWeeklyTrendsScreenButtonAction(event);
     }
-    
+
     @FXML
     public void handleDailyLearningScreenButtonAction(ActionEvent event) throws IOException {
         layoutController.handleDailyLearningScreenButtonAction(event);
