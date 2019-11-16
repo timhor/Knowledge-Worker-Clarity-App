@@ -28,12 +28,12 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
-                        <Button fx:id="homeScreenButton" alignment="BASELINE_LEFT" graphicTextGap="0.0" mnemonicParsing="false" onAction="#handleEntriesScreenButtonAction" prefHeight="50.0" prefWidth="100.0" text="Entries" wrapText="true" GridPane.rowIndex="1" />
-                        <Button fx:id="myLifeScreenButton" alignment="BASELINE_LEFT" graphicTextGap="0.0" mnemonicParsing="false" onAction="#handleMyLifeScreenButtonAction" prefHeight="50.0" prefWidth="100.0" text="My Life" GridPane.rowIndex="2" />
-                        <Button fx:id="myDayScreenButton" alignment="BASELINE_LEFT" graphicTextGap="0.0" mnemonicParsing="false" onAction="#handleMyDayScreenButtonAction" prefHeight="50.0" prefWidth="100.0" text="My Day" GridPane.rowIndex="3" />
-                        <Button fx:id="myWeekScreenButton" alignment="BASELINE_LEFT" graphicTextGap="0.0" mnemonicParsing="false" onAction="#handleMyWeekScreenButtonAction" prefHeight="50.0" prefWidth="100.0" text="My Week" GridPane.rowIndex="4" />
-                        <Button fx:id="weeklyTrendsScreenButton" alignment="BASELINE_LEFT" graphicTextGap="0.0" mnemonicParsing="false" onAction="#handleWeeklyTrendsScreenButtonAction" prefHeight="50.0" prefWidth="100.0" text="Weekly Trends" GridPane.rowIndex="5" />
-                        <Button fx:id="dailyLearningScreenButton" alignment="BASELINE_LEFT" graphicTextGap="0.0" layoutX="10.0" layoutY="163.0" mnemonicParsing="false" onAction="#handleDailyLearningScreenButtonAction" prefHeight="93.0" prefWidth="100.0" text="Daily Learnings" GridPane.rowIndex="5" />
+                        <Button fx:id="homeScreenButton" alignment="CENTER_LEFT" graphicTextGap="0.0" mnemonicParsing="false" onAction="#handleEntriesScreenButtonAction" prefHeight="50.0" prefWidth="100.0" text="Entries" wrapText="true" GridPane.rowIndex="1" />
+                        <Button fx:id="myLifeScreenButton" alignment="CENTER_LEFT" graphicTextGap="0.0" mnemonicParsing="false" onAction="#handleMyLifeScreenButtonAction" prefHeight="50.0" prefWidth="100.0" text="My Life" GridPane.rowIndex="2" />
+                        <Button fx:id="myDayScreenButton" alignment="CENTER_LEFT" graphicTextGap="0.0" mnemonicParsing="false" onAction="#handleMyDayScreenButtonAction" prefHeight="50.0" prefWidth="100.0" text="My Day" GridPane.rowIndex="3" />
+                        <Button fx:id="myWeekScreenButton" alignment="CENTER_LEFT" graphicTextGap="0.0" mnemonicParsing="false" onAction="#handleMyWeekScreenButtonAction" prefHeight="50.0" prefWidth="100.0" text="My Week" GridPane.rowIndex="4" />
+                        <Button fx:id="weeklyTrendsScreenButton" alignment="CENTER_LEFT" graphicTextGap="0.0" mnemonicParsing="false" onAction="#handleWeeklyTrendsScreenButtonAction" prefHeight="50.0" prefWidth="100.0" text="Weekly Trends" GridPane.rowIndex="5" />
+                        <Button fx:id="dailyLearningScreenButton" alignment="CENTER_LEFT" graphicTextGap="0.0" layoutX="10.0" layoutY="163.0" mnemonicParsing="false" onAction="#handleDailyLearningScreenButtonAction" prefHeight="93.0" prefWidth="100.0" text="Daily Learnings" GridPane.rowIndex="5" />
 
                         <Button fx:id="categoriesButton" alignment="CENTER_LEFT" graphicTextGap="0.0" mnemonicParsing="false" onAction="#handleCategoriesScreenButtonAction" prefHeight="50.0" prefWidth="100.0" text="Categories" />
                     </children>

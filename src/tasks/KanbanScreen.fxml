@@ -19,8 +19,8 @@
                 <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#91caff" height="45.0" smooth="false" stroke="TRANSPARENT" strokeType="INSIDE" width="1000.0" />
                 <GridPane alignment="CENTER_LEFT" layoutY="150.0" prefHeight="150.0" prefWidth="110.0">
                     <children>
-                        <Button fx:id="kanbanScreenButton" alignment="BASELINE_LEFT" graphicTextGap="0.0" mnemonicParsing="false" onAction="#handleKanbanScreenButtonAction" prefHeight="50.0" prefWidth="100.0" text="Kanban View" wrapText="true" GridPane.rowIndex="1" />
-                        <Button fx:id="focusModeScreenButton" alignment="BASELINE_LEFT" graphicTextGap="0.0" mnemonicParsing="false" onAction="#handleFocusModeScreenButtonAction" prefHeight="50.0" prefWidth="100.0" text="Deep Focus" wrapText="true" GridPane.rowIndex="2" />
+                        <Button fx:id="kanbanScreenButton" alignment="CENTER_LEFT" graphicTextGap="0.0" mnemonicParsing="false" onAction="#handleKanbanScreenButtonAction" prefHeight="50.0" prefWidth="100.0" text="Kanban View" wrapText="true" GridPane.rowIndex="1" />
+                        <Button fx:id="focusModeScreenButton" alignment="CENTER_LEFT" graphicTextGap="0.0" mnemonicParsing="false" onAction="#handleFocusModeScreenButtonAction" prefHeight="50.0" prefWidth="100.0" text="Deep Focus" wrapText="true" GridPane.rowIndex="2" />
                         <Button fx:id="manageTaskScreenButton" mnemonicParsing="false" onAction="#handleManageTaskScreenButtonAction" prefHeight="50.0" prefWidth="100.0" text="Manage Tasks" wrapText="true" />
                     </children>
                     <columnConstraints>
