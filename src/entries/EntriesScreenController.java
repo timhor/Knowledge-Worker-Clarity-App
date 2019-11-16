@@ -88,10 +88,10 @@ public class EntriesScreenController {
 
     // Navigation
     // Side bar
-    
+
     @FXML
     public Button categoriesButton;
-    
+
     @FXML
     public Button homeScreenButton;
 
@@ -106,7 +106,7 @@ public class EntriesScreenController {
 
     @FXML
     public Button weeklyTrendsScreenButton;
-    
+
     @FXML
     public Button dailyLearningScreenButton;
 
@@ -326,6 +326,8 @@ public class EntriesScreenController {
         entryDescriptionTextField.setText("");
         startTimeTextField.setText("");
         endTimeTextField.setText("");
+        saveEntryButton.setText("New Entry");
+        selectedEntryId = "";
     }
 
     // Navigation
@@ -346,12 +348,12 @@ public class EntriesScreenController {
     }
 
     // Add Data Handling
-    
+
     @FXML
     public void handleCategoriesScreenButtonAction(ActionEvent event) throws IOException {
         layoutController.handleCategoriesScreenButtonAction(event);
     }
-    
+
     @FXML
     public void handleMyLifeScreenButtonAction(ActionEvent event) throws IOException {
         layoutController.handleMyLifeScreenButtonAction(event);
@@ -371,7 +373,7 @@ public class EntriesScreenController {
     public void handleWeeklyTrendsScreenButtonAction(ActionEvent event) throws IOException {
         layoutController.handleWeeklyTrendsScreenButtonAction(event);
     }
-    
+
     @FXML
     public void handleDailyLearningScreenButtonAction(ActionEvent event) throws IOException {
         layoutController.handleDailyLearningScreenButtonAction(event);

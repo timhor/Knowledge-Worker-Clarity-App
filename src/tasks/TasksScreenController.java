@@ -37,16 +37,16 @@ public class TasksScreenController {
 
     // Navigation
     // Side bar
-    
+
     @FXML
     public Button manageTaskScreenButton;
-    
+
     @FXML
     public Button kanbanScreenButton;
 
     @FXML
     public Button focusModeScreenButton;
-    
+
 
     // Top Bar
     @FXML
@@ -222,6 +222,8 @@ public class TasksScreenController {
         prioritySlider.setValue(0);
         dueDatePicker.setValue(null);
         doDatePicker.setValue(null);
+        saveTaskButton.setText("Save New Task");
+        selectedTaskId = "";
     }
 
     @FXML
@@ -254,9 +256,9 @@ public class TasksScreenController {
     public void handleAboutScreenButtonAction(ActionEvent event) throws IOException {
         layoutController.handleAboutScreenButtonAction(event);
     }
-    
+
     //Side Bar Handling
-    
+
     @FXML
     public void handleManageTaskScreenButtonAction(ActionEvent event) throws IOException{
         try{
