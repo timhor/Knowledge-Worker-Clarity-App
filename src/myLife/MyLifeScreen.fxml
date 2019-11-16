@@ -35,7 +35,7 @@
                         <Button fx:id="weeklyTrendsScreenButton" alignment="BASELINE_LEFT" graphicTextGap="0.0" mnemonicParsing="false" onAction="#handleWeeklyTrendsScreenButtonAction" prefHeight="50.0" prefWidth="100.0" text="Weekly Trends" GridPane.rowIndex="5" />
                         <Button fx:id="dailyLearningScreenButton" alignment="BASELINE_LEFT" graphicTextGap="0.0" layoutX="10.0" layoutY="163.0" mnemonicParsing="false" onAction="#handleDailyLearningScreenButtonAction" prefHeight="93.0" prefWidth="100.0" text="Daily Learnings" GridPane.rowIndex="5" />
 
-                        <Button fx:id="categoriesButton" mnemonicParsing="false" onAction="#handleCategoriesScreenButtonAction" prefHeight="50.0" prefWidth="100.0" text="Categories" />
+                        <Button fx:id="categoriesButton" alignment="CENTER_LEFT" graphicTextGap="0.0" mnemonicParsing="false" onAction="#handleCategoriesScreenButtonAction" prefHeight="50.0" prefWidth="100.0" text="Categories" />
                     </children>
                 </GridPane>
                 <GridPane alignment="CENTER" layoutY="5.0" prefHeight="34.0" prefWidth="1000.0">
