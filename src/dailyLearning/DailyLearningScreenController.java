@@ -347,6 +347,9 @@ public class DailyLearningScreenController {
         Date prev = null;
         Date next = null;
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        StringBuilder msg = new StringBuilder();
+        
+    
         while (rs.next()) {
             Learning learning = new Learning(rs.getString("id"), rs.getString("date"),
                     rs.getString("wentWell"), rs.getString("couldImprove"));
@@ -362,9 +365,10 @@ public class DailyLearningScreenController {
                         ErrorLabel.setVisible(true);
                         ErrorLabel.setTextFill(Color.RED);
                         warningLabel.setTextFill(Color.RED);
-                        ErrorLabel.setText("Please fill out missing daily learnings between: " + df.format(prev) + " & " + df.format(next));
+                        msg.append("Please fill out missing daily learnings between: " + df.format(prev).toString() + " & " + df.format(next).toString()); 
+                        msg.append(".\n");  
+                        ErrorLabel.setText(msg.toString());
                         warningLabel.setText("Some Daily Learnings are missing from memory.");
-//            return;
                     }
                 }
                 prev = df.parse(rs.getString("date"));
