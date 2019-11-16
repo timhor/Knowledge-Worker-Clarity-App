@@ -10,11 +10,6 @@
 
 <AnchorPane id="AnchorPane" prefHeight="768.0" prefWidth="917.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="myWeek.MyWeekScreenController">
     <children>
-        <Label layoutX="112.0" layoutY="117.0" text="My Week Screen">
-            <font>
-                <Font size="18.0" />
-            </font>
-        </Label>
         <Group>
             <children>
                 <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#91caff" height="770.0" smooth="false" stroke="TRANSPARENT" strokeType="INSIDE" width="100.0" />
@@ -58,20 +53,25 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                 </GridPane>
-                <Label fx:id="dateRangeLabel" layoutX="101.0" layoutY="752.0" text="Date Range: XXXX-XX-XX AND XXXX-XX-XX">
-                    <font>
-                        <Font size="12.0" />
-                    </font>
-                </Label>
+              <Label layoutX="131.0" layoutY="75.0" text="My Week">
+                  <font>
+                      <Font size="18.0" />
+                  </font>
+              </Label>
+              <BarChart fx:id="myWeekBarChart" layoutX="131.0" layoutY="126.0" prefHeight="578.0" prefWidth="807.0">
+                  <xAxis>
+                      <CategoryAxis fx:id="myWeekCategoryAxis" side="BOTTOM" />
+                  </xAxis>
+                  <yAxis>
+                      <NumberAxis fx:id="myWeekNumberAxis" side="LEFT" />
+                  </yAxis>
+              </BarChart>
             </children>
         </Group>
-        <BarChart fx:id="myWeekBarChart" layoutX="154.0" layoutY="171.0" prefHeight="578.0" prefWidth="807.0">
-            <xAxis>
-                <CategoryAxis fx:id="myWeekCategoryAxis" side="BOTTOM" />
-            </xAxis>
-            <yAxis>
-                <NumberAxis fx:id="myWeekNumberAxis" side="LEFT" />
-            </yAxis>
-        </BarChart>
+          <Label fx:id="dateRangeLabel" layoutX="132.0" layoutY="731.0" text="Date Range: XXXX-XX-XX AND XXXX-XX-XX">
+              <font>
+                  <Font size="14.0" />
+              </font>
+          </Label>
     </children>
 </AnchorPane>
