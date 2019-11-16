@@ -193,16 +193,10 @@ public class MyDayScreenController {
             //colour coding each bar depending on category hexString
             //adapted from https://stackoverflow.com/questions/43396419/how-to-change-the-colors-of-specific-bars-using-javafx-barchart
             try {
-                Node n = myDayBarChart.lookup(".data0.chart-bar");
-                n.setStyle("-fx-bar-fill: " + colourCodes.get(0));
-                n = myDayBarChart.lookup(".data1.chart-bar");
-                n.setStyle("-fx-bar-fill: " + colourCodes.get(1));
-                n = myDayBarChart.lookup(".data2.chart-bar");
-                n.setStyle("-fx-bar-fill: " + colourCodes.get(2));
-                n = myDayBarChart.lookup(".data3.chart-bar");
-                n.setStyle("-fx-bar-fill: " + colourCodes.get(3));
-                n = myDayBarChart.lookup(".data4.chart-bar");
-                n.setStyle("-fx-bar-fill: " + colourCodes.get(4));
+                for (int i = 0; i < colourCodes.size(); i++) {
+                    Node n = myDayBarChart.lookup(".data" + i + ".chart-bar");
+                    n.setStyle("-fx-bar-fill: " + colourCodes.get(i));
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
